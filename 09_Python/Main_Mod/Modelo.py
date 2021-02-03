@@ -4,19 +4,30 @@ Created on Sat Dec 26 06:24:14 2020
 
 @author: Oscar
 """
-
+#inspirado en Gidahatari fully geospatial model
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 import flopy as fp
 from flopy.utils.gridgen import Gridgen
 from flopy.utils.reference import SpatialReference
-import  shapefile as sf #tomado de github flopy 
+import  shapefile as sf #tomado de github flopy --pip install pyshp
 from osgeo import gdal # tomado de gidahatari
 import pandas as pd
 from scipy.interpolate import griddata
 
 import mplleaflet
+
+#inspirado en grid intersection demo
+import matplotlib as mpl
+import flopy.discretization as fgrid
+import flopy.plot as fplot
+import shapely 
+from shapely.geometry import Polygon, Point, LineString, MultiLineString, MultiPoint, MultiPolygon, shape#lastone form StackO.F.
+from shapely.strtree import STRtree
+from flopy.utils.gridintersect import GridIntersect
+
+
 
 model_name= "modelo_Norte"
 # Creation of workspace folder
@@ -72,7 +83,7 @@ plt.show()
 
 # if you want to see it on a map
 # crs={'init' : 'epsg:3116'}#deprecated
-# mplleaflet.show(fig, epsg=3116)
+# mplleaflet.show(fig, epsg=3116)#muy lento por eso lo comento
 
 print(GloRefBox)
 print(LocRefBox)
@@ -89,8 +100,7 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
 celGlo = 50
-celRef = 50
-
+celRef = 20
 
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -148,4 +158,30 @@ dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
                            nrow=nrows, ncol=ncols,  delr=delRArray,
                            delc=delCArray, top=mtop, botm=botm, filename= f"{model_name}.dis")
 
-# fp.mf6.modflow.mfgwfdis.
+
+#  procedure to include Recharge in shapely
+
+recarga=sf.Reader(path_sh+"/Zonas_Rec3")
+recarga1=recarga.shapeRecords()[0]
+first=recarga1.shape.__geo_interface__
+print(first)
+shp_geom=shape(first)
+print(shp_geom)
+print(type(shp_geom))
+
+
+# now we use shapely to instersect
+gwf.modelgrid.plot()
+ix = GridIntersect(gwf.modelgrid, method="structured", rtree=True)
+# %timeit ix.intersect(shp_geom) #it works!
+result=ix.intersect(shp_geom)
+print(result)
+
+
+
+
+
+
+
+
+
