@@ -83,7 +83,7 @@ plt.show()
 
 # if you want to see it on a map
 # crs={'init' : 'epsg:3116'}#deprecated
-# mplleaflet.show(fig, epsg=3116)#muy lento por eso lo comento
+mplleaflet.show(fig, epsg=3116)#muy lento por eso lo comento
 
 print(GloRefBox)
 print(LocRefBox)
@@ -150,13 +150,15 @@ nlay = 20
 mtop = 0
 botm = np.array([])
 for i in range(nlay):
-    botm=np.append(botm, mtop-20)
+    botm=np.append(botm, mtop-20)#Corregir/Revisar
 print(botm)
 
 # Apply the spatial and temporal discretization parameters to the DIS package
 dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
                            nrow=nrows, ncol=ncols,  delr=delRArray,
-                           delc=delCArray, top=mtop, botm=botm, filename= f"{model_name}.dis")
+                           delc=delCArray, top=mtop, botm=botm,
+                           filename= f"{model_name}.dis",xorigin=GloRefBox[0],
+                           yorigin=GloRefBox[1])
 
 
 #  procedure to include Recharge in shapely
@@ -166,16 +168,95 @@ recarga1=recarga.shapeRecords()[0]
 first=recarga1.shape.__geo_interface__
 print(first)
 shp_geom=shape(first)
-print(shp_geom)
+# print(shp_geom)
 print(type(shp_geom))
 
 
 # now we use shapely to instersect
+# plt.figure()
 gwf.modelgrid.plot()
 ix = GridIntersect(gwf.modelgrid, method="structured", rtree=True)
 # %timeit ix.intersect(shp_geom) #it works!
 result=ix.intersect(shp_geom)
 print(result)
+
+rch_spd=[]
+for i in range(result.shape[0]):
+    rch_spd.append([0,*result["cellids"][i],0.11/86400])#hay que revisar si la tupla quedó mal
+    
+rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
+                            filename=f"{model_name}.rch",pname="RCH",
+                            print_input=True,print_flows=True,save_flows=True)
+
+# we are including the idomain by using shapes
+dominio=sf.Reader(path_sh+"/Domin_Mod.shp")
+dominio1=dominio.shapeRecords()[0]
+firstd=dominio1.shape.__geo_interface__
+print(firstd)
+shp_geomd=shape(firstd)
+
+
+resultd= ix.intersect(shp_geomd)
+domain_cells=[]
+for i in range(result.shape[0]):
+    domain_cells.append([0,*resultd["cellids"][i]])#hay que revisar si la tupla quedó mal
+
+# creating the idomain matrix
+idom=np.zeros((nlay,nrows,ncols))
+print(nlay,nrows,ncols)
+for i, value in enumerate(domain_cells):
+    # print(i)
+    # print(value)
+    idom[tuple(value)]=1
+    
+    
+# cloning in all layers
+idom[:]=idom[0]
+
+# assigning domain to the model
+dis.idomain=idom
+
+
+# cretaing drains from shapefiles
+
+queb=sf.Reader(os.path.join(path_sh,"Queb_corr.shp"))
+
+
+queb1=queb.shapeRecords()[0]
+firstq=queb1.shape.__geo_interface__
+shp_geomq=shape(firstq)
+
+for i in range(1,queb.numRecords):
+    queb1=queb.shapeRecords()[i]
+    firstq=queb1.shape.__geo_interface__
+    shp_geomq=shp_geomq.union(shape(firstq))
+    
+    
+resultq=ix.intersect(shp_geomq)
+drn_spd=[]
+for i in range(resultq.shape[0]):
+    drn_spd.append([0,*resultq["cellids"][i]])#falta agregar valores de quebradas, I need terrain
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
