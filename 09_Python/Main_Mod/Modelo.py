@@ -27,6 +27,8 @@ from shapely.geometry import Polygon, Point, LineString, MultiLineString, MultiP
 from shapely.strtree import STRtree
 from flopy.utils.gridintersect import GridIntersect
 
+from flopy.utils import Raster
+
 
 
 model_name= "modelo_Norte"
@@ -61,7 +63,7 @@ ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
 
 
 # open shapefiles of limits and refinement
-path_sh= r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\02_Shp_Vect\Input_Model"
+path_sh= "../../02_Shp_Vect/Input_Model"
 ModelLimitShp=sf.Reader(path_sh+"/Domin_Mod.shp" )
 GalleryShp=sf.Reader(path_sh+"/Alineamiento_Galeria.shp" )
 
@@ -216,6 +218,23 @@ idom[:]=idom[0]
 # assigning domain to the model
 dis.idomain=idom
 
+# assigning surface raster
+path_raster="../../03_Raster/Input_ModelR/Superficies_R_Tiff"
+
+surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
+surface.bands
+
+fig2=plt.figure(figsize=(12,12))
+ax=fig2.add_subplot(1,1,1, aspect="equal")
+ax=surface.plot(ax=ax)
+plt.colorbar(ax.images[0], shrink=0.7) 
+gwf.modelgrid.plot()
+# intersecting and resampling
+dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
+dis.top=dem_Matrix
+
+for i in range(nlay):
+    botm=np.append(botm, mtop-20)#Corregir/Revisar---asignar por ahora fondo de capas CORREGIR!! AQUI Y ARRIBA
 
 # cretaing drains from shapefiles
 
@@ -235,7 +254,9 @@ for i in range(1,queb.numRecords):
 resultq=ix.intersect(shp_geomq)
 drn_spd=[]
 for i in range(resultq.shape[0]):
-    drn_spd.append([0,*resultq["cellids"][i]])#falta agregar valores de quebradas, I need terrain
+    drn_spd.append([0,*resultq["cellids"][i],
+                   dem_Matrix[resultq["cellids"][i]]+1,
+                   1e-5*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
 
 
 
