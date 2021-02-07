@@ -63,8 +63,10 @@ ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
 
 
 # open shapefiles of limits and refinement
-path_sh= "../../02_Shp_Vect/Input_Model"
-ModelLimitShp=sf.Reader(path_sh+"/Domin_Mod.shp" )
+path_sh= r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\02_Shp_Vect\Input_Model"
+ruta=os.path.join(path_sh,"Domin_Mod.shp")
+print(ruta)
+ModelLimitShp=sf.Reader(ruta)
 GalleryShp=sf.Reader(path_sh+"/Alineamiento_Galeria.shp" )
 
 
@@ -149,11 +151,11 @@ print('Number of rows: %d and number of cols: %d' % (nrows,ncols))
 
 #Number of layers and layer elevations
 nlay = 20
-mtop = 0
-botm = np.array([])
-for i in range(nlay):
-    botm=np.append(botm, mtop-20)#Corregir/Revisar
-print(botm)
+mtop = 1000
+H=500#borde inferior del modelo
+botm= np.linspace(mtop-H/nlay, H, nlay)
+
+
 
 # Apply the spatial and temporal discretization parameters to the DIS package
 dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
@@ -161,6 +163,30 @@ dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
                            delc=delCArray, top=mtop, botm=botm,
                            filename= f"{model_name}.dis",xorigin=GloRefBox[0],
                            yorigin=GloRefBox[1])
+
+
+
+# assigning surface raster
+path_raster=r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\03_Raster\Input_ModelR\Superficies_R_Tiff"
+
+surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
+surface.bands
+
+fig2=plt.figure(figsize=(12,12))
+ax=fig2.add_subplot(1,1,1, aspect="equal")
+ax=surface.plot(ax=ax)
+plt.colorbar(ax.images[0], shrink=0.7) 
+gwf.modelgrid.plot()
+# intersecting and resampling raster
+dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
+dis.top=dem_Matrix
+
+botm=np.empty((nlay,nrows,ncols))
+
+botm[0,:,:]=dem_Matrix-100
+for i in range(1,nlay):
+    botm[i,:,:]=botm[i-1,:,:]-(H/nlay)#Corregir/Revisar/provisional
+    
 
 
 #  procedure to include Recharge in shapely
@@ -218,23 +244,7 @@ idom[:]=idom[0]
 # assigning domain to the model
 dis.idomain=idom
 
-# assigning surface raster
-path_raster="../../03_Raster/Input_ModelR/Superficies_R_Tiff"
 
-surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
-surface.bands
-
-fig2=plt.figure(figsize=(12,12))
-ax=fig2.add_subplot(1,1,1, aspect="equal")
-ax=surface.plot(ax=ax)
-plt.colorbar(ax.images[0], shrink=0.7) 
-gwf.modelgrid.plot()
-# intersecting and resampling
-dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
-dis.top=dem_Matrix
-
-for i in range(nlay):
-    botm=np.append(botm, mtop-20)#Corregir/Revisar---asignar por ahora fondo de capas CORREGIR!! AQUI Y ARRIBA
 
 # cretaing drains from shapefiles
 
@@ -261,13 +271,34 @@ for i in range(resultq.shape[0]):
 
 
 
+# create the initial condition package
+start=np.empty((nlay,nrows,ncols))
+start[:] = dem_Matrix[0]
+ic=fp.mf6.ModflowGwfic(gwf,pname="ic", strt=start)
+# ic=fp.mf6.ModflowGwfic(gwf,pname="ic", strt=dem_Matrix)
+
+k=1e-6
+npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True)
+
+# create the output control package
+headfile="{}.hds".format(model_name)
+head_filerecord =[headfile]
+budgetfile = "{}.cbb".format(model_name)
+budget_filerecord = [budgetfile]
+saverecord = [("HEAD","ALL"),("BUDGET","ALL")]
+printrecord = [("HEAD","LAST")]
+oc = fp.mf6.ModflowGwfoc(gwf, saverecord=saverecord,
+                         head_filerecord=head_filerecord,
+                         budget_filerecord=budget_filerecord,
+                         printrecord=printrecord)
 
 
+sim.write_simulation()
 
 
-
-
-
+success,buff=sim.run_simulation()
+if not success:
+    raise Exception("MODFLOW 6 did not terminate normally.")
 
 
 
