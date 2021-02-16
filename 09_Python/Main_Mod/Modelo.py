@@ -2,6 +2,7 @@
 """
 Created on Sat Dec 26 06:24:14 2020
 
+
 @author: Oscar
 """
 #inspirado en Gidahatari fully geospatial model
@@ -101,10 +102,10 @@ LocLx = LocRefBox[2] - LocRefBox[0] #x_max - x_min
 LocLy = LocRefBox[3] - LocRefBox[1]
 print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension: %8.1f' % (LocLx,LocLy))
 
-
+# y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
 celGlo = 50
-celRef = 20
+celRef = 50
 
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -187,7 +188,7 @@ botm[0,:,:]=dem_Matrix-100
 for i in range(1,nlay):
     botm[i,:,:]=botm[i-1,:,:]-(H/nlay)#Corregir/Revisar/provisional
     
-
+dis.botm=botm
 
 #  procedure to include Recharge in shapely
 
@@ -226,7 +227,7 @@ shp_geomd=shape(firstd)
 
 resultd= ix.intersect(shp_geomd)
 domain_cells=[]
-for i in range(result.shape[0]):
+for i in range(resultd.shape[0]):
     domain_cells.append([0,*resultd["cellids"][i]])#hay que revisar si la tupla quedó mal
 
 # creating the idomain matrix
@@ -302,15 +303,19 @@ if not success:
 
 
 
+# graficos
 
+# no usar, se tira el modelo cuando se rota
+# gwf.modelgrid.set_coord_info(angrot=11)
 
-
-
-
-
-
-
-
+fig=plt.figure()
+# gwf.modelgrid.
+mapview=fp.plot.PlotMapView(model=gwf)
+linecolection = mapview.plot_grid()
+quadmesh=mapview.plot_ibound()
+quadmesh=mapview.plot_bc("rch", color="purple")
+# quadmesh=mapview.plot_bc("drn", color="purple")
+linecolection = mapview.plot_grid()
 
 
 
