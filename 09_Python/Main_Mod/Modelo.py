@@ -195,7 +195,7 @@ dis.botm=botm
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
 recarga1=recarga.shapeRecords()[0]
 first=recarga1.shape.__geo_interface__
-print(first)
+# print(first)
 shp_geom=shape(first)
 # print(shp_geom)
 print(type(shp_geom))
@@ -221,7 +221,7 @@ rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
 dominio=sf.Reader(path_sh+"/Domin_Mod.shp")
 dominio1=dominio.shapeRecords()[0]
 firstd=dominio1.shape.__geo_interface__
-print(firstd)
+# print(firstd)
 shp_geomd=shape(firstd)
 
 
@@ -232,7 +232,7 @@ for i in range(resultd.shape[0]):
 
 # creating the idomain matrix
 idom=np.zeros((nlay,nrows,ncols))
-print(nlay,nrows,ncols)
+# print(nlay,nrows,ncols)
 for i, value in enumerate(domain_cells):
     # print(i)
     # print(value)
@@ -265,10 +265,56 @@ for i in range(1,queb.numRecords):
 resultq=ix.intersect(shp_geomq)
 drn_spd=[]
 for i in range(resultq.shape[0]):
-    drn_spd.append([0,*resultq["cellids"][i],
-                   dem_Matrix[resultq["cellids"][i]]+1,
-                   1e-5*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
+    if idom[tuple((0,*resultq["cellids"][i]))]==1:
+        drn_spd.append([0,*resultq["cellids"][i], dem_Matrix[resultq["cellids"][i]]+1, 1e-5*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
 
+drn=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=drn_spd, filename=f"{model_name}.drn", pname="drn", print_input=True,print_flows=True,save_flows=True)
+
+
+# cretaing Rivers from shapefiles as Constant heads
+
+rio=sf.Reader(os.path.join(path_sh,"Rios.shp"))
+
+
+rio1=rio.shapeRecords()[0]
+firstr=rio1.shape.__geo_interface__
+shp_geomr=shape(firstr)
+
+for i in range(1,rio.numRecords):
+    rio1=rio.shapeRecords()[i]
+    firstr=rio1.shape.__geo_interface__
+    shp_geomr=shp_geomr.union(shape(firstr))
+    
+    
+resultr=ix.intersect(shp_geomr)
+chd_spd=[]
+for i in range(resultr.shape[0]):
+    if idom[tuple((0,*resultr["cellids"][i]))]==1:
+        chd_spd.append([0,*resultr["cellids"][i], dem_Matrix[resultr["cellids"][i]]+1 ])#falta agregar valores de quebradas, I need terrain
+
+
+# creating the main chd inflow boundary condition
+
+inflow=sf.Reader(os.path.join(path_sh,"Chd_In.shp"))
+
+
+inflow1=inflow.shapeRecords()[0]
+firsti=inflow1.shape.__geo_interface__
+shp_geomi=shape(firsti)
+
+for i in range(1,inflow.numRecords):
+    inflow1=inflow.shapeRecords()[i]
+    firsti=inflow1.shape.__geo_interface__
+    shp_geomi=shp_geomi.union(shape(firsti))
+    
+    
+resulti=ix.intersect(shp_geomi)
+for i in range(resulti.shape[0]):
+    if idom[tuple((0,*resulti["cellids"][i]))]==1:
+        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-60])
+
+
+chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
 
 
 
@@ -314,10 +360,11 @@ mapview=fp.plot.PlotMapView(model=gwf)
 linecolection = mapview.plot_grid()
 quadmesh=mapview.plot_ibound()
 quadmesh=mapview.plot_bc("rch", color="purple")
-# quadmesh=mapview.plot_bc("drn", color="purple")
+quadmesh=mapview.plot_bc("drn", color="cyan")
+quadmesh=mapview.plot_bc("chd", color="blue")
 linecolection = mapview.plot_grid()
 
-
+fig=plt.figure()
 
 
 
