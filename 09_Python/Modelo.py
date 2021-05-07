@@ -78,6 +78,8 @@ galleryArray = np.array(GalleryShp.shapeRecords()[0].shape.points)
 LBB=GloRefBox=ModelLimitShp.bbox
 GBB=LocRefBox=GalleryShp.bbox
 
+GloRefBox=np.array(GloRefBox)
+LocRefBox=np.array(LocRefBox)
 # To plot Area model
 fig = plt.figure()
 plt.plot(limitArray[:,0],limitArray[:,1])
@@ -88,24 +90,24 @@ plt.show()
 
 # if you want to see it on a map
 # crs={'init' : 'epsg:3116'}#deprecated
-mplleaflet.show(fig, epsg=3116)#muy lento por eso lo comento
+# mplleaflet.show(fig, epsg=3116)#muy lento por eso lo comento
 
 print(GloRefBox)
 print(LocRefBox)
 
 #Calculating Global Model (Glo) and Local Refinement (Loc) dimensions
 GloLx = GloRefBox[2] - GloRefBox[0] #x_max - x_min
-GloLy = GloRefBox[3] - GloRefBox[1]
+GloLy = GloRefBox[3] - GloRefBox[1] #y_max - y_min
 print('Global Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension: %8.1f' % (GloLx,GloLy))
 
 LocLx = LocRefBox[2] - LocRefBox[0] #x_max - x_min
-LocLy = LocRefBox[3] - LocRefBox[1]
+LocLy = LocRefBox[3] - LocRefBox[1] #y_max - y_min
 print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension: %8.1f' % (LocLx,LocLy))
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 50
-celRef = 50
+celGlo = 25
+celRef = 5
 
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -119,6 +121,7 @@ def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
+
 def arrayGeneratorRow(gloRef, locRef, gloSize, locSize):
 
     cellArray = np.array([])
@@ -132,16 +135,86 @@ def arrayGeneratorRow(gloRef, locRef, gloSize, locSize):
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
+import math
+def arrayGeneratorRowSmooth(gloRef, locRef, gloSize, locSize):
+    print("coordGlob= "+str( gloRef[3]))
+    smooth=1.5
+    cellratio=gloSize/locSize
+    # calculate how many cells(and lenght) do we need to reach big cell size
+    cellneeds=np.log(cellratio)/np.log(smooth)
+    print("smooth_cellneeds= "+str(cellneeds))
+    cellcomplete=int(cellneeds)
+    print("cellcomplete= "+str(cellcomplete))
+    lenght_afected=0
+    smooth_cell= np.array([])
+    for i in range(cellcomplete):
+        lenght_afected += locSize*smooth**(i+1)
+        print("lenght_afected="+str(lenght_afected))
+        smooth_cell=np.append(smooth_cell,locSize*smooth**(i+1))
+    # lenght_afected=(cellneeds-int(cellneeds))*gloSize
+    print("lenght_afected="+str(lenght_afected))
+    print("smoothcell"+str(smooth_cell))    
+    cells_afected=(lenght_afected/gloSize)-lenght_afected//gloSize
+    print("cells_afected="+str(cells_afected))
+    # lenght_afected =+ locSize
+    # correct grid position due to grid change
+    delta_coords=gloSize*cells_afected
+    print("deltaCoords:"+str(delta_coords))
+    print("coordGlob= "+str( gloRef[3]))
+    # cloning the list to avoid side effects
+    gloRef2=list(gloRef)
+    gloRef2[3] =gloRef[3] + delta_coords
+    print("coordGlobCorr=",gloRef2[3])
+
+    cellArray = np.array([])
+    accumCoordinate =  gloRef2[3] - cellArray.sum()
+    print("cellarray:", cellArray)
+    i=1
+
+    while gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected:
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected)
+        cellArray = np.append(cellArray,[gloSize])
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected)
+        
+    
+    i=1    
+    while gloRef2[3] - cellArray.sum() > locRef[3] + celGlo:
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo)
+        # print(i," i/cellcom" ,cellcomplete)
+        cellArray = np.append(cellArray,smooth_cell[cellcomplete-i])
+        # print("smoothCell: "+str(smooth_cell[cellcomplete-i]))
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo)
+        i += 1
+        
+        
+    while gloRef2[3] - cellArray.sum() < locRef[3] + celGlo and gloRef2[3] - cellArray.sum() > locRef[1] - celGlo:
+        cellArray = np.append(cellArray,[locSize])
+        
+    i=0      
+    while gloRef2[3] - cellArray.sum() < locRef[1] + celGlo and gloRef2[3] - cellArray.sum() > locRef[1] - lenght_afected:
+        cellArray = np.append(cellArray,smooth_cell[i])
+        i += 1
+        
+    while gloRef2[3] - cellArray.sum() < locRef[1] - celGlo and gloRef2[3] - cellArray.sum() > gloRef2[1]:
+        cellArray = np.append(cellArray,[gloSize])
+
+    return cellArray
+
+
+
+#And DELC is the space between columns, so its the row dimension array
+delCArray = arrayGeneratorRowSmooth(GloRefBox, LocRefBox, celGlo, celRef)
+print("delCols= \n"+str(delCArray))
 
 
 #Remember that DELR is space between rows, so it is the column dimension array
 delRArray = arrayGeneratorCol(GloRefBox, LocRefBox, celGlo, celRef)
 print("delRows= \n"+str(delRArray))
 
-#And DELC is the space between columns, so its the row dimension array
-delCArray = arrayGeneratorRow(GloRefBox, LocRefBox, celGlo, celRef)
-print("delColds= \n"+str(delCArray))
 
+
+# delCArray = arrayGeneratorRow(GloRefBox, LocRefBox, celGlo, celRef)
+# print("delCols= \n"+str(delCArray))
 
 #Calculating number or rows and cols since they are dependant from the discretization
 nrows = delCArray.shape[0]
@@ -364,7 +437,7 @@ quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
 linecolection = mapview.plot_grid()
 
-fig=plt.figure()
+# fig=plt.figure()
 
 
 
