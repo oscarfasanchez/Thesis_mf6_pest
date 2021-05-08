@@ -106,8 +106,8 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 50
-celRef = 10
+celGlo = 100
+celRef = 50
 
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -282,7 +282,7 @@ print('Number of rows: %d and number of cols: %d' % (nrows,ncols))
 #Define some parameters and values for the spatial and temporal discretization (DIS package)
 
 #Number of layers and layer elevations
-nlay = 20
+nlay = 5
 mtop = 1000
 H=500#borde inferior del modelo
 botm= np.linspace(mtop-H/nlay, H, nlay)
@@ -335,14 +335,17 @@ print(type(shp_geom))
 # now we use shapely to instersect
 # plt.figure()
 gwf.modelgrid.plot()
-ix = GridIntersect(gwf.modelgrid, method="structured", rtree=True)
+ix = GridIntersect(gwf.modelgrid, method="structured", rtree=False)
 # %timeit ix.intersect(shp_geom) #it works!
 result=ix.intersect(shp_geom)
 print(result)
 
 rch_spd=[]
 for i in range(result.shape[0]):
-    rch_spd.append([0,*result["cellids"][i],0.11/86400])#hay que revisar si la tupla quedó mal
+    rch_spd.append([0,*result["cellids"][i],
+                    (0.11/86400)*(result['areas'][i]/
+                                  delCArray[result["cellids"][i][0]]/
+                                  delRArray[result["cellids"][i][1]])])#hay que revisar si la tupla quedó mal/corregir nombres result, añadir timeseries
     
 rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
                             filename=f"{model_name}.rch",pname="RCH",
