@@ -106,18 +106,18 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 25
-celRef = 5
+celGlo = 50
+celRef = 10
 
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
     cellArray = np.array([])
 
-    while cellArray.sum() + gloRef[0] < locRef[0] - celGlo:
+    while cellArray.sum() + gloRef[0] < locRef[0] - gloSize:
         cellArray = np.append(cellArray,[gloSize])
-    while cellArray.sum() + gloRef[0] > locRef[0] - celGlo and cellArray.sum() + gloRef[0] < locRef[2] + celGlo:
+    while cellArray.sum() + gloRef[0] > locRef[0] - gloSize and cellArray.sum() + gloRef[0] < locRef[2] + gloSize:
         cellArray = np.append(cellArray,[locSize])
-    while cellArray.sum() + gloRef[0] > locRef[2] + celGlo and cellArray.sum() + gloRef[0] < gloRef[2]:
+    while cellArray.sum() + gloRef[0] > locRef[2] + gloSize and cellArray.sum() + gloRef[0] < gloRef[2]:
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
@@ -125,13 +125,12 @@ def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 def arrayGeneratorRow(gloRef, locRef, gloSize, locSize):
 
     cellArray = np.array([])
-    accumCoordinate =  gloRef[3] - cellArray.sum()
 
-    while gloRef[3] - cellArray.sum() > locRef[3] + celGlo:
+    while gloRef[3] - cellArray.sum() > locRef[3] + gloSize:
         cellArray = np.append(cellArray,[gloSize])
-    while gloRef[3] - cellArray.sum() < locRef[3] + celGlo and gloRef[3] - cellArray.sum() > locRef[1] - celGlo:
+    while gloRef[3] - cellArray.sum() < locRef[3] + gloSize and gloRef[3] - cellArray.sum() > locRef[1] - gloSize:
         cellArray = np.append(cellArray,[locSize])
-    while gloRef[3] - cellArray.sum() < locRef[1] - celGlo and gloRef[3] - cellArray.sum() > gloRef[1]:
+    while gloRef[3] - cellArray.sum() < locRef[1] - gloSize and gloRef[3] - cellArray.sum() > gloRef[1]:
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
@@ -165,42 +164,101 @@ def arrayGeneratorRowSmooth(gloRef, locRef, gloSize, locSize):
     gloRef2=list(gloRef)
     gloRef2[3] =gloRef[3] + delta_coords
     print("coordGlobCorr=",gloRef2[3])
-
     cellArray = np.array([])
-    accumCoordinate =  gloRef2[3] - cellArray.sum()
+    
     print("cellarray:", cellArray)
-    i=1
-
-    while gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected:
-        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected)
+    
+    while gloRef2[3] - cellArray.sum() > locRef[3] + gloSize + lenght_afected:
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + gloSize + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + gloSize + lenght_afected)
         cellArray = np.append(cellArray,[gloSize])
-        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo + lenght_afected)
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + gloSize + lenght_afected, gloRef2[3] - cellArray.sum() > locRef[3] + gloSize + lenght_afected)
         
     
     i=1    
-    while gloRef2[3] - cellArray.sum() > locRef[3] + celGlo:
-        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo)
+    while gloRef2[3] - cellArray.sum() > locRef[3] + smooth_cell[cellcomplete-i] and cellcomplete-i >= 0:
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + gloSize, gloRef2[3] - cellArray.sum() > locRef[3] + gloSize)
         # print(i," i/cellcom" ,cellcomplete)
         cellArray = np.append(cellArray,smooth_cell[cellcomplete-i])
         # print("smoothCell: "+str(smooth_cell[cellcomplete-i]))
-        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + celGlo, gloRef2[3] - cellArray.sum() > locRef[3] + celGlo)
+        # print(gloRef2[3] - cellArray.sum()," comparar" ,locRef[3] + gloSize, gloRef2[3] - cellArray.sum() > locRef[3] + gloSize)
         i += 1
         
         
-    while gloRef2[3] - cellArray.sum() < locRef[3] + celGlo and gloRef2[3] - cellArray.sum() > locRef[1] - celGlo:
+    while gloRef2[3] - cellArray.sum() < locRef[3] + gloSize and gloRef2[3] - cellArray.sum() > locRef[1] - gloSize:
         cellArray = np.append(cellArray,[locSize])
         
     i=0      
-    while gloRef2[3] - cellArray.sum() < locRef[1] + celGlo and gloRef2[3] - cellArray.sum() > locRef[1] - lenght_afected:
+    while gloRef2[3] - cellArray.sum() < locRef[1] + gloSize and gloRef2[3] - cellArray.sum() > locRef[1] - lenght_afected - smooth_cell[cellcomplete - 1]:
         cellArray = np.append(cellArray,smooth_cell[i])
         i += 1
         
-    while gloRef2[3] - cellArray.sum() < locRef[1] - celGlo and gloRef2[3] - cellArray.sum() > gloRef2[1]:
+    while gloRef2[3] - cellArray.sum() < locRef[1] - gloSize and gloRef2[3] - cellArray.sum() > gloRef2[1]:
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
 
 
+def arrayGeneratorColSmooth(gloRef, locRef, gloSize, locSize):
+    print("coordGlob= "+str( gloRef[0]))
+    smooth=1.5
+    cellratio=gloSize/locSize
+    # calculate how many cells(and lenght) do we need to reach big cell size
+    cellneeds=np.log(cellratio)/np.log(smooth)
+    print("smooth_cellneeds= "+str(cellneeds))
+    cellcomplete=int(cellneeds)
+    print("cellcomplete= "+str(cellcomplete))
+    lenght_afected=0
+    smooth_cell= np.array([])
+    for i in range(cellcomplete):
+        lenght_afected += locSize*smooth**(i+1)
+        print("lenght_afected="+str(lenght_afected))
+        smooth_cell=np.append(smooth_cell,locSize*smooth**(i+1))
+    # lenght_afected=(cellneeds-int(cellneeds))*gloSize
+    print("lenght_afected="+str(lenght_afected))
+    print("smoothcell"+str(smooth_cell))    
+    cells_afected=(lenght_afected/gloSize)-lenght_afected//gloSize
+    print("cells_afected="+str(cells_afected))
+    # lenght_afected =+ locSize
+    # correct grid position due to grid change
+    delta_coords=gloSize*cells_afected
+    print("deltaCoords:"+str(delta_coords))
+    print("coordGlob= "+str( gloRef[0]))
+    # cloning the list to avoid side effects
+    gloRef2=list(gloRef)
+    gloRef2[0] =gloRef[0] + delta_coords
+    print("coordGlobCorr=",gloRef2[0])
+    cellArray = np.array([])
+    
+    print("cellarray:", cellArray)
+    
+    while gloRef2[0] + cellArray.sum() < locRef[0] - gloSize - lenght_afected:
+        # print(gloRef2[0] - cellArray.sum()," comparar" ,locRef[0] + gloSize + lenght_afected, gloRef2[0] - cellArray.sum() > locRef[0] + gloSize + lenght_afected)
+        cellArray = np.append(cellArray,[gloSize])
+        # print(gloRef2[0] - cellArray.sum()," comparar" ,locRef[0] + gloSize + lenght_afected, gloRef2[0] - cellArray.sum() > locRef[0] + gloSize + lenght_afected)
+        
+    
+    i=1    
+    while gloRef2[0] + cellArray.sum() < locRef[0] - smooth_cell[cellcomplete-i] and cellcomplete-i >= 0:
+        # print(gloRef2[0] - cellArray.sum()," comparar" ,locRef[0] + gloSize, gloRef2[0] - cellArray.sum() > locRef[0] + gloSize)
+        # print(i," i/cellcom" ,cellcomplete)
+        cellArray = np.append(cellArray,smooth_cell[cellcomplete-i])
+        # print("smoothCell: "+str(smooth_cell[cellcomplete-i]))
+        # print(gloRef2[0] - cellArray.sum()," comparar" ,locRef[0] + gloSize, gloRef2[0] - cellArray.sum() > locRef[0] + gloSize)
+        i += 1
+        
+        
+    while gloRef2[0] + cellArray.sum() > locRef[0] - gloSize and gloRef2[0] + cellArray.sum() < locRef[2] + gloSize:
+        cellArray = np.append(cellArray,[locSize])
+        
+    i=0      
+    while gloRef2[0] + cellArray.sum() > locRef[2] - gloSize and gloRef2[0] + cellArray.sum() < locRef[2] + lenght_afected + smooth_cell[cellcomplete - 1]:
+        cellArray = np.append(cellArray,smooth_cell[i])
+        i += 1
+        
+    while gloRef2[0] + cellArray.sum() > locRef[2] + gloSize and gloRef2[0] + cellArray.sum() < gloRef2[2]:
+        cellArray = np.append(cellArray,[gloSize])
+
+    return cellArray
 
 #And DELC is the space between columns, so its the row dimension array
 delCArray = arrayGeneratorRowSmooth(GloRefBox, LocRefBox, celGlo, celRef)
@@ -208,7 +266,7 @@ print("delCols= \n"+str(delCArray))
 
 
 #Remember that DELR is space between rows, so it is the column dimension array
-delRArray = arrayGeneratorCol(GloRefBox, LocRefBox, celGlo, celRef)
+delRArray = arrayGeneratorColSmooth(GloRefBox, LocRefBox, celGlo, celRef)
 print("delRows= \n"+str(delRArray))
 
 
