@@ -24,7 +24,7 @@ import matplotlib as mpl
 import flopy.discretization as fgrid
 import flopy.plot as fplot
 import shapely 
-from shapely.geometry import Polygon, Point, LineString, MultiLineString, MultiPoint, MultiPolygon, shape#lastone form StackO.F.
+from shapely.geometry import Polygon, Point, LineString, MultiLineString, MultiPoint, MultiPolygon, shape#lastone from StackO.F.
 from shapely.strtree import STRtree
 from flopy.utils.gridintersect import GridIntersect
 
@@ -64,7 +64,7 @@ ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
 
 
 # open shapefiles of limits and refinement
-path_sh= r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\02_Shp_Vect\Input_Model"
+path_sh= "../02_Shp_Vect/Input_Model"
 ruta=os.path.join(path_sh,"Domin_Mod.shp")
 print(ruta)
 ModelLimitShp=sf.Reader(ruta)
@@ -282,7 +282,7 @@ print('Number of rows: %d and number of cols: %d' % (nrows,ncols))
 #Define some parameters and values for the spatial and temporal discretization (DIS package)
 
 #Number of layers and layer elevations
-nlay = 5
+nlay = 6
 mtop = 1000
 H=500#borde inferior del modelo
 botm= np.linspace(mtop-H/nlay, H, nlay)
@@ -299,7 +299,7 @@ dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
 
 
 # assigning surface raster
-path_raster=r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\03_Raster\Input_ModelR\Superficies_R_Tiff"
+path_raster="../03_Raster/Input_ModelR/Superficies_R_Tiff"
 
 surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
 surface.bands
@@ -314,12 +314,137 @@ dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.yc
 dis.top=dem_Matrix
 
 botm=np.empty((nlay,nrows,ncols))
+print(botm)
 
 botm[0,:,:]=dem_Matrix-100
 for i in range(1,nlay):
     botm[i,:,:]=botm[i-1,:,:]-(H/nlay)#Corregir/Revisar/provisional
     
 dis.botm=botm
+
+
+def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_thick=0):
+    """
+    path_folder is a string with the relative or absolute path of the folder containing raster files
+    name_raster is a list of  variables containing the names of raster files, the firxt one has to be model Top
+    div_layers is a list of int variables containing the number of division of each layer between raster layers
+    it should have the same size as name_raster minus 1(or the same if bottom constant layer is defined[bottom <= -1000])
+    bottom is the bottom height  of the model, if negative, the last raster will be used as bottom
+    min_thick is an int Minimun raster thickness variable allowed for raster layers.(maybe a list, it is not clear yet)
+    maybe include the possibility of a last offset for model bottom.
+    """
+    demMatrix=np.empty((len(name_raster),nrows, ncols))
+    print(demMatrix)
+    print(demMatrix.ndim)
+    print(demMatrix.shape)
+    
+    Topo = Raster.load(os.path.join(path_folder, name_raster[0]))
+    fig = plt.figure(figsize=(12,12))
+    ax=fig.add_subplot(1, 1, 1, aspect = "equal")
+    ax = Topo.plot(ax = ax)
+    plt.colorbar(ax.images[0], shrink =0.7)
+    gwf.modelgrid.plot()
+    # intersecting and resampling raster
+    demMatrix[0]=Topo.resample_to_grid(gwf.modelgrid.xcellcenters,
+                                    gwf.modelgrid.ycellcenters,
+                                    Topo.bands[0], method="nearest")
+    print(demMatrix)
+    print(type(demMatrix))
+    print(demMatrix.ndim)
+    print(demMatrix.shape)
+    # dis.top=demMatrix[0]
+    count = 0
+    botm=np.empty((div_layers.sum(),nrows, ncols))
+    print("bottom_Shape=",botm.shape)
+    for i in range(1, len(name_raster)):
+        print("i=",i)
+        bottom = Raster.load(os.path.join(path_folder, name_raster[i]))
+        fig = plt.figure(figsize=(12,12))
+        ax=fig.add_subplot(1, 1, 1, aspect = "equal")
+        ax = bottom.plot(ax = ax)
+        plt.colorbar(ax.images[0], shrink =0.7)
+        gwf.modelgrid.plot()
+        # intersecting and resampling raster, the nodata values, are being used, it has to be fixed
+        demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid.xcellcenters,
+                                              gwf.modelgrid.ycellcenters,
+                                              Topo.bands[0], method="nearest")
+        
+        demMatrix[i][demMatrix[i] + min_thick > demMatrix[i-1]] = demMatrix[i-1][demMatrix[i] + min_thick > demMatrix[i-1]]-min_thick
+        # demMatrix[i][demMatrix[i]  > demMatrix[i-1]] = demMatrix[i-1][demMatrix[i] > demMatrix[i-1]]
+        
+        print("count=",count)
+        for j in range(count ,div_layers[i-1] + count):
+            print("j=",j)
+            if div_layers[i-1] == 1:
+                botm[j]= demMatrix[i]
+                
+                break
+            botm[j] = demMatrix[i-1]+(demMatrix[i]-demMatrix[i-1])*(j-count + 1)/div_layers[i-1]
+        count += div_layers[i-1]
+        print("count=",count)
+            
+    return botm, demMatrix
+         
+raster_names=["R_Topo_Union_Clip.tif", "R_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
+capas=np.array([2,2,2])
+fondos, geol= dis_layers(path_raster,raster_names, capas, bottom_model=500, min_thick=2)
+dis.botm=fondos
+        
+"""       
+
+# assigning bottom height using geology
+
+bot_Qd = Raster.load(os.path.join(path_raster, "R_Qd.tif"))
+bot_Qd.bands
+
+figQd = plt.figure(figsize=(12,12))
+ax = figQd.add_subplot(1,1,1, aspect = "equal")
+ax= bot_Qd.plot(ax=ax)
+plt.colorbar(ax.images[0], shrink =0.7)
+gwf.modelgrid.plot()
+# intersecting and resampling raster
+bot_qd_matrix = bot_Qd.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, bot_Qd.bands[0], method= "nearest")
+
+botm[0][botm[0] < dem_Matrix] = bot_qd_matrix[botm[0] < dem_Matrix]
+botm[0][botm[0] > dem_Matrix] = dem_Matrix[botm[0] > dem_Matrix]
+dis.botm=botm
+
+
+bot_Qbo2 = Raster.load(os.path.join(path_raster, "R_Qbo2.tif"))
+bot_Qbo2.bands
+
+figQbo2 = plt.figure(figsize=(12,12))
+ax = figQbo2.add_subplot(1,1,1, aspect = "equal")
+ax= bot_Qbo2.plot(ax=ax)
+plt.colorbar(ax.images[0], shrink =0.7)
+gwf.modelgrid.plot()
+# intersecting and resampling raster
+bot_qbo2_matrix = bot_Qbo2.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, bot_Qbo2.bands[0], method= "nearest")
+
+botm[1][botm[1] < dem_Matrix] = bot_qbo2_matrix[botm[1] < dem_Matrix]
+botm[1][botm[1] > dem_Matrix] = dem_Matrix[botm[1] > dem_Matrix]
+dis.botm=botm
+
+
+
+bot_Qbo1 = Raster.load(os.path.join(path_raster, "R_Qbo1.tif"))
+bot_Qbo1.bands
+
+figQbo1 = plt.figure(figsize=(12,12))
+ax = figQbo1.add_subplot(1,1,1, aspect = "equal")
+ax= bot_Qbo1.plot(ax=ax)
+plt.colorbar(ax.images[0], shrink =0.7)
+gwf.modelgrid.plot()
+# intersecting and resampling raster
+bot_qbo1_matrix = bot_Qbo1.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, bot_Qbo1.bands[0], method= "nearest")
+
+botm[3][botm[3] < dem_Matrix] = bot_qbo1_matrix[botm[3] < dem_Matrix]
+botm[3][botm[3] > dem_Matrix] = dem_Matrix[botm[3] > dem_Matrix]
+dis.botm=botm
+
+
+"""
+
 
 #  procedure to include Recharge in shapely
 
@@ -445,7 +570,7 @@ for i in range(1,inflow.numRecords):
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     if idom[tuple((0,*resulti["cellids"][i]))]==1:
-        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-60])
+        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-1])#problema de la altura -60 que queda debajo de las celdas
 
 
 chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
