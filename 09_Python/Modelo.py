@@ -30,6 +30,7 @@ from flopy.utils.gridintersect import GridIntersect
 
 from flopy.utils import Raster
 
+import copy
 
 
 model_name= "modelo_Norte"
@@ -282,7 +283,7 @@ print('Number of rows: %d and number of cols: %d' % (nrows,ncols))
 #Define some parameters and values for the spatial and temporal discretization (DIS package)
 
 #Number of layers and layer elevations
-nlay = 6
+nlay = 7
 mtop = 1000
 H=500#borde inferior del modelo
 botm= np.linspace(mtop-H/nlay, H, nlay)
@@ -333,7 +334,14 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
     min_thick is an int Minimun raster thickness variable allowed for raster layers.(maybe a list, it is not clear yet)
     maybe include the possibility of a last offset for model bottom.
     """
-    demMatrix=np.empty((len(name_raster),nrows, ncols))
+    if bottom_model == -1000: 
+        botm=np.empty((div_layers.sum(),nrows, ncols))
+        demMatrix=np.empty((len(name_raster),nrows, ncols))
+    else:
+        botm=np.empty((div_layers.sum() + div_layers[-1] ,nrows, ncols))
+        demMatrix=np.empty((len(name_raster) + 1 ,nrows, ncols))
+    
+    
     print(demMatrix)
     print(demMatrix.ndim)
     print(demMatrix.shape)
@@ -354,22 +362,38 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
     print(demMatrix.shape)
     # dis.top=demMatrix[0]
     count = 0
-    botm=np.empty((div_layers.sum(),nrows, ncols))
+    if bottom_model == -1000: 
+        botm=np.empty((div_layers.sum(),nrows, ncols))
+    else:
+        botm=np.empty((div_layers.sum() + 1 ,nrows, ncols))
     print("bottom_Shape=",botm.shape)
-    for i in range(1, len(name_raster)):
+    thickcells=np.ones(botm.shape)
+    for i in range(1, len(capas)+1):
         print("i=",i)
-        bottom = Raster.load(os.path.join(path_folder, name_raster[i]))
-        fig = plt.figure(figsize=(12,12))
-        ax=fig.add_subplot(1, 1, 1, aspect = "equal")
-        ax = bottom.plot(ax = ax)
-        plt.colorbar(ax.images[0], shrink =0.7)
-        gwf.modelgrid.plot()
-        # intersecting and resampling raster, the nodata values, are being used, it has to be fixed
-        demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid.xcellcenters,
-                                              gwf.modelgrid.ycellcenters,
-                                              Topo.bands[0], method="nearest")
         
-        demMatrix[i][demMatrix[i] + min_thick > demMatrix[i-1]] = demMatrix[i-1][demMatrix[i] + min_thick > demMatrix[i-1]]-min_thick
+        if i  == len(capas) and bottom_model != -1000:
+            demMatrix[i] = bottom_model
+            print("opt1")
+        elif i  == len(capas) and bottom_model == -1000:
+            print("you probably didn't define a suitable bottom model!!")
+            demMatrix[i] = bottom_model
+            print("opt2")
+        else:
+            print("opt3")
+            bottom = Raster.load(os.path.join(path_folder, name_raster[i]))
+            fig = plt.figure(figsize=(12,12))
+            ax=fig.add_subplot(1, 1, 1, aspect = "equal")
+            ax = bottom.plot(ax = ax)
+            plt.colorbar(ax.images[0], shrink =0.7)
+            gwf.modelgrid.plot()
+            # intersecting and resampling raster, the nodata values, are being used, it has to be fixed
+            demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid.xcellcenters,
+                                                  gwf.modelgrid.ycellcenters,
+                                                  Topo.bands[0], method="nearest")
+        
+        
+        
+        demMatrix[i][demMatrix[i] + min_thick[i-1] > demMatrix[i-1]] = demMatrix[i-1][demMatrix[i] + min_thick[i-1] > demMatrix[i-1]]-min_thick[i-1]
         # demMatrix[i][demMatrix[i]  > demMatrix[i-1]] = demMatrix[i-1][demMatrix[i] > demMatrix[i-1]]
         
         print("count=",count)
@@ -377,17 +401,26 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
             print("j=",j)
             if div_layers[i-1] == 1:
                 botm[j]= demMatrix[i]
-                
+                thickcells[j][demMatrix[i] + 0 >= demMatrix[i-1]]=-1
                 break
+            
             botm[j] = demMatrix[i-1]+(demMatrix[i]-demMatrix[i-1])*(j-count + 1)/div_layers[i-1]
+            thickcells[j][demMatrix[i] + 0>= demMatrix[i-1]]=-1
         count += div_layers[i-1]
         print("count=",count)
-            
-    return botm, demMatrix
+    # if bottom_model != -1000:
+    #     botm[-1]= bottom_model
+    
+    
+    
+    return botm, demMatrix, thickcells
          
-raster_names=["R_Topo_Union_Clip.tif", "R_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
-capas=np.array([2,2,2])
-fondos, geol= dis_layers(path_raster,raster_names, capas, bottom_model=500, min_thick=2)
+raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
+capas=np.array([1,2,2,1])
+min_thick=([1,0,0,0])
+fondos, geol, thickcells= dis_layers(path_raster,raster_names, capas, bottom_model=500, min_thick=min_thick)
+nlay = fondos.shape[0]
+dis.nlay = fondos.shape[0]
 dis.botm=fondos
         
 """       
@@ -500,7 +533,7 @@ for i, value in enumerate(domain_cells):
     
 # cloning in all layers
 idom[:]=idom[0]
-
+idom=idom*thickcells
 # assigning domain to the model
 dis.idomain=idom
 
@@ -570,7 +603,7 @@ for i in range(1,inflow.numRecords):
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     if idom[tuple((0,*resulti["cellids"][i]))]==1:
-        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-1])#problema de la altura -60 que queda debajo de las celdas
+        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-0])#problema de la altura -60 que queda debajo de las celdas
 
 
 chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
