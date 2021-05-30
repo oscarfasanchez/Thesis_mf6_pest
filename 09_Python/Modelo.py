@@ -334,6 +334,15 @@ k_3="k_qbo1.txt"
 k_roc=1e-9*np.ones([nrows,ncols])
 k_4="k_roc.txt"
 
+kv_qd_qbg=1e-1*np.ones([nrows,ncols])
+kv_1="kv_qd_qbg.txt"
+kv_qbo2=1e-1*np.ones([nrows,ncols])
+kv_2="kv_qbo2.txt"
+kv_qbo1=1e-1*np.ones([nrows,ncols])
+kv_3="kv_qbo1.txt"
+kv_roc=1e-1*np.ones([nrows,ncols])
+kv_4="kv_roc.txt"
+
 
 # we are including the qbg  by using shapes
 gravoso=sf.Reader(path_sh+"/Superficies/Cont_Qbg2.shp")
@@ -368,8 +377,14 @@ np.savetxt(os.path.join(workspace,k_3), k_qbo1)
 np.savetxt(os.path.join(workspace,k_4), k_roc)
 kgeol=[k_1, k_2, k_3, k_4]
 
+np.savetxt(os.path.join(workspace,kv_1), kv_qd_qbg)
+np.savetxt(os.path.join(workspace,kv_2), kv_qbo2)
+np.savetxt(os.path.join(workspace,kv_3), kv_qbo1)
+np.savetxt(os.path.join(workspace,kv_4), kv_roc)
+kvgeol=[kv_1, kv_2, kv_3, kv_4]
 
-def dis_layers(path_folder, name_raster, div_layers, kgeo, bottom_model = -1000, min_thick=0):
+
+def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model = -1000, min_thick=0):
     """
     dis_layers is made for layer discretization
     this function also helps to define idomain -1 when layer thickness is 0
@@ -392,6 +407,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, bottom_model = -1000,
         demMatrix=np.empty((len(name_raster) + 1 ,nrows, ncols))
         
     k=div_layers.sum()*[None]
+    kv=div_layers.sum()*[None]
     # k=list()
     
     print(demMatrix)
@@ -453,11 +469,13 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, bottom_model = -1000,
                 botm[j]= demMatrix[i]
                 thickcells[j][demMatrix[i] + 0 >= demMatrix[i-1]]=-1
                 k[j]=kgeo[i-1]
+                kv[j]=kvgeo[i-1]
                 break
             
             botm[j] = demMatrix[i-1]+(demMatrix[i]-demMatrix[i-1])*(j-count + 1)/div_layers[i-1]
             thickcells[j][demMatrix[i] + 0>= demMatrix[i-1]]=-1
             k[j]=kgeo[i-1]
+            kv[j]=kvgeo[i-1]
         count += div_layers[i-1]
         print("count=",count)
     # if bottom_model != -1000:
@@ -465,18 +483,18 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, bottom_model = -1000,
     
     
     
-    return botm, demMatrix, thickcells, k
+    return botm, demMatrix, thickcells, k, kv
          
 raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
 capas=np.array([1,2,2,1])
 min_thick=([1,0,0,0])
-fondos, geol, thickcells, k= dis_layers(path_raster,raster_names, capas, kgeol, bottom_model=500, min_thick=min_thick)
+fondos, geol, thickcells, k, kv= dis_layers(path_raster,raster_names, capas, kgeol, kvgeol, bottom_model=500, min_thick=min_thick)
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
         
 
-npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True)
+npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv, save_flows=True)
 """       
 
 # assigning bottom height using geology
