@@ -61,7 +61,7 @@ gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
 
 # Setting the solver
 ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
-                                      complexity= "Simple")
+                                      complexity= "Complex")
 
 
 # open shapefiles of limits and refinement
@@ -323,24 +323,76 @@ for i in range(1,nlay):
     
 dis.botm=botm
 
+#hydraulic conductivity definition
 
-def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_thick=0):
+k_qd_qbg=1e-6*np.ones([nrows,ncols])
+k_1="k_qd_qbg.txt"
+k_qbo2=1e-7*np.ones([nrows,ncols])
+k_2="k_qbo2.txt"
+k_qbo1=1e-8*np.ones([nrows,ncols])
+k_3="k_qbo1.txt"
+k_roc=1e-9*np.ones([nrows,ncols])
+k_4="k_roc.txt"
+
+
+# we are including the qbg  by using shapes
+gravoso=sf.Reader(path_sh+"/Superficies/Cont_Qbg2.shp")
+gravoso1=gravoso.shapeRecords()[0]
+firstkg=gravoso1.shape.__geo_interface__
+# print(firstd)
+shp_geomkg=shape(firstkg)
+
+
+# now we use shapely to instersect
+# plt.figure()
+gwf.modelgrid.plot()
+ix = GridIntersect(gwf.modelgrid, method="structured", rtree=False)
+
+resultkg= ix.intersect(shp_geomkg)
+gravoso_cells=[]
+for i in range(resultkg.shape[0]):
+    gravoso_cells.append([*resultkg["cellids"][i]])#hay que revisar si la tupla quedó mal
+
+# creating the idomain matrix
+domin_grav=np.zeros((nrows,ncols))
+# print(nlay,nrows,ncols)
+for i, value in enumerate(gravoso_cells):
+    # print(i)
+    # print(value)
+    k_qd_qbg[tuple(value)]=1e-5
+    domin_grav[tuple(value)]=1 #this will be necessary for pyemu 
+
+np.savetxt(os.path.join(workspace,k_1), k_qd_qbg)
+np.savetxt(os.path.join(workspace,k_2), k_qbo2)
+np.savetxt(os.path.join(workspace,k_3), k_qbo1)
+np.savetxt(os.path.join(workspace,k_4), k_roc)
+kgeol=[k_1, k_2, k_3, k_4]
+
+
+def dis_layers(path_folder, name_raster, div_layers, kgeo, bottom_model = -1000, min_thick=0):
     """
+    dis_layers is made for layer discretization
+    this function also helps to define idomain -1 when layer thickness is 0
+    raster layers should have a possitive no data value to be corrected by minimun thickness
+    
     path_folder is a string with the relative or absolute path of the folder containing raster files
     name_raster is a list of  variables containing the names of raster files, the firxt one has to be model Top
     div_layers is a list of int variables containing the number of division of each layer between raster layers
     it should have the same size as name_raster minus 1(or the same if bottom constant layer is defined[bottom <= -1000])
     bottom is the bottom height  of the model, if negative, the last raster will be used as bottom
-    min_thick is an int Minimun raster thickness variable allowed for raster layers.(maybe a list, it is not clear yet)
-    maybe include the possibility of a last offset for model bottom.
+    min_thick is a list of int Minimun raster thickness variable allowed for raster layers.
+    
     """
     if bottom_model == -1000: 
         botm=np.empty((div_layers.sum(),nrows, ncols))
         demMatrix=np.empty((len(name_raster),nrows, ncols))
+        
     else:
-        botm=np.empty((div_layers.sum() + div_layers[-1] ,nrows, ncols))
+        botm=np.empty((div_layers.sum(),nrows, ncols))
         demMatrix=np.empty((len(name_raster) + 1 ,nrows, ncols))
-    
+        
+    k=div_layers.sum()*[None]
+    # k=list()
     
     print(demMatrix)
     print(demMatrix.ndim)
@@ -362,10 +414,8 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
     print(demMatrix.shape)
     # dis.top=demMatrix[0]
     count = 0
-    if bottom_model == -1000: 
-        botm=np.empty((div_layers.sum(),nrows, ncols))
-    else:
-        botm=np.empty((div_layers.sum() + 1 ,nrows, ncols))
+    #tengo que colocar K en las capas, y asegurarme de organizar K, idomain abajo
+
     print("bottom_Shape=",botm.shape)
     thickcells=np.ones(botm.shape)
     for i in range(1, len(capas)+1):
@@ -402,10 +452,12 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
             if div_layers[i-1] == 1:
                 botm[j]= demMatrix[i]
                 thickcells[j][demMatrix[i] + 0 >= demMatrix[i-1]]=-1
+                k[j]=kgeo[i-1]
                 break
             
             botm[j] = demMatrix[i-1]+(demMatrix[i]-demMatrix[i-1])*(j-count + 1)/div_layers[i-1]
             thickcells[j][demMatrix[i] + 0>= demMatrix[i-1]]=-1
+            k[j]=kgeo[i-1]
         count += div_layers[i-1]
         print("count=",count)
     # if bottom_model != -1000:
@@ -413,16 +465,18 @@ def dis_layers(path_folder, name_raster, div_layers, bottom_model = -1000, min_t
     
     
     
-    return botm, demMatrix, thickcells
+    return botm, demMatrix, thickcells, k
          
 raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
 capas=np.array([1,2,2,1])
 min_thick=([1,0,0,0])
-fondos, geol, thickcells= dis_layers(path_raster,raster_names, capas, bottom_model=500, min_thick=min_thick)
+fondos, geol, thickcells, k= dis_layers(path_raster,raster_names, capas, kgeol, bottom_model=500, min_thick=min_thick)
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
         
+
+npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True)
 """       
 
 # assigning bottom height using geology
@@ -490,10 +544,7 @@ shp_geom=shape(first)
 print(type(shp_geom))
 
 
-# now we use shapely to instersect
-# plt.figure()
-gwf.modelgrid.plot()
-ix = GridIntersect(gwf.modelgrid, method="structured", rtree=False)
+
 # %timeit ix.intersect(shp_geom) #it works!
 result=ix.intersect(shp_geom)
 print(result)
@@ -504,7 +555,7 @@ for i in range(result.shape[0]):
                     (0.11/86400)*(result['areas'][i]/
                                   delCArray[result["cellids"][i][0]]/
                                   delRArray[result["cellids"][i][1]])])#hay que revisar si la tupla quedó mal/corregir nombres result, añadir timeseries
-    
+# debo revisar la activación de recarga en celdas secas.    
 rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
                             filename=f"{model_name}.rch",pname="RCH",
                             print_input=True,print_flows=True,save_flows=True)
@@ -584,9 +635,10 @@ for i in range(resultr.shape[0]):
     if idom[tuple((0,*resultr["cellids"][i]))]==1:
         chd_spd.append([0,*resultr["cellids"][i], dem_Matrix[resultr["cellids"][i]]+1 ])#falta agregar valores de quebradas, I need terrain
 
+chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
+# creating the main ghc inflow boundary condition
 
-# creating the main chd inflow boundary condition
-
+ghb_spd=[]
 inflow=sf.Reader(os.path.join(path_sh,"Chd_In.shp"))
 
 
@@ -603,10 +655,10 @@ for i in range(1,inflow.numRecords):
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     if idom[tuple((0,*resulti["cellids"][i]))]==1:
-        chd_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-0])#problema de la altura -60 que queda debajo de las celdas
+        ghb_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-0,(1e-6*20*5/20)])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
 
 
-chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
+ghb=fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd, filename=f"{model_name}.ghb", pname="ghb", print_input=True,print_flows=True,save_flows=True)
 
 
 
@@ -616,8 +668,13 @@ start[:] = dem_Matrix[0]
 ic=fp.mf6.ModflowGwfic(gwf,pname="ic", strt=start)
 # ic=fp.mf6.ModflowGwfic(gwf,pname="ic", strt=dem_Matrix)
 
-k=1e-6
-npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, save_flows=True)
+
+
+domin_qd=idom[0]-domin_grav    #this will be necessary for pyemu
+
+
+
+
 
 # create the output control package
 headfile="{}.hds".format(model_name)
@@ -654,6 +711,7 @@ quadmesh=mapview.plot_ibound()
 quadmesh=mapview.plot_bc("rch", color="purple")
 quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
+quadmesh=mapview.plot_bc("ghb", color="red")
 linecolection = mapview.plot_grid()
 
 # fig=plt.figure()
