@@ -109,7 +109,7 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
 celGlo = 100
 celRef = 50
-
+"""
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
     cellArray = np.array([])
@@ -135,35 +135,36 @@ def arrayGeneratorRow(gloRef, locRef, gloSize, locSize):
         cellArray = np.append(cellArray,[gloSize])
 
     return cellArray
+"""
 import math
 def arrayGeneratorRowSmooth(gloRef, locRef, gloSize, locSize):
     print("coordGlob= "+str( gloRef[3]))
-    smooth=1.5
+    smooth=1.5#maximun cell size incremente between cells
     cellratio=gloSize/locSize
     # calculate how many cells(and lenght) do we need to reach big cell size
-    cellneeds=np.log(cellratio)/np.log(smooth)
+    cellneeds=np.log(cellratio)/np.log(smooth)#how many smooth cells are needed to change the cell size correctly
     print("smooth_cellneeds= "+str(cellneeds))
-    cellcomplete=int(cellneeds)
+    cellcomplete=int(cellneeds)#steps needed to change cell size smoothly
     print("cellcomplete= "+str(cellcomplete))
     lenght_afected=0
     smooth_cell= np.array([])
     for i in range(cellcomplete):
-        lenght_afected += locSize*smooth**(i+1)
+        lenght_afected += locSize*smooth**(i+1)#lenght needed for transition to small size
         print("lenght_afected="+str(lenght_afected))
-        smooth_cell=np.append(smooth_cell,locSize*smooth**(i+1))
+        smooth_cell=np.append(smooth_cell,locSize*smooth**(i+1))#smooth cells size
     # lenght_afected=(cellneeds-int(cellneeds))*gloSize
     print("lenght_afected="+str(lenght_afected))
     print("smoothcell"+str(smooth_cell))    
-    cells_afected=(lenght_afected/gloSize)-lenght_afected//gloSize
+    cells_afected=(lenght_afected/gloSize)-lenght_afected//gloSize#partial big cell affected
     print("cells_afected="+str(cells_afected))
     # lenght_afected =+ locSize
     # correct grid position due to grid change
-    delta_coords=gloSize*cells_afected
+    delta_coords=gloSize*cells_afected#coordinate shift to adapt mesh
     print("deltaCoords:"+str(delta_coords))
     print("coordGlob= "+str( gloRef[3]))
     # cloning the list to avoid side effects
     gloRef2=list(gloRef)
-    gloRef2[3] =gloRef[3] + delta_coords
+    gloRef2[3] =gloRef[3] + delta_coords#coordianate corrected
     print("coordGlobCorr=",gloRef2[3])
     cellArray = np.array([])
     
@@ -657,6 +658,46 @@ chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}
 # creating the main ghc inflow boundary condition
 
 ghb_spd=[]
+
+
+c_1=1e-6*(20*5/20)
+
+c_2=1e-7*(20*5/20)
+
+c_3=1e-8*(20*5/20)
+
+c_4=1e-9*(20*5/20)
+
+# np.savetxt(os.path.join(workspace,c_1), c_qd_qbg)
+
+c_geol=[c_1, c_2, c_3, c_4]
+
+j=0
+# c=[None]*capas.sum()
+# c=[c_geol[0]]*capas[0]
+c=[]
+layer_count=[]
+for i in range(capas.size):
+    for j in range(capas[i]):
+        c.append(c_geol[i])
+        layer_count.append(i)
+        print("i= ",i ," j= ",j )
+    
+"""
+for i in range(capas.sum()):
+    if capas[:j].sum()!=i:
+        # ghb_spd[1]=capas[j]
+        c[i]=c_geol[j]
+        fondos[capas[:j].sum()]
+        capas[i:].sum()
+        print("i= ",i ," j= ",j," capas= ", capas[:j].sum() )
+        
+    else:
+        print("i= ",i ," j= ",j," capas= ", capas[:j].sum() )
+        j+=1
+ """       
+
+
 inflow=sf.Reader(os.path.join(path_sh,"Chd_In.shp"))
 
 
@@ -672,8 +713,14 @@ for i in range(1,inflow.numRecords):
     
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
-    if idom[tuple((0,*resulti["cellids"][i]))]==1:
-        ghb_spd.append([0,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-0,(1e-6*20*5/20)])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+    for j in range(capas.sum()):
+        if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]-60:
+            ghb_spd.append([j,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-60,c[j]])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+
+df_ghb = pd.DataFrame(ghb_spd)
+
+for i in range(capas.sum()):
+    df_ghb[df_ghb[0]==i].to_csv(workspace + f"/ghb_{i}.txt", index=False, header=False)
 
 
 ghb=fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd, filename=f"{model_name}.ghb", pname="ghb", print_input=True,print_flows=True,save_flows=True)
