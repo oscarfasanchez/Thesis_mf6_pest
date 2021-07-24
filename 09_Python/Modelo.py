@@ -107,8 +107,8 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 100
-celRef = 50
+celGlo = 180
+celRef = 80
 """
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -286,7 +286,7 @@ print('Number of rows: %d and number of cols: %d' % (nrows,ncols))
 #Number of layers and layer elevations
 nlay = 7
 mtop = 1000
-H=500#borde inferior del modelo
+H=500 #model bottom
 botm= np.linspace(mtop-H/nlay, H, nlay)
 
 
@@ -314,7 +314,7 @@ gwf.modelgrid.plot()
 # intersecting and resampling raster
 dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
 dis.top=dem_Matrix
-
+"""
 botm=np.empty((nlay,nrows,ncols))
 print(botm)
 
@@ -323,7 +323,7 @@ for i in range(1,nlay):
     botm[i,:,:]=botm[i-1,:,:]-(H/nlay)#Corregir/Revisar/provisional
     
 dis.botm=botm
-
+"""
 #hydraulic conductivity definition
 
 k_qd_qbg=1e-6*np.ones([nrows,ncols])
@@ -344,8 +344,29 @@ kv_3="kv_qbo1.txt"
 kv_roc=1e-1*np.ones([nrows,ncols])
 kv_4="kv_roc.txt"
 
+#Storage definition
 
-# we are including the qbg  by using shapes
+k_qd_qbg=1e-6*np.ones([nrows,ncols])
+k_1="k_qd_qbg.txt"
+k_qbo2=1e-7*np.ones([nrows,ncols])
+k_2="k_qbo2.txt"
+k_qbo1=1e-8*np.ones([nrows,ncols])
+k_3="k_qbo1.txt"
+k_roc=1e-9*np.ones([nrows,ncols])
+k_4="k_roc.txt"
+
+kv_qd_qbg=1e-1*np.ones([nrows,ncols])
+kv_1="kv_qd_qbg.txt"
+kv_qbo2=1e-1*np.ones([nrows,ncols])
+kv_2="kv_qbo2.txt"
+kv_qbo1=1e-1*np.ones([nrows,ncols])
+kv_3="kv_qbo1.txt"
+kv_roc=1e-1*np.ones([nrows,ncols])
+kv_4="kv_roc.txt"
+
+
+
+# we are including the qbg hydraulic conductivity  by using shapes
 gravoso=sf.Reader(path_sh+"/Superficies/Cont_Qbg2.shp")
 gravoso1=gravoso.shapeRecords()[0]
 firstkg=gravoso1.shape.__geo_interface__
@@ -389,6 +410,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     """
     dis_layers is made for layer discretization
     this function also helps to define idomain -1 when layer thickness is 0
+    also helps to define hydraulic conductivity
     raster layers should have a possitive no data value to be corrected by minimun thickness
     
     path_folder is a string with the relative or absolute path of the folder containing raster files
@@ -398,7 +420,15 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     bottom is the bottom height  of the model, if negative, the last raster will be used as bottom
     min_thick is a list of int Minimun raster thickness variable allowed for raster layers.
     
+    Return
+    botm is a matrix of each layer bottom
+    demMatrix is a matrix of geological layers bottoms
+    thickcells is a matrix used for identify no thick cells, later can be used to build an idomain matrix
+    k, kv hydraulic condivity matrix for every layer
+    
     """
+    
+    # deciding if there is an extra layer for model bottom
     if bottom_model == -1000: 
         botm=np.empty((div_layers.sum(),nrows, ncols))
         demMatrix=np.empty((len(name_raster),nrows, ncols))
@@ -406,7 +436,8 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     else:
         botm=np.empty((div_layers.sum(),nrows, ncols))
         demMatrix=np.empty((len(name_raster) + 1 ,nrows, ncols))
-        
+    
+    # creating an empty list of k
     k=div_layers.sum()*[None]
     kv=div_layers.sum()*[None]
     # k=list()
@@ -414,7 +445,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     print(demMatrix)
     print(demMatrix.ndim)
     print(demMatrix.shape)
-    
+    # first define model top
     Topo = Raster.load(os.path.join(path_folder, name_raster[0]))
     fig = plt.figure(figsize=(12,12))
     ax=fig.add_subplot(1, 1, 1, aspect = "equal")
@@ -431,13 +462,12 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     print(demMatrix.shape)
     # dis.top=demMatrix[0]
     count = 0
-    #tengo que colocar K en las capas, y asegurarme de organizar K, idomain abajo
-
+    
     print("bottom_Shape=",botm.shape)
     thickcells=np.ones(botm.shape)
     for i in range(1, len(capas)+1):
         print("i=",i)
-        
+        # assign geologicalbottom layers to matrix
         if i  == len(capas) and bottom_model != -1000:
             demMatrix[i] = bottom_model
             print("opt1")
@@ -465,6 +495,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
         
         print("count=",count)
         for j in range(count ,div_layers[i-1] + count):
+            # assign model layer bottoms, K and thickcell to a matrix
             print("j=",j)
             if div_layers[i-1] == 1:
                 botm[j]= demMatrix[i]
@@ -485,7 +516,8 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     
     
     return botm, demMatrix, thickcells, k, kv
-         
+
+# run dis_layer function
 raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
 capas=np.array([1,2,2,1])
 min_thick=([1,0,0,0])
@@ -493,9 +525,10 @@ fondos, geol, thickcells, k, kv= dis_layers(path_raster,raster_names, capas, kge
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
-        
-
-npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv, save_flows=True)
+celltype=([0,0,0,1])
+# define node property flow package
+npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv,
+                           save_flows=True, save_specific_discharge = True)
 """       
 
 # assigning bottom height using geology
@@ -573,7 +606,7 @@ for i in range(result.shape[0]):
     rch_spd.append([0,*result["cellids"][i],
                     (0.11/86400)*(result['areas'][i]/
                                   delCArray[result["cellids"][i][0]]/
-                                  delRArray[result["cellids"][i][1]])])#hay que revisar si la tupla quedó mal/corregir nombres result, añadir timeseries
+                                  delRArray[result["cellids"][i][1]])])#it is weighted by intersected area, añadir timeseries
 # debo revisar la activación de recarga en celdas secas.    
 rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
                             filename=f"{model_name}.rch",pname="RCH",
@@ -595,6 +628,7 @@ for i in range(resultd.shape[0]):
 # creating the idomain matrix
 idom=np.zeros((nlay,nrows,ncols))
 # print(nlay,nrows,ncols)
+# Assigning the list of active cells to a matrix
 for i, value in enumerate(domain_cells):
     # print(i)
     # print(value)
@@ -603,13 +637,13 @@ for i, value in enumerate(domain_cells):
     
 # cloning in all layers
 idom[:]=idom[0]
-idom=idom*thickcells
+idom=idom*thickcells #using this variable to use vertical flow cells
 # assigning domain to the model
 dis.idomain=idom
 
 
 
-# cretaing drains from shapefiles
+# creating drains from shapefiles
 
 queb=sf.Reader(os.path.join(path_sh,"Queb_corr.shp"))
 
@@ -658,29 +692,38 @@ chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}
 # creating the main ghc inflow boundary condition
 
 ghb_spd=[]
+# defining conductances per thickness unit in general head boundary condition
 
+c_1=k_qd_qbg[0,0]*(celGlo/2000)#*thickness_layer to get conductance
 
-c_1=1e-6*(20*5/20)
+c_2=k_qbo2[0,0]*(celGlo/2000)
 
-c_2=1e-7*(20*5/20)
+c_3=k_qbo1[0,0]*(celGlo/2000)
 
-c_3=1e-8*(20*5/20)
-
-c_4=1e-9*(20*5/20)
+c_4=k_roc[0,0]*(celGlo/2000)
 
 # np.savetxt(os.path.join(workspace,c_1), c_qd_qbg)
 
 c_geol=[c_1, c_2, c_3, c_4]
+
+# thickness for conductance
+lay_thick  = np.ones(fondos.shape)
+lay_thick[0]=dem_Matrix -fondos[0]
+for i in range(1, fondos.shape[0]):
+    lay_thick[i]=fondos[i-1]-fondos[i]
+    
+    
 
 j=0
 # c=[None]*capas.sum()
 # c=[c_geol[0]]*capas[0]
 c=[]
 layer_count=[]
+# create each layer with suitable conductance
 for i in range(capas.size):
     for j in range(capas[i]):
-        c.append(c_geol[i])
-        layer_count.append(i)
+        c.append(c_geol[i])#vector of suitable conductance
+        layer_count.append(i) #list to remeber discretization of geological layer
         print("i= ",i ," j= ",j )
     
 """
@@ -705,25 +748,30 @@ inflow1=inflow.shapeRecords()[0]
 firsti=inflow1.shape.__geo_interface__
 shp_geomi=shape(firsti)
 
-for i in range(1,inflow.numRecords):
+for i in range(1,inflow.numRecords):#by default
     inflow1=inflow.shapeRecords()[i]
     firsti=inflow1.shape.__geo_interface__
     shp_geomi=shp_geomi.union(shape(firsti))
     
-    
+    # assign ghb 
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
-    for j in range(capas.sum()):
-        if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]-60:
-            ghb_spd.append([j,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]-60,c[j]])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+    for j in range(capas.sum()):#condition for dry cells
+        if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]+100:#set a variable
+            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))]])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+            # I use j+1 because i will write modflow file directly, so flopy doen't make the transition
 
 df_ghb = pd.DataFrame(ghb_spd)
+ghb_spd_txt={}
+for i in range(0,capas.sum()):
+    df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}.txt", index=False, header=False, sep=' ')
+    ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"}}
+    print(i)
+    fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd_txt, filename=f"{model_name}_{i}.ghb", pname=f"ghb_{i}", print_input=True,print_flows=True,save_flows=True)
+    print(i)
 
-for i in range(capas.sum()):
-    df_ghb[df_ghb[0]==i].to_csv(workspace + f"/ghb_{i}.txt", index=False, header=False)
-
-
-ghb=fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd, filename=f"{model_name}.ghb", pname="ghb", print_input=True,print_flows=True,save_flows=True)
+# definir por capa con lista, no es posible.
+# ghb=fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd, filename=f"{model_name}.ghb", pname="ghb", print_input=True,print_flows=True,save_flows=True)
 
 
 
