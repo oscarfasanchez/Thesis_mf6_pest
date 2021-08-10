@@ -5,4 +5,5 @@
 *.exe
 *.html
 *.xml
-09_Python/Main_Mod/data/modelo_Norte
+*.cbb
+*.chd
