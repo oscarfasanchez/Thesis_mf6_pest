@@ -47,16 +47,18 @@ sim =fp.mf6.MFSimulation(sim_name=model_name, version="mf6",
 
 #setting modflow time
 # [perlen, nstp, tsmult]
-time_disc=[(1.0, 1, 1.0)]
+
+nsper=3 #number of  stress periods
+time_disc=[(365*86400, 365, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]#
+time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginning of list
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
-                         nper=1, perioddata=time_disc)
-
+                         nper=nsper, perioddata=time_disc)
 # Create gwf model
 model_nam_file=f"{model_name}.nam"
 gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
                         model_nam_file=model_nam_file,
-                        newtonoptions=None)
+                        newtonoptions=None, save_flows=True)
 
 
 # Setting the solver
@@ -306,11 +308,11 @@ path_raster="../03_Raster/Input_ModelR/Superficies_R_Tiff"
 surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
 surface.bands
 
-fig2=plt.figure(figsize=(12,12))
-ax=fig2.add_subplot(1,1,1, aspect="equal")
-ax=surface.plot(ax=ax)
-plt.colorbar(ax.images[0], shrink=0.7) 
-gwf.modelgrid.plot()
+# fig2=plt.figure(figsize=(12,12))
+# ax=fig2.add_subplot(1,1,1, aspect="equal")
+# ax=surface.plot(ax=ax)
+# plt.colorbar(ax.images[0], shrink=0.7) 
+# gwf.modelgrid.plot()
 # intersecting and resampling raster
 dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
 dis.top=dem_Matrix
@@ -346,23 +348,23 @@ kv_4="kv_roc.txt"
 
 #Storage definition
 
-k_qd_qbg=1e-6*np.ones([nrows,ncols])
-k_1="k_qd_qbg.txt"
-k_qbo2=1e-7*np.ones([nrows,ncols])
-k_2="k_qbo2.txt"
-k_qbo1=1e-8*np.ones([nrows,ncols])
-k_3="k_qbo1.txt"
-k_roc=1e-9*np.ones([nrows,ncols])
-k_4="k_roc.txt"
+sy_qd_qbg=1e-1*np.ones([nrows,ncols])
+sy_1="sy_qd_qbg.txt"
+sy_qbo2=1e-1*np.ones([nrows,ncols])
+sy_2="sy_qbo2.txt"
+sy_qbo1=1e-1*np.ones([nrows,ncols])
+sy_3="sy_qbo1.txt"
+sy_roc=1e-1*np.ones([nrows,ncols])
+sy_4="sy_roc.txt"
 
-kv_qd_qbg=1e-1*np.ones([nrows,ncols])
-kv_1="kv_qd_qbg.txt"
-kv_qbo2=1e-1*np.ones([nrows,ncols])
-kv_2="kv_qbo2.txt"
-kv_qbo1=1e-1*np.ones([nrows,ncols])
-kv_3="kv_qbo1.txt"
-kv_roc=1e-1*np.ones([nrows,ncols])
-kv_4="kv_roc.txt"
+ss_qd_qbg=1e-4*np.ones([nrows,ncols])
+ss_1="ss_qd_qbg.txt"
+ss_qbo2=1e-4*np.ones([nrows,ncols])
+ss_2="ss_qbo2.txt"
+ss_qbo1=1e-4*np.ones([nrows,ncols])
+ss_3="ss_qbo1.txt"
+ss_roc=1e-4*np.ones([nrows,ncols])
+ss_4="ss_roc.txt"
 
 
 
@@ -391,8 +393,10 @@ for i, value in enumerate(gravoso_cells):
     # print(i)
     # print(value)
     k_qd_qbg[tuple(value)]=1e-5
+    ss_qd_qbg[tuple(value)]=1e-4
+    sy_qd_qbg[tuple(value)]=1e-1
     domin_grav[tuple(value)]=1 #this will be necessary for pyemu 
-
+#this should be more automatic i guess
 np.savetxt(os.path.join(workspace,k_1), k_qd_qbg)
 np.savetxt(os.path.join(workspace,k_2), k_qbo2)
 np.savetxt(os.path.join(workspace,k_3), k_qbo1)
@@ -405,8 +409,20 @@ np.savetxt(os.path.join(workspace,kv_3), kv_qbo1)
 np.savetxt(os.path.join(workspace,kv_4), kv_roc)
 kvgeol=[kv_1, kv_2, kv_3, kv_4]
 
+np.savetxt(os.path.join(workspace,ss_1), ss_qd_qbg)
+np.savetxt(os.path.join(workspace,ss_2), ss_qbo2)
+np.savetxt(os.path.join(workspace,ss_3), ss_qbo1)
+np.savetxt(os.path.join(workspace,ss_4), ss_roc)
+ssgeol=[ss_1, ss_2, ss_3, ss_4]
 
-def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model = -1000, min_thick=0):
+np.savetxt(os.path.join(workspace,sy_1), sy_qd_qbg)
+np.savetxt(os.path.join(workspace,sy_2), sy_qbo2)
+np.savetxt(os.path.join(workspace,sy_3), sy_qbo1)
+np.savetxt(os.path.join(workspace,sy_4), sy_roc)
+sygeol=[sy_1, sy_2, sy_3, sy_4]
+
+
+def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, bottom_model = -1000, min_thick=0):
     """
     dis_layers is made for layer discretization
     this function also helps to define idomain -1 when layer thickness is 0
@@ -440,6 +456,9 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     # creating an empty list of k
     k=div_layers.sum()*[None]
     kv=div_layers.sum()*[None]
+    # creating an empty list of Storage
+    ss=div_layers.sum()*[None]
+    sy=div_layers.sum()*[None]
     # k=list()
     
     print(demMatrix)
@@ -502,12 +521,16 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
                 thickcells[j][demMatrix[i] + 0 >= demMatrix[i-1]]=-1
                 k[j]=kgeo[i-1]
                 kv[j]=kvgeo[i-1]
+                ss[j]=ssgeo[i-1]
+                sy[j]=sygeo[i-1]
                 break
             
             botm[j] = demMatrix[i-1]+(demMatrix[i]-demMatrix[i-1])*(j-count + 1)/div_layers[i-1]
             thickcells[j][demMatrix[i] + 0>= demMatrix[i-1]]=-1
             k[j]=kgeo[i-1]
             kv[j]=kvgeo[i-1]
+            ss[j]=ssgeo[i-1]
+            sy[j]=sygeo[i-1]
         count += div_layers[i-1]
         print("count=",count)
     # if bottom_model != -1000:
@@ -515,13 +538,13 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, bottom_model =
     
     
     
-    return botm, demMatrix, thickcells, k, kv
+    return botm, demMatrix, thickcells, k, kv, ss, sy
 
 # run dis_layer function
 raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
 capas=np.array([1,2,2,1])
 min_thick=([1,0,0,0])
-fondos, geol, thickcells, k, kv= dis_layers(path_raster,raster_names, capas, kgeol, kvgeol, bottom_model=500, min_thick=min_thick)
+fondos, geol, thickcells, k, kv, ss, sy= dis_layers(path_raster,raster_names, capas, kgeol, kvgeol, ssgeol, sygeol, bottom_model=500, min_thick=min_thick)
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
@@ -529,6 +552,8 @@ celltype=([0,0,0,1])
 # define node property flow package
 npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv,
                            save_flows=True, save_specific_discharge = True)
+# specifies storage
+sto = fp.mf6.ModflowGwfsto(gwf, pname="sto", save_flows=True, iconvert=1, ss=ss, sy=sy, steady_state= {0:True}, transient={1:True})
 """       
 
 # assigning bottom height using geology
@@ -586,6 +611,9 @@ dis.botm=botm
 
 
 #  procedure to include Recharge in shapely
+df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")
+df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)
+df_monthly_rain=df_rain.resample("M", on="Fecha").sum()#resampling rain by month
 
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
 recarga1=recarga.shapeRecords()[0]
