@@ -1,2 +1,3 @@
 # Thesis_mf6_pest
-ANALISIS DE INCERTIDUMBRE DE MODELO INVERSO HIDROGEOLÓGICO EN LA ZONA NORTE DE BUCARAMANGA.
+Uncertainty Analysis of an inverse hidrogeologogical model in the north of Bucaramanga, Colombia
+
