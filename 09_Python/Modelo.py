@@ -613,10 +613,7 @@ dis.botm=botm
 #  procedure to include Recharge in shapely
 df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")
 df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)
-df_monthly_rain=df_rain.resample("M", on="Fecha").sum()#resampling rain by month
 
-df_monthly_rain["time"]=df_monthly_rain.index-df_rain["Fecha"][0]
-df_monthly_rain["time_s"]=df_monthly_rain["time"].astype("timedelta64[s]")
 
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
 recarga1=recarga.shapeRecords()[0]
@@ -772,9 +769,14 @@ for i in range(capas.sum()):
         j+=1
  """       
 
+# Processing monthly rain to GHB condition
+df_monthly_rain=df_rain.resample("M", on="Fecha").sum()#resampling rain by month
+df_monthly_rain["time"]=df_monthly_rain.index-df_rain["Fecha"][0]
+df_monthly_rain["time_s"]=df_monthly_rain["time"].astype("timedelta64[s]")
+df_monthly_rain=df_monthly_rain.loc[(df_monthly_rain.index<"2021-12-31")]
+df_monthly_rain["weight"]=df_monthly_rain["Valor"]/df_monthly_rain["Valor"].mean()
 
 inflow=sf.Reader(os.path.join(path_sh,"Chd_In.shp"))
-
 
 inflow1=inflow.shapeRecords()[0]
 firsti=inflow1.shape.__geo_interface__
@@ -790,7 +792,7 @@ resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     for j in range(capas.sum()):#condition for dry cells
         if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]+100:#set a variable
-            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], None])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], 1])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
             # I use j+1 because i will write modflow file directly, so flopy doen't make the transition
             ghb_spd_tr.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))],"rain_mult"])
 
@@ -808,7 +810,7 @@ for i in range(0,capas.sum()):
     ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
     print(i)
     
-    tsdict = {
+    ts_dict = {
             "timeseries": ts_data,
             "time_series_namerecord": "rain_mult",
             "interpolation_methodrecord": "LINEAREND",
@@ -818,7 +820,7 @@ for i in range(0,capas.sum()):
                          filename=f"{model_name}_{i}.ghb", pname=f"ghb_{i}",
                          auxiliary="rain_mult",
                          auxmultname="rain_mult",
-                         timeseries =ts_data,
+                         timeseries =ts_dict,
                          print_input=True,print_flows=True,save_flows=True)
     print(i)
 
