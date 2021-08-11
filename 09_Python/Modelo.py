@@ -615,6 +615,9 @@ df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")
 df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)
 df_monthly_rain=df_rain.resample("M", on="Fecha").sum()#resampling rain by month
 
+df_monthly_rain["time"]=df_monthly_rain.index-df_rain["Fecha"][0]
+df_monthly_rain["time_s"]=df_monthly_rain["time"].astype("timedelta64[s]")
+
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
 recarga1=recarga.shapeRecords()[0]
 first=recarga1.shape.__geo_interface__
@@ -720,6 +723,7 @@ chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}
 # creating the main ghc inflow boundary condition
 
 ghb_spd=[]
+ghb_spd_tr=[]
 # defining conductances per thickness unit in general head boundary condition
 
 c_1=k_qd_qbg[0,0]*(celGlo/2000)#*thickness_layer to get conductance
@@ -786,16 +790,36 @@ resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     for j in range(capas.sum()):#condition for dry cells
         if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]+100:#set a variable
-            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))]])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], None])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
             # I use j+1 because i will write modflow file directly, so flopy doen't make the transition
+            ghb_spd_tr.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))],"rain_mult"])
 
 df_ghb = pd.DataFrame(ghb_spd)
+df_ghb_tr = pd.DataFrame(ghb_spd_tr)
+df_monthly_rain["time"]
 ghb_spd_txt={}
+
+ts_data=[]
+ts_data=[(df_monthly_rain["time_s"].tolist()[i],df_monthly_rain["Valor"].tolist()[i]) for i in range(df_monthly_rain.shape[0])]
+
 for i in range(0,capas.sum()):
     df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}.txt", index=False, header=False, sep=' ')
-    ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"}}
+    df_ghb_tr[df_ghb_tr[0]==i+1].to_csv(workspace + f"/ghb_tr_{i}.txt", index=False, header=False, sep=' ')
+    ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
     print(i)
-    fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd_txt, filename=f"{model_name}_{i}.ghb", pname=f"ghb_{i}", print_input=True,print_flows=True,save_flows=True)
+    
+    tsdict = {
+            "timeseries": ts_data,
+            "time_series_namerecord": "rain_mult",
+            "interpolation_methodrecord": "LINEAREND",
+        }
+    
+    fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd_txt,
+                         filename=f"{model_name}_{i}.ghb", pname=f"ghb_{i}",
+                         auxiliary="rain_mult",
+                         auxmultname="rain_mult",
+                         timeseries =ts_data,
+                         print_input=True,print_flows=True,save_flows=True)
     print(i)
 
 # definir por capa con lista, no es posible.
