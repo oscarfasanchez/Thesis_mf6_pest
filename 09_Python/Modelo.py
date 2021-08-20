@@ -815,14 +815,16 @@ ghb_spd_txt={}
 # ts_data=[(df_monthly_rain["time_s"].tolist()[i],df_monthly_rain["Valor"].tolist()[i]) for i in range(df_monthly_rain.shape[0])]
 
 for i in range(0,capas.sum()):
+    df_ghb_tr[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}_{0}.txt", index=False, header=False, sep=' ')
     for j in range(df_monthly_rain.shape[0]):
         df_ghb.loc[df_ghb[0]==i+1,3]=df_ghb_tr.loc[df_ghb[0]==i+1,3]+df_monthly_rain.reset_index()["delta_head"][j]
-        df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}_{j}.txt", index=False, header=False, sep=' ')
+        df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}_{j+1}.txt", index=False, header=False, sep=' ')
     
     # list of sp and list of names
     
     ghb_spd_txt= dict((df_monthly_rain.reset_index()["time"][j].days,
-                       {"filename":f"ghb_{i}_{j}.txt"}) for j in range(df_monthly_rain.shape[0]))#
+                       {"filename":f"ghb_{i}_{j+1}.txt"}) for j in range(df_monthly_rain.shape[0]))#
+    ghb_spd_txt[0]={"filename":f"ghb_{i}_{0}.txt"}
     # ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
     print(i)
     
