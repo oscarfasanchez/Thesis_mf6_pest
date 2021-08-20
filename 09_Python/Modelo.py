@@ -48,8 +48,8 @@ sim =fp.mf6.MFSimulation(sim_name=model_name, version="mf6",
 #setting modflow time
 # [perlen, nstp, tsmult]
 
-nsper=3 #number of  stress periods
-time_disc=[(365*86400, 365, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]#
+nsper=365*4 #number of  stress periods
+time_disc=[(86400, 1, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]#
 time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginning of list
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
@@ -787,40 +787,56 @@ for i in range(1,inflow.numRecords):#by default
     firsti=inflow1.shape.__geo_interface__
     shp_geomi=shp_geomi.union(shape(firsti))
     
-    # assign ghb 
+# assign ghb 
+# Antolinez assumes a head variation from 1005 to 1038 in Gravoso constant head, terrain height in ghb varies between 990 and 940, 
+# steady maximun head in antolinez was 1032-1038
+Lay_hei_off=20#layer height offset between virtual head and ghb terrain height (20+990= 1010? as minimun)
+
+ghb_tr_delta=20#value to add to the average head variation
+
+df_monthly_rain["delta_head"]=df_monthly_rain["weight"]*ghb_tr_delta
+
 resulti=ix.intersect(shp_geomi)
 for i in range(resulti.shape[0]):
     for j in range(capas.sum()):#condition for dry cells
-        if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]+100:#set a variable
-            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], 1])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
-            # I use j+1 because i will write modflow file directly, so flopy doen't make the transition
-            ghb_spd_tr.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+100,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))],"rain_mult"])
+        if idom[tuple((j,*resulti["cellids"][i]))]==1 and fondos[tuple((j,*resulti["cellids"][i]))]<dem_Matrix[resulti["cellids"][i]]+Lay_hei_off:#set a variable
+            ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+Lay_hei_off,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], 1])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
+            # I use j+1 because i will write modflow file directly, so flopy doesn't make the transition
+            # ghb_spd_tr.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+Lay_hei_off,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))],"rain_mult"])
+
 
 df_ghb = pd.DataFrame(ghb_spd)
-df_ghb_tr = pd.DataFrame(ghb_spd_tr)
+df_ghb_tr = pd.DataFrame(ghb_spd)
+# df_ghb_tr = pd.DataFrame(ghb_spd_tr)
 df_monthly_rain["time"]
 ghb_spd_txt={}
 
-ts_data=[]
-ts_data=[(df_monthly_rain["time_s"].tolist()[i],df_monthly_rain["Valor"].tolist()[i]) for i in range(df_monthly_rain.shape[0])]
+# ts_data=[]
+# ts_data=[(df_monthly_rain["time_s"].tolist()[i],df_monthly_rain["Valor"].tolist()[i]) for i in range(df_monthly_rain.shape[0])]
 
 for i in range(0,capas.sum()):
-    df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}.txt", index=False, header=False, sep=' ')
-    df_ghb_tr[df_ghb_tr[0]==i+1].to_csv(workspace + f"/ghb_tr_{i}.txt", index=False, header=False, sep=' ')
-    ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
+    for j in range(df_monthly_rain.shape[0]):
+        df_ghb.loc[df_ghb[0]==i+1,3]=df_ghb_tr.loc[df_ghb[0]==i+1,3]+df_monthly_rain.reset_index()["delta_head"][j]
+        df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}_{j}.txt", index=False, header=False, sep=' ')
+    
+    # list of sp and list of names
+    
+    ghb_spd_txt= dict((df_monthly_rain.reset_index()["time"][j].days,
+                       {"filename":f"ghb_{i}_{j}.txt"}) for j in range(df_monthly_rain.shape[0]))#
+    # ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
     print(i)
     
-    ts_dict = {
-            "timeseries": ts_data,
-            "time_series_namerecord": "rain_mult",
-            "interpolation_methodrecord": "LINEAREND",
-        }
+    # ts_dict = {
+    #         "timeseries": ts_data,
+    #         "time_series_namerecord": "rain_mult",
+    #         "interpolation_methodrecord": "LINEAREND",
+    #     }
     
     fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd_txt,
                          filename=f"{model_name}_{i}.ghb", pname=f"ghb_{i}",
-                         auxiliary="rain_mult",
-                         auxmultname="rain_mult",
-                         timeseries =ts_dict,
+                         # auxiliary="rain_mult",
+                         # auxmultname="rain_mult",
+                         # timeseries =ts_dict,
                          print_input=True,print_flows=True,save_flows=True)
     print(i)
 
