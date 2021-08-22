@@ -643,7 +643,7 @@ for i in range(result.shape[0]):#0.11 from water budget?
                     *result["cellids"][i],
                     (0.11/86400/365)*(result['areas'][i]/
                                   delCArray[result["cellids"][i][0]]/
-                                  delRArray[result["cellids"][i][1]]), None])
+                                  delRArray[result["cellids"][i][1]]), 1])
 for i in range(len(rch_spd)):#to correct 0 based index in python, because flopy doen't correct in external files
     rch_spd[i][0]+=1
     rch_spd[i][1]+=1
@@ -669,7 +669,7 @@ ts_dict={
 
 
 # debo revisar la activación de recarga en celdas secas.    
-rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
+rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd_txt,
                             filename=f"{model_name}.rch",pname="RCH",
                             auxiliary="rain_mult",
                             auxmultname="rain_mult",
@@ -939,7 +939,6 @@ quadmesh=mapview.plot_bc("ghb", color="red")
 linecolection = mapview.plot_grid()
 
 # fig=plt.figure()
-
 
 
 
