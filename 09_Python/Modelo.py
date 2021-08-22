@@ -613,6 +613,8 @@ dis.botm=botm
 #  procedure to include Recharge in shapely
 df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")
 df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)
+df_rain["time"]=df_rain["Fecha"]-df_rain["Fecha"][0]
+df_rain["time_s"]=df_rain["time"].astype("timedelta64[s]")
 
 
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
@@ -630,14 +632,48 @@ result=ix.intersect(shp_geom)
 print(result)
 
 rch_spd=[]
-for i in range(result.shape[0]):
-    rch_spd.append([0,*result["cellids"][i],
-                    (0.11/86400)*(result['areas'][i]/
+rch_spd_st=[]
+for i in range(result.shape[0]):#0.11 from water budget?
+    rch_spd.append([0,
+                    *result["cellids"][i],
+                    (0.001/86400/365)*(result['areas'][i]/
                                   delCArray[result["cellids"][i][0]]/
-                                  delRArray[result["cellids"][i][1]])])#it is weighted by intersected area, añadir timeseries
+                                  delRArray[result["cellids"][i][1]]),"rain_mult"])#it is weighted by intersected area, añadir timeseries
+    rch_spd_st.append([0,
+                    *result["cellids"][i],
+                    (0.11/86400/365)*(result['areas'][i]/
+                                  delCArray[result["cellids"][i][0]]/
+                                  delRArray[result["cellids"][i][1]]), None])
+for i in range(len(rch_spd)):#to correct 0 based index in python, because flopy doen't correct in external files
+    rch_spd[i][0]+=1
+    rch_spd[i][1]+=1
+    rch_spd[i][2]+=1
+    rch_spd_st[i][0]+=1
+    rch_spd_st[i][1]+=1
+    rch_spd_st[i][2]+=1
+
+df_rch_spd_st=pd.DataFrame(rch_spd_st)
+df_rch_spd=pd.DataFrame(rch_spd)
+df_rch_spd_st.to_csv(workspace+"/rch_0.txt", index=False, header= False, sep= " ")
+df_rch_spd.to_csv(workspace+"/rch_1.txt", index=False, header= False, sep= " ")
+    
+ts_data=[]
+ts_data=[(df_rain["time_s"].tolist()[i], df_rain["Valor"].tolist()[i]) for i in range(df_rain.shape[0])]
+
+rch_spd_txt={0:{"filename":"rch_0.txt"},1:{"filename":"rch_1.txt"}}
+
+ts_dict={
+    "timeseries": ts_data,
+    "time_series_namerecord":"rain_mult",
+    "interpolation_methodrecord":"LINEAREND"}
+
+
 # debo revisar la activación de recarga en celdas secas.    
 rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd,
                             filename=f"{model_name}.rch",pname="RCH",
+                            auxiliary="rain_mult",
+                            auxmultname="rain_mult",
+                            timeseries= ts_dict,
                             print_input=True,print_flows=True,save_flows=True)
 
 # we are including the idomain by using shapes
@@ -803,7 +839,10 @@ for i in range(resulti.shape[0]):
             ghb_spd.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+Lay_hei_off,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))], 1])#problema de la altura -60 que queda debajo de las celdas, hay que calcular conductancia.
             # I use j+1 because i will write modflow file directly, so flopy doesn't make the transition
             # ghb_spd_tr.append([j+1,*resulti["cellids"][i], dem_Matrix[resulti["cellids"][i]]+Lay_hei_off,c[j]/lay_thick[tuple((j,*resulti["cellids"][i]))],"rain_mult"])
-
+for i in range(len(ghb_spd)):
+    # to fix index because i will write modflow file directly, so flopy doesn't make the transition
+    ghb_spd[i][1]+=1
+    ghb_spd[i][2]+=1
 
 df_ghb = pd.DataFrame(ghb_spd)
 df_ghb_tr = pd.DataFrame(ghb_spd)
@@ -821,10 +860,10 @@ for i in range(0,capas.sum()):
         df_ghb[df_ghb[0]==i+1].to_csv(workspace + f"/ghb_{i}_{j+1}.txt", index=False, header=False, sep=' ')
     
     # list of sp and list of names
-    
-    ghb_spd_txt= dict((df_monthly_rain.reset_index()["time"][j].days,
-                       {"filename":f"ghb_{i}_{j+1}.txt"}) for j in range(df_monthly_rain.shape[0]))#
     ghb_spd_txt[0]={"filename":f"ghb_{i}_{0}.txt"}
+    ghb_spd_txt.update( dict((df_monthly_rain.reset_index()["time"][j].days,
+                       {"filename":f"ghb_{i}_{j+1}.txt"}) for j in range(df_monthly_rain.shape[0])))#
+    
     # ghb_spd_txt={0:{"filename":f"ghb_{i}.txt"},1:{"filename":f"ghb_tr_{i}.txt"}}
     print(i)
     
