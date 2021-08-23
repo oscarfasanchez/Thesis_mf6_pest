@@ -881,10 +881,25 @@ for i in range(0,capas.sum()):
                          print_input=True,print_flows=True,save_flows=True)
     print(i)
 
-# definir por capa con lista, no es posible.
-# ghb=fp.mf6.ModflowGwfghb(gwf,stress_period_data=ghb_spd, filename=f"{model_name}.ghb", pname="ghb", print_input=True,print_flows=True,save_flows=True)
+# gallery construction
+gal=sf.Reader(os.path.join(path_sh,"Alineamiento_Galeria.shp"))
+gal1=gal.shapeRecords()[0]
+firstg=gal1.shape.__geo_interface__
+shp_geomg=shape(firstg)
 
+for i in range(1,gal.numRecords):
+    gal1=gal.shapeRecords()[i]
+    firstg=gal1.shape.__geo_interface__
+    shp_geomg=shp_geomg.union(shape(firstg))
+    
+    
+resultg=ix.intersect(shp_geomg)
+gal_spd=[]
+for i in range(resultg.shape[0]):
+    if idom[tuple((0,*resultg["cellids"][i]))]==1:
+        gal_spd.append([0,*resultg["cellids"][i], dem_Matrix[resultg["cellids"][i]]+1, 1e-5*delCArray[resultg["cellids"][i][0]]*delRArray[resultg["cellids"][i][1]]])
 
+drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd, filename=f"{model_name}_gal.drn", pname="drn_gal", print_input=True,print_flows=True,save_flows=True)
 
 # create the initial condition package
 start=np.empty((nlay,nrows,ncols))
@@ -935,7 +950,8 @@ quadmesh=mapview.plot_ibound()
 quadmesh=mapview.plot_bc("rch", color="purple")
 quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
-quadmesh=mapview.plot_bc("ghb", color="red")
+quadmesh=mapview.plot_bc("ghb", color="magenta")
+quadmesh=mapview.plot_bc("drn_gal", color="red")
 linecolection = mapview.plot_grid()
 
 # fig=plt.figure()
