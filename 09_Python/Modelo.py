@@ -895,9 +895,29 @@ for i in range(1,gal.numRecords):
     
 resultg=ix.intersect(shp_geomg)
 gal_spd=[]
+
+#conductance per meter of gallery
+gal_perim=9.2106+1.3906*2+0.46#ignoring depth channel
+gal_thick=0.3
+gal_k_conc=1e-7
+gal_drn_space=10
+len_drn=1.5*7#outside gallery in 2 inches, there are seven drains
+gal_drn_cnd=1e-5*len_drn*np.pi*2*(2*0.0254)/0.01#K*L*With/thickness
+gal_cond=(gal_perim*gal_k_conc/gal_thick)+gal_drn_cnd/gal_drn_space#
+height_0=748
+height_f=753.25
+gal_len=resultg["lengths"].sum()#525
+gal_slp=0.01# gallery slope
+
 for i in range(resultg.shape[0]):
-    if idom[tuple((0,*resultg["cellids"][i]))]==1:
-        gal_spd.append([0,*resultg["cellids"][i], dem_Matrix[resultg["cellids"][i]]+1, 1e-5*delCArray[resultg["cellids"][i][0]]*delRArray[resultg["cellids"][i][1]]])
+    for j in range(fondos.shape[0]):
+        if height_0+resultg["lengths"][0:i].sum()*gal_slp > fondos[tuple((j,*resultg["cellids"][i]))]:
+            if idom[tuple((0,*resultg["cellids"][i]))]==1:
+                gal_spd.append([j,*resultg["cellids"][i],height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i]])
+            break
+         
+        
+        
 
 drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd, filename=f"{model_name}_gal.drn", pname="drn_gal", print_input=True,print_flows=True,save_flows=True)
 
