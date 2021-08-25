@@ -900,7 +900,7 @@ gal_spd=[]
 gal_perim=9.2106+1.3906*2+0.46#ignoring depth channel
 gal_thick=0.3
 gal_k_conc=1e-7
-gal_drn_space=10
+gal_drn_space=10#space between sections with drains
 len_drn=1.5*7#outside gallery in 2 inches, there are seven drains
 gal_drn_cnd=1e-5*len_drn*np.pi*2*(2*0.0254)/0.01#K*L*With/thickness
 gal_cond=(gal_perim*gal_k_conc/gal_thick)+gal_drn_cnd/gal_drn_space#
@@ -908,14 +908,22 @@ height_0=748
 height_f=753.25
 gal_len=resultg["lengths"].sum()#525
 gal_slp=0.01# gallery slope
+gal_speed_exc=2.2 
+
+
+ # m/d
+time_gal_0=365*3
+
+gal_spd_tr={}
 
 for i in range(resultg.shape[0]):
     for j in range(fondos.shape[0]):
         if height_0+resultg["lengths"][0:i].sum()*gal_slp > fondos[tuple((j,*resultg["cellids"][i]))]:
-            if idom[tuple((0,*resultg["cellids"][i]))]==1:
+            if idom[tuple((0,*resultg["cellids"][i]))]==1:#Cambiar J?
                 gal_spd.append([j,*resultg["cellids"][i],height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i]])
+            print(int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1)
+            gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=gal_spd
             break
-         
         
         
 
