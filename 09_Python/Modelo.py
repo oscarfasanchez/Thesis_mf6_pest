@@ -900,9 +900,10 @@ gal_spd=[]
 gal_perim=9.2106+1.3906*2+0.46#ignoring depth channel
 gal_thick=0.3
 gal_k_conc=1e-7
+gal_k_grav=1e-7
 gal_drn_space=10#space between sections with drains
 len_drn=1.5*7#outside gallery in 2 inches, there are seven drains
-gal_drn_cnd=1e-5*len_drn*np.pi*2*(2*0.0254)/0.01#K*L*With/thickness
+gal_drn_cnd=gal_k_grav*len_drn*np.pi*2*(2*0.0254)/0.01#K*L*With/thickness
 gal_cond=(gal_perim*gal_k_conc/gal_thick)+gal_drn_cnd/gal_drn_space#
 height_0=748
 height_f=753.25
@@ -913,7 +914,6 @@ gal_speed_exc=2.2
 
  # m/d
 time_gal_0=365*3
-
 gal_spd_tr={}
 
 for i in range(resultg.shape[0]):
@@ -922,12 +922,47 @@ for i in range(resultg.shape[0]):
             if idom[tuple((0,*resultg["cellids"][i]))]==1:#Cambiar J?
                 gal_spd.append([j,*resultg["cellids"][i],height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i]])
             print(int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1)
-            gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=gal_spd
+            gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=list(gal_spd)#review indent
             break
         
         
 
-drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd, filename=f"{model_name}_gal.drn", pname="drn_gal", print_input=True,print_flows=True,save_flows=True)
+drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr, filename=f"{model_name}_gal.drn", pname="drn_gal", print_input=True,print_flows=True,save_flows=True)
+
+#Well gallery construction
+
+gal_wells_time=np.array([30+9,11,14,15,17,18,20,21])
+gal_wells_depth=np.array([25.17,31.04,40.94,42.43,49.04,52.60,57.69,61.30])
+gal_wells_depth-=2.5#not 1.5 because gallery size
+
+gal_w_spd=[]
+gal_w_spd_tr={}
+gal_w=sf.Reader(os.path.join(path_sh,"Pozos_Galeria_Final.shp"))
+gal_w1=gal_w.shapeRecords()[0]
+firstg_w=gal_w1.shape.__geo_interface__
+shp_geomg_w=shape(firstg_w)
+
+for i in range(1,gal_w.numRecords):
+    gal_w1=gal_w.shapeRecords()[i]
+    firstg_w=gal_w1.shape.__geo_interface__
+    shp_geomg_w=shp_geomg_w.union(shape(firstg_w))
+    
+    
+resultg_w=ix.intersect(shp_geomg_w)
+
+for i in range(resultg_w.shape[0]):
+    for j in range(fondos.shape[0]):
+        if fondos[tuple((j,*resultg_w["cellids"][i]))]> dem_Matrix[resultg_w["cellids"][i]] - gal_wells_depth[i]:
+            if idom[tuple((0,*resultg_w["cellids"][i]))]==1:#Cambiar J?
+                gal_w_spd.append([j,*resultg_w["cellids"][i],fondos[tuple((j,*resultg_w["cellids"][i]))], gal_cond])
+                print("time= ",gal_wells_time[0:i+1].sum()+time_gal_0)
+                print("cell= ",[j,*resultg_w["cellids"][i]], "\n")
+                print(gal_w_spd, "\n")
+                
+    gal_w_spd_tr[int(gal_wells_time[0:i+1].sum()+time_gal_0)]=list(gal_w_spd)
+        # break
+
+drn_gal_w=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_w_spd_tr, filename=f"{model_name}_gal_w.drn", pname="drn_gal_w", print_input=True,print_flows=True,save_flows=True)
 
 # create the initial condition package
 start=np.empty((nlay,nrows,ncols))
@@ -975,11 +1010,13 @@ fig=plt.figure()
 mapview=fp.plot.PlotMapView(model=gwf)
 linecolection = mapview.plot_grid()
 quadmesh=mapview.plot_ibound()
+quadmesh=mapview.plot_bc("drn_gal_w", color="green")
 quadmesh=mapview.plot_bc("rch", color="purple")
 quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
 quadmesh=mapview.plot_bc("ghb", color="magenta")
 quadmesh=mapview.plot_bc("drn_gal", color="red")
+
 linecolection = mapview.plot_grid()
 
 # fig=plt.figure()
