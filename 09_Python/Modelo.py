@@ -1010,12 +1010,12 @@ fig=plt.figure()
 mapview=fp.plot.PlotMapView(model=gwf)
 linecolection = mapview.plot_grid()
 quadmesh=mapview.plot_ibound()
-quadmesh=mapview.plot_bc("drn_gal_w", color="green")
 quadmesh=mapview.plot_bc("rch", color="purple")
 quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
-quadmesh=mapview.plot_bc("ghb", color="magenta")
-quadmesh=mapview.plot_bc("drn_gal", color="red")
+quadmesh=mapview.plot_bc("ghb", color="aquamarine")
+quadmesh=mapview.plot_bc("drn_gal", color="brown", plotAll=True,kper=1334)#
+quadmesh=mapview.plot_bc("drn_gal_w", color="olive", plotAll=True,kper=1229)
 
 linecolection = mapview.plot_grid()
 
