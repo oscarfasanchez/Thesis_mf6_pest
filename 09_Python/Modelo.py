@@ -109,8 +109,8 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 50
-celRef = 5
+celGlo = 180
+celRef = 80
 """
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -314,7 +314,7 @@ surface.bands
 # plt.colorbar(ax.images[0], shrink=0.7) 
 # gwf.modelgrid.plot()
 # intersecting and resampling raster
-dem_Matrix=surface.resample_to_grid(gwf.modelgrid.xcellcenters, gwf.modelgrid.ycellcenters, surface.bands[0], method="nearest")
+dem_Matrix=surface.resample_to_grid(gwf.modelgrid, surface.bands[0], method="nearest")
 dis.top=dem_Matrix
 """
 botm=np.empty((nlay,nrows,ncols))
@@ -472,8 +472,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
     plt.colorbar(ax.images[0], shrink =0.7)
     gwf.modelgrid.plot()
     # intersecting and resampling raster
-    demMatrix[0]=Topo.resample_to_grid(gwf.modelgrid.xcellcenters,
-                                    gwf.modelgrid.ycellcenters,
+    demMatrix[0]=Topo.resample_to_grid(gwf.modelgrid,
                                     Topo.bands[0], method="nearest")
     print(demMatrix)
     print(type(demMatrix))
@@ -503,8 +502,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
             plt.colorbar(ax.images[0], shrink =0.7)
             gwf.modelgrid.plot()
             # intersecting and resampling raster, the nodata values, are being used, it has to be fixed
-            demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid.xcellcenters,
-                                                  gwf.modelgrid.ycellcenters,
+            demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid,
                                                   Topo.bands[0], method="nearest")
         
         

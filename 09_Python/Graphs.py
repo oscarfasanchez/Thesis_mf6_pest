@@ -109,8 +109,8 @@ plt.clabel(cont,fmt="%1.0f")
 print("numrows= ",gwf.modelgrid.nrow)
 print("numcols= ",gwf.modelgrid.ncol)
 print("numcols= ",gwf.modelgrid.nlay)
-sect_col=12
-sect_row=10
+sect_col=25
+sect_row=52
 sec_lay=0
 
 line = np.array([(gwf.modelgrid.xcellcenters[0,sect_col],
@@ -325,10 +325,23 @@ gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=
 # chd export, with points
 gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doen't work
 
-# head export, with points
-# vtk.export_heads(gwf, head_file,
-#                  pv_folder,
-#                  kstpkper=[(0,0), (0, 49), (0, 99), (0, 999)],
-#                  point_scalars=True, nanval=(1e30,-1e30))
+# model export
+gwf.export(pv_folder, fmt='vtk', binary=True) #works for dis, ic, npf, sto
 
-# vtk.export_heads(gwf, cellbycellfile, pv_folder)
+# head export
+
+heads_output_folder = os.path.join(pv_folder, 'heads_output_test')
+vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work many values nan
+
+
+#with points
+vtk.export_heads(gwf, head_file,
+                  heads_output_folder,
+                  kstpkper=[(0,0), (0, 49), (0, 99), (0, 999)],#review time steps
+                  point_scalars=True, nanval=1e30)#doesn't work many values nan
+
+# Export output cell by cell file to .vtu
+# vtk.export_cbc(gwf, budget_file, pv_folder, kstpkper=[(0, 0), (0, 9), (0, 10), (0, 11)],#review time steps
+#                text=['CONSTANT HEAD', 'STORAGE'], point_scalars=True, binary=True)#doen't work, ERROR
+
+# revisar # https://flopy.readthedocs.io/en/latest/source/flopy.export.vtk.html?highlight=vtk.export_heads#flopy.export.vtk.export_heads
