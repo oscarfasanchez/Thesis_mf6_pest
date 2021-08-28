@@ -109,8 +109,8 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 180
-celRef = 80
+celGlo = 50
+celRef = 5
 """
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import numpy as np
 import os
+from flopy.export import vtk
 
 import matplotlib.colors as colors
 
@@ -284,3 +285,50 @@ quiver=xsect.plot_vector(qx, qy, qz,head=head[time],
 t = ax.set_title(f'Column {sect_row} Cross-Section with  with Heads and flow in time {time}')
 # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
 cb = plt.colorbar(csa, shrink=0.75)
+
+
+"""
+Export to paraview
+"""
+pv_folder = os.path.join("../" , '11_pv_test')
+if not os.path.exists(pv_folder):
+    os.mkdir(pv_folder)
+
+
+gwf.dis.top.export(pv_folder, fmt='vtk')
+
+# 3D Array export
+# export model bottoms
+gwf.dis.botm.export(pv_folder, fmt='vtk')
+
+# transient 2d array
+# export recharge
+gwf.rch.export(pv_folder, fmt='vtk')#doen't work
+
+# 3D Array export
+# hk export, with points
+gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=True)
+
+# npf export, with points
+gwf.npf.export(pv_folder, smooth=True, fmt='vtk', name='NPF', point_scalars=True)
+
+# DRN export, with points
+gwf.drn.export(pv_folder, smooth=True, fmt='vtk', name='DRN', point_scalars=True)#doen't work
+
+# 3D Array export
+# hk export, with points
+gwf.sto.export(pv_folder, smooth=True, fmt='vtk', name='STO', point_scalars=True)
+
+# ghb export, with points
+gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=True)#doen't work
+
+# chd export, with points
+gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doen't work
+
+# head export, with points
+# vtk.export_heads(gwf, head_file,
+#                  pv_folder,
+#                  kstpkper=[(0,0), (0, 49), (0, 99), (0, 999)],
+#                  point_scalars=True, nanval=(1e30,-1e30))
+
+# vtk.export_heads(gwf, cellbycellfile, pv_folder)

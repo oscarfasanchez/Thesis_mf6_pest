@@ -10,3 +10,4 @@
 *.lst
 02_Shp_Vect/Input_Model/
 09_Python/data/modelo_Norte/*.txt
+*.vtu
