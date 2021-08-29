@@ -503,7 +503,9 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
             gwf.modelgrid.plot()
             # intersecting and resampling raster, the nodata values, are being used, it has to be fixed
             demMatrix[i] = bottom.resample_to_grid(gwf.modelgrid,
-                                                  Topo.bands[0], method="nearest")
+                                                  Topo.bands[0],
+                                                  method="linear",multithread=True,
+                                                  thread_pool=6, extrapolate_edges=True)
         
         
         

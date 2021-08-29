@@ -109,9 +109,9 @@ plt.clabel(cont,fmt="%1.0f")
 print("numrows= ",gwf.modelgrid.nrow)
 print("numcols= ",gwf.modelgrid.ncol)
 print("numcols= ",gwf.modelgrid.nlay)
-sect_col=25
-sect_row=52
-sec_lay=0
+sect_col=int(gwf.modelgrid.ncol/2)
+sect_row=gwf.modelgrid.nrow-1#int(gwf.modelgrid.nrow/2)
+sec_lay=1
 
 line = np.array([(gwf.modelgrid.xcellcenters[0,sect_col],
                 gwf.modelgrid.ycellcenters[0,sect_col]),
@@ -304,7 +304,7 @@ gwf.dis.botm.export(pv_folder, fmt='vtk')
 # transient 2d array
 # export recharge
 gwf.rch.export(pv_folder, fmt='vtk')#doen't work
-
+gwf.rch.rech.export(pv_folder, fmt='vtk')#doen't work
 # 3D Array export
 # hk export, with points
 gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=True)
@@ -313,7 +313,8 @@ gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=Tru
 gwf.npf.export(pv_folder, smooth=True, fmt='vtk', name='NPF', point_scalars=True)
 
 # DRN export, with points
-gwf.drn.export(pv_folder, smooth=True, fmt='vtk', name='DRN', point_scalars=True)#doen't work
+gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal_w', point_scalars=False)#doen't work
+# fp.export.utils.package_export(pv_folder, gwf.drn_gal,fmt='vtk')
 
 # 3D Array export
 # hk export, with points
@@ -331,7 +332,7 @@ gwf.export(pv_folder, fmt='vtk', binary=True) #works for dis, ic, npf, sto
 # head export
 
 heads_output_folder = os.path.join(pv_folder, 'heads_output_test')
-vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work many values nan
+vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work, many values nan
 
 
 #with points
