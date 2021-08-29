@@ -303,8 +303,8 @@ gwf.dis.botm.export(pv_folder, fmt='vtk')
 
 # transient 2d array
 # export recharge
-gwf.rch.export(pv_folder, fmt='vtk')#doen't work
-gwf.rch.rech.export(pv_folder, fmt='vtk')#doen't work
+gwf.rch.export(pv_folder, fmt='vtk')#doesn't work
+# gwf.rch.rech.export(pv_folder, fmt='vtk')#doesn't work
 # 3D Array export
 # hk export, with points
 gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=True)
@@ -313,7 +313,7 @@ gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=Tru
 gwf.npf.export(pv_folder, smooth=True, fmt='vtk', name='NPF', point_scalars=True)
 
 # DRN export, with points
-gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal_w', point_scalars=False)#doen't work
+gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal_w', point_scalars=False)#doesn't work
 # fp.export.utils.package_export(pv_folder, gwf.drn_gal,fmt='vtk')
 
 # 3D Array export
@@ -321,10 +321,10 @@ gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal_w', point_scalars=False)#
 gwf.sto.export(pv_folder, smooth=True, fmt='vtk', name='STO', point_scalars=True)
 
 # ghb export, with points
-gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=True)#doen't work
+gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=True)#doesn't work
 
 # chd export, with points
-gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doen't work
+gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doesn't work
 
 # model export
 gwf.export(pv_folder, fmt='vtk', binary=True) #works for dis, ic, npf, sto
@@ -332,7 +332,7 @@ gwf.export(pv_folder, fmt='vtk', binary=True) #works for dis, ic, npf, sto
 # head export
 
 heads_output_folder = os.path.join(pv_folder, 'heads_output_test')
-vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work, many values nan
+vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work beru well,pvd error, many values nan
 
 
 #with points
