@@ -48,8 +48,9 @@ sim =fp.mf6.MFSimulation(sim_name=model_name, version="mf6",
 #setting modflow time
 # [perlen, nstp, tsmult]
 
-nsper=365*4 #number of  stress periods
-time_disc=[(86400, 1, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]#
+nsper=365*4 #number of  stress periods, 365 per year
+#there are 86400 seconds
+time_disc=[(86400, 1, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]
 time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginning of list
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
@@ -326,7 +327,7 @@ for i in range(1,nlay):
     
 dis.botm=botm
 """
-#hydraulic conductivity definition
+#hydraulic conductivity definition in arrays
 
 k_qd_qbg=1e-6*np.ones([nrows,ncols])
 k_1="k_qd_qbg.txt"
@@ -610,13 +611,13 @@ dis.botm=botm
 """
 
 
-#  procedure to include Recharge in shapely
-df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")
-df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)
-df_rain["time"]=df_rain["Fecha"]-df_rain["Fecha"][0]
-df_rain["time_s"]=df_rain["time"].astype("timedelta64[s]")
+#  procedure to include Recharge 
+df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")#load file
+df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)#format of of dates setted
+df_rain["time"]=df_rain["Fecha"]-df_rain["Fecha"][0]#days since the first day
+df_rain["time_s"]=df_rain["time"].astype("timedelta64[s]")#count in seconds for modflow
 
-
+#shapely process 
 recarga=sf.Reader(path_sh+"/Zonas_Rec3")
 recarga1=recarga.shapeRecords()[0]
 first=recarga1.shape.__geo_interface__
@@ -632,19 +633,20 @@ result=ix.intersect(shp_geom)
 print(result)
 
 rch_spd=[]
+#steady list for first stress period
 rch_spd_st=[]
-for i in range(result.shape[0]):#0.11 from water budget?
+for i in range(result.shape[0]):#0.11 from water budget?REVIEW VALUE IN TRANSIENT
     rch_spd.append([0,
                     *result["cellids"][i],
-                    (0.001/86400/365)*(result['areas'][i]/
+                    0.1*(0.001/86400)*(result['areas'][i]/#convert mm/day to m/s , 10% rain
                                   delCArray[result["cellids"][i][0]]/
-                                  delRArray[result["cellids"][i][1]]),"rain_mult"])#it is weighted by intersected area, añadir timeseries
+                                  delRArray[result["cellids"][i][1]]),"rain_mult"])#it is weighted by intersected area, rain_mult timeseries multplier
     rch_spd_st.append([0,
                     *result["cellids"][i],
-                    (0.11/86400/365)*(result['areas'][i]/
+                    (110/1000/86400/365)*(result['areas'][i]/#convert mm/year to m/s , 11 mm
                                   delCArray[result["cellids"][i][0]]/
                                   delRArray[result["cellids"][i][1]]), 1])
-for i in range(len(rch_spd)):#to correct 0 based index in python, because flopy doen't correct in external files
+for i in range(len(rch_spd)):#to correct 0 based index in python, because flopy doesn't correct in external files
     rch_spd[i][0]+=1
     rch_spd[i][1]+=1
     rch_spd[i][2]+=1
@@ -656,7 +658,7 @@ df_rch_spd_st=pd.DataFrame(rch_spd_st)
 df_rch_spd=pd.DataFrame(rch_spd)
 df_rch_spd_st.to_csv(workspace+"/rch_0.txt", index=False, header= False, sep= " ")
 df_rch_spd.to_csv(workspace+"/rch_1.txt", index=False, header= False, sep= " ")
-    
+   #we start setting "rain_mult" 
 ts_data=[]
 ts_data=[(df_rain["time_s"].tolist()[i], df_rain["Valor"].tolist()[i]) for i in range(df_rain.shape[0])]
 
@@ -721,7 +723,7 @@ for i in range(1,queb.numRecords):
     firstq=queb1.shape.__geo_interface__
     shp_geomq=shp_geomq.union(shape(firstq))
     
-    
+    #change conductance accordingly to area/lenght?
 resultq=ix.intersect(shp_geomq)
 drn_spd=[]
 for i in range(resultq.shape[0]):
@@ -807,9 +809,9 @@ for i in range(capas.sum()):
 
 # Processing monthly rain to GHB condition
 df_monthly_rain=df_rain.resample("M", on="Fecha").sum()#resampling rain by month
-df_monthly_rain["time"]=df_monthly_rain.index-df_rain["Fecha"][0]
-df_monthly_rain["time_s"]=df_monthly_rain["time"].astype("timedelta64[s]")
-df_monthly_rain=df_monthly_rain.loc[(df_monthly_rain.index<"2021-12-31")]
+df_monthly_rain["time"]=df_monthly_rain.index-df_rain["Fecha"][0]#dates since first day
+df_monthly_rain["time_s"]=df_monthly_rain["time"].astype("timedelta64[s]")#convert to time in seconds
+df_monthly_rain=df_monthly_rain.loc[(df_monthly_rain.index<"2021-12-31")]#filter by date
 df_monthly_rain["weight"]=df_monthly_rain["Valor"]/df_monthly_rain["Valor"].mean()
 
 inflow=sf.Reader(os.path.join(path_sh,"Chd_In.shp"))
@@ -909,13 +911,13 @@ height_0=748
 height_f=753.25
 gal_len=resultg["lengths"].sum()#525
 gal_slp=0.01# gallery slope
-gal_speed_exc=2.2 
+gal_speed_exc=2.2 #gallery excavation speed m/d
 
 
- # m/d
-time_gal_0=365*3
+
+time_gal_0=365*3#time when gallery construction begins
 gal_spd_tr={}
-
+# write comments
 for i in range(resultg.shape[0]):
     for j in range(fondos.shape[0]):
         if height_0+resultg["lengths"][0:i].sum()*gal_slp > fondos[tuple((j,*resultg["cellids"][i]))]:
@@ -927,10 +929,13 @@ for i in range(resultg.shape[0]):
         
         
 
-drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr, filename=f"{model_name}_gal.drn", pname="drn_gal", print_input=True,print_flows=True,save_flows=True)
+drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr,
+                             filename=f"{model_name}_gal.drn",
+                             pname="drn_gal", print_input=True,
+                             print_flows=True,save_flows=True)
 
 #Well gallery construction
-
+# i have to check gallery construction to activate wells!! :o
 gal_wells_time=np.array([30+9,11,14,15,17,18,20,21])
 gal_wells_depth=np.array([25.17,31.04,40.94,42.43,49.04,52.60,57.69,61.30])
 gal_wells_depth-=2.5#not 1.5 because gallery size
@@ -949,7 +954,7 @@ for i in range(1,gal_w.numRecords):
     
     
 resultg_w=ix.intersect(shp_geomg_w)
-
+# write comments
 for i in range(resultg_w.shape[0]):
     for j in range(fondos.shape[0]):
         if fondos[tuple((j,*resultg_w["cellids"][i]))]> dem_Matrix[resultg_w["cellids"][i]] - gal_wells_depth[i]:
@@ -990,6 +995,18 @@ oc = fp.mf6.ModflowGwfoc(gwf, saverecord=saverecord,
                          budget_filerecord=budget_filerecord,
                          printrecord=printrecord)
 
+obslist=[]
+import geopandas as gpd
+inv=gpd.read_file("../../05_Vectorial/INV_PAS_V5_POSTCAMPO_VCOMPATIBLE.shp")
+for i in range(inv.shape[0]):
+    result_inv=ix.intersect(inv.geometry[i])
+    obslist.append([inv["ESTACION"][i],"head",(0,*result_inv["cellids"][0])])
+    
+    
+obsdict={}
+obsdict[f"{model_name}.obs.head.csv"]=obslist
+
+obs = fp.mf6.ModflowUtlobs(gwf, print_input= False, continuous=obsdict)
 
 sim.write_simulation()
 
