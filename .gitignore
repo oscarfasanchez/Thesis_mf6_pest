@@ -8,7 +8,15 @@
 *.cbb
 *.hds
 *.lst
+*.png
+09_Python/temp_pst_model/
+09_Python/template/
 02_Shp_Vect/Input_Model/
+*.shp
+*.shx
+*.dat
+
+
 09_Python/data/modelo_Norte/*.txt
 *.vtu
 06_Jpg/

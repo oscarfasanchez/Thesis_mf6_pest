@@ -364,7 +364,7 @@ ss_qbo2=1e-4*np.ones([nrows,ncols])
 ss_2="ss_qbo2.txt"
 ss_qbo1=1e-4*np.ones([nrows,ncols])
 ss_3="ss_qbo1.txt"
-ss_roc=1e-4*np.ones([nrows,ncols])
+ss_roc=1e-5*np.ones([nrows,ncols])
 ss_4="ss_roc.txt"
 
 
@@ -555,6 +555,9 @@ npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv,
                            save_flows=True, save_specific_discharge = True)
 # specifies storage
 sto = fp.mf6.ModflowGwfsto(gwf, pname="sto", save_flows=True, iconvert=1, ss=ss, sy=sy, steady_state= {0:True}, transient={1:True})
+#later i will need it to pyemu
+np.savetxt(os.path.join(workspace,"layers"), capas)
+
 """       
 
 # assigning bottom height using geology
