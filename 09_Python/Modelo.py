@@ -54,7 +54,7 @@ time_disc=[(86400, 1, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]
 time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginning of list
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
-                         nper=nsper, perioddata=time_disc)
+                         nper=nsper, perioddata=time_disc,)
 # Create gwf model
 model_nam_file=f"{model_name}.nam"
 gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
@@ -329,7 +329,7 @@ dis.botm=botm
 """
 #hydraulic conductivity definition in arrays
 
-k_qd_qbg=1e-6*np.ones([nrows,ncols])
+k_qd_qbg=1e-7*np.ones([nrows,ncols])
 k_1="k_qd_qbg.txt"
 k_qbo2=1e-7*np.ones([nrows,ncols])
 k_2="k_qbo2.txt"
@@ -764,7 +764,7 @@ ghb_spd=[]
 ghb_spd_tr=[]
 # defining conductances per thickness unit in general head boundary condition
 
-c_1=k_qd_qbg[0,0]*(celGlo/2000)#*thickness_layer to get conductance
+c_1=k_qd_qbg[-2,-1]*(celGlo/2000)#*thickness_layer to get conductance
 
 c_2=k_qbo2[0,0]*(celGlo/2000)
 
@@ -921,8 +921,8 @@ gal_speed_exc=2.2 #gallery excavation speed m/d
 time_gal_0=365*3#time when gallery construction begins
 gal_spd_tr={}
 # write comments
-for i in range(resultg.shape[0]):
-    for j in range(fondos.shape[0]):
+for i in range(resultg.shape[0]):#iterate gallery cells
+    for j in range(fondos.shape[0]):#iterate over layer numbers
         if height_0+resultg["lengths"][0:i].sum()*gal_slp > fondos[tuple((j,*resultg["cellids"][i]))]:
             if idom[tuple((0,*resultg["cellids"][i]))]==1:#Cambiar J?
                 gal_spd.append([j,*resultg["cellids"][i],height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i]])
@@ -1000,10 +1000,19 @@ oc = fp.mf6.ModflowGwfoc(gwf, saverecord=saverecord,
 
 obslist=[]
 import geopandas as gpd
-inv=gpd.read_file("../../05_Vectorial/INV_PAS_V5_POSTCAMPO_VCOMPATIBLE.shp")
+inventory=gpd.read_file("../../05_Vectorial/INV_PAS_V5_DEM.shp")
+inv=inventory[inventory["DEPTH_MEA"]>0]
+inv.reset_index(drop=True, inplace=True)#because we erased some points
+
 for i in range(inv.shape[0]):
     result_inv=ix.intersect(inv.geometry[i])
-    obslist.append([inv["ESTACION"][i],"head",(0,*result_inv["cellids"][0])])
+    for j in range(fondos.shape[0]):
+        print("i= ",str(i)," j= "+str(j))
+        print("Z_MEA= ",str(inv["Z_MEA"][i])," dem_lay= "+str(fondos[(0,*result_inv["cellids"][0])]))
+        if inv["Z_MEA"][i]>fondos[(j,*result_inv["cellids"][0])]:
+            obslist.append([inv["obs_model"][i],"head",(j,*result_inv["cellids"][0])])
+            print("yes")
+            break
     
     
 obsdict={}

@@ -14,6 +14,85 @@ import pyemu
 import shutil
 from shutil import copyfile
 
+def setup_obs():
+    
+    #procedure to import dipper log head measuments
+    obs_path="../04_Xls/Observ"#"../04_Xls/Observ"
+    dip_log=pd.read_excel( os.path.join(obs_path,"dip_log.xlsx"),sheet_name=None)
+    
+    #filter for bad dates due to piezometer leakage
+    dip_log["P-Gal-S3"].loc[dip_log["P-Gal-S3"]["P-Gal-S3"]<9.4,"P-Gal-S3"]=None
+    
+    for i in dip_log.keys():
+        dip_log[i]=dip_log[i].groupby('date').mean()
+        
+    dip_log_d=pd.concat(
+        dip_log,
+        ignore_index=False).reset_index(level=0).drop(columns="level_0").groupby('date').mean()
+    
+    #procedure to import vibrating wire head measuments
+    vib_wir=pd.read_excel( os.path.join(obs_path,"vib_wire.xlsx"),sheet_name=None)
+    for i in vib_wir.keys():
+        vib_wir[i]=vib_wir[i].groupby('date').mean()
+    
+    vib_wir_d=pd.concat(vib_wir,ignore_index=False).groupby('date').mean()
+    vib_wir_d_2=vib_wir_d.resample("d").mean()
+    
+    #filter for bad dates due to piezometer installation and one anomaly
+    
+    
+    vib_wir_d_2.loc[vib_wir_d_2.index<"7/11/2017","P-RN-S7_1"]=None
+    vib_wir_d_2.loc[vib_wir_d_2.index<"8/3/2017","P-RN-S7_4"]=None
+    vib_wir_d_2.loc[vib_wir_d_2.index<"7/16/2017","P-E3-S6_1"]=None
+    vib_wir_d_2.loc[vib_wir_d_2.index<"10/13/2017","P-E3-S6_2"]=None
+    vib_wir_d_2.loc[vib_wir_d_2.index<"10/12/2017","P-E3-S6_3"]=None
+    vib_wir_d_2.loc[vib_wir_d_2.index<"8/5/2017","P-VR-S_1"]=None
+    vib_wir_d_2.loc[(vib_wir_d_2.index >"5/10/2018") & (vib_wir_d_2.index<"7/7/2018"),
+                    "P-VR-S_1"]=None#anomaly
+    vib_wir_d_2.loc[vib_wir_d_2.index<"6/25/2017","P-VR-S_2"]=None
+    
+    #procedure to import water level meter head measuments
+    wlm=pd.read_excel( os.path.join(obs_path,"WLM.xlsx"),sheet_name=0, index_col="date")
+    
+    #procedure to import flow measuments
+    flow=pd.read_excel( os.path.join(obs_path,"Flow_m_s.xlsx"),sheet_name=0, index_col="date")
+    
+    
+    #merge all dataframes, warning 
+    
+    obs_heads2=pd.concat([dip_log_d, wlm], ignore_index=False, axis=0, sort=False)#,join="inner")#, verify_integrity=True)
+    
+    obs_heads3=pd.concat([vib_wir_d_2, obs_heads2], ignore_index=False, axis=1, sort=False)#, verify_integrity=True)
+    return obs_heads3
+
+def modif_obs_csv(csv_file):
+    tmp_model_ws="temp_pst_model"#erase later
+    df_obs=pd.read_csv(os.path.join(tmp_model_ws,csv_file),index_col=0)
+    df_obs.loc[:,:]=None
+    df_field_mea["time"]=df_field_mea.index-pd.Timestamp('2017-01-01 00:00:00')
+    df_field_mea["time"]=df_field_mea["time"].astype("timedelta64[s]")+1 #becausesteady time shift every stress period
+    df_field_mea.columns=df_field_mea.columns.str.upper()
+    df_obs_final=pd.concat([df_obs,df_field_mea.set_index("TIME")], join="outer", axis=0 )
+    
+    import geopandas as gpd
+    inventory=gpd.read_file("../../05_Vectorial/INV_PAS_V5_DEM.shp")
+    inv=inventory[inventory["DEPTH_MEA"]>0]
+    inv.reset_index(drop=True, inplace=True)#because we erased some points
+    
+    df_depth=inv.loc[:,["obs_model","SAMPLE_DEM"]]
+    df_depth["obs_model"]=df_depth["obs_model"].str.upper()
+    df_depth.set_index("obs_model", inplace=True)
+    # df_depth.transpose()
+    df_obs_final=-df_obs_final+df_depth.squeeze()
+    df_obs_final.index.name="time"
+    df_obs_final.fillna(" ", inplace=True)
+    df_obs_final.to_csv(os.path.join(tmp_model_ws,csv_file))
+    return df_obs_final
+    
+    
+    
+    
+    
 def setup_inv_model(org_ws):
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
@@ -35,6 +114,7 @@ def setup_inv_model(org_ws):
     # print(sr)
     #create instance of pstfrom for pest++
     template_ws = "template"
+    df=  modif_obs_csv("modelo_Norte.obs.head.csv")#create file with real obs before cloning folder
     pf = pyemu.utils.PstFrom(original_d=tmp_model_ws,
                              new_d=template_ws,
                              remove_existing=True,
@@ -46,9 +126,11 @@ def setup_inv_model(org_ws):
    
     #add , check real head name, because there may be an error
     
-    df = pd.read_csv(
-        os.path.join(tmp_model_ws,"modelo_Norte.obs.head.csv"),
-        index_col=0)
+    # df = pd.read_csv(
+    #     os.path.join(tmp_model_ws,"modelo_Norte.obs.head.csv"),
+    #     index_col=0)
+    # df=  modif_obs_csv("modelo_Norte.obs.head.csv")
+    
     
     hds_df=pf.add_observations(
         "modelo_Norte.obs.head.csv",
@@ -94,7 +176,7 @@ def setup_inv_model(org_ws):
     vk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kv_" in f and f.endswith(".txt")]
     ss_arr_files = [f for f in os.listdir(tmp_model_ws) if "ss_" in f and f.endswith(".txt")]
     sy_arr_files = [f for f in os.listdir(tmp_model_ws) if "sy_" in f and f.endswith(".txt")]
-    # ghb_arr_files = [f for f in os.listdir(tmp_model_ws) if "ghb_" in f and f.endswith(".txt")]
+    # ghb_arr_files = [f for f in os.listdir(tmp_model_ws) if "ghb_" in f and f.endswith(".txt")]#remember why
     rch_arr_files = [f for f in os.listdir(tmp_model_ws) if "rch_" in f and f.endswith(".txt")]
     print(vk_arr_files)
     # assign parameters for instruction file
@@ -253,7 +335,9 @@ def run_pest(t_d):
     
     
 if __name__ == "__main__":
-    # setup_inv_model("data/modelo_Norte")
+    df_field_mea=setup_obs()
+    # df=  modif_obs_csv("modelo_Norte.obs.head.csv")
+    setup_inv_model("data/modelo_Norte")
     run_pest("template")
     
     
