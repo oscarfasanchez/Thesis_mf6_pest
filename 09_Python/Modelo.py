@@ -641,14 +641,14 @@ rch_spd_st=[]
 for i in range(result.shape[0]):#0.11 from water budget?REVIEW VALUE IN TRANSIENT
     rch_spd.append([0,
                     *result["cellids"][i],
-                    0.1*(0.001/86400)*(result['areas'][i]/#convert mm/day to m/s , 10% rain
+                    0.1*(0.001/86400)*(result['areas'][i]/#convert mm/day to m/s , 10% rain percolated*1/1000(due to mm units in files))
                                   delCArray[result["cellids"][i][0]]/
                                   delRArray[result["cellids"][i][1]]),"rain_mult"])#it is weighted by intersected area, rain_mult timeseries multplier
     rch_spd_st.append([0,
                     *result["cellids"][i],
-                    (110/1000/86400/365)*(result['areas'][i]/#convert mm/year to m/s , 11 mm
+                    (110/1000/86400/365)*(result['areas'][i]/#convert mm/year to m/s ,10%*11000 mm --> 110 mm, steady
                                   delCArray[result["cellids"][i][0]]/
-                                  delRArray[result["cellids"][i][1]]), 1])
+                                  delRArray[result["cellids"][i][1]]), 1])#it is multiplied by %cell area afected
 for i in range(len(rch_spd)):#to correct 0 based index in python, because flopy doesn't correct in external files
     rch_spd[i][0]+=1
     rch_spd[i][1]+=1

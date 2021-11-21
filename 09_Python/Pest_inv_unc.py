@@ -228,10 +228,10 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                           spatial_reference=sr,
                           geostruct=grid_gs)
     for i in range(len(vk_arr_files)):
-        pf.add_parameters(filenames=hk_arr_files[i],
+        pf.add_parameters(filenames=vk_arr_files[i],
                           par_type="pilotpoint",
                           pp_space=pp_cell_space,
-                          par_name_base=f"hk_glayer_{i}",
+                          par_name_base=f"vk_glayer_{i}",
                           pargp=f"vk_glayer_{i}",
                           zone_array=ib[i],
                           upper_bound=10.,
@@ -275,7 +275,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     #     pf.add_parameters(filenames=ghb_list[i],
     #                       par_type="constant",
     #                       par_name_base=f"ghb_glayer_{i}",
-    #                       pargp=f"ghb _glayer_{i}",
+    #                       pargp=f"ghb_glayer_{i}",
     #                       index_cols=[0,1,2],
     #                       use_cols=[4],
     #                       upper_bound=10.,
@@ -284,20 +284,21 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     #                       ult_lbound=0.01,
     #                       spatial_reference=sr
     #                       )
-        
-    # #be careful about this setup, review PLEASE
-    # pf.add_parameters(filenames=rch_arr_files,
-    #                   par_type="constant",
-    #                   par_name_base=f"rch_rain",
-    #                   pargp=f"rch_rain",
-    #                   index_cols=[0,1,2],
-    #                   use_cols=[3],
-    #                   upper_bound=3,
-    #                   lower_bound=0.3,
-    #                   ult_ubound=5,
-    #                   ult_lbound=0.1,
-    #                   spatial_reference=sr,
-    #                   )
+    ubnd=[1.157e-6,3.48e-8]    # transient 100% daily percol, steady 1100 mm/yr
+    #be careful about this setup, review PLEASE
+    for i in range(len(rch_arr_files)):        
+        pf.add_parameters(filenames=rch_arr_files[i],
+                          par_type="constant",
+                          par_name_base=f"rch_rain",
+                          pargp=f"rch_rain",
+                          index_cols=[0,1,2],
+                          use_cols=[3],
+                          upper_bound=3,
+                          lower_bound=0.3,
+                          ult_ubound=ubnd[i],
+                          ult_lbound=0,
+                          spatial_reference=sr,
+                          )
     
     #add run model command(run once only?), review later
     pf.mod_sys_cmds.append(exe_name)
@@ -415,6 +416,6 @@ if __name__ == "__main__":
     df_field_meas=setup_obs()
     setup_inv_model("data/modelo_Norte", updt_obs_field=False )
     run_pest("template")
-    pest_graphs("master")
+    pest_graphs("template")
     
     
