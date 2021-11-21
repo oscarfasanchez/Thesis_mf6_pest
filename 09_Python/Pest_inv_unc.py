@@ -266,24 +266,24 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                           ult_lbound=0.01,
                           spatial_reference=sr,
                           geostruct=grid_gs)
-    # ghb_list=[]
-    # for i in range(int(layers.sum())):
-    #     ghb_list.append([f for f in os.listdir(tmp_model_ws) if f"ghb_{i}" in f and f.endswith(".txt")])
+    ghb_list=[]
+    for i in range(int(layers.sum())):
+        ghb_list.append([f for f in os.listdir(tmp_model_ws) if f"ghb_{i}" in f and f.endswith(".txt")])
         
     
-    # for i in range(len(ghb_list)):#warning in bounds
-    #     pf.add_parameters(filenames=ghb_list[i],
-    #                       par_type="constant",
-    #                       par_name_base=f"ghb_glayer_{i}",
-    #                       pargp=f"ghb_glayer_{i}",
-    #                       index_cols=[0,1,2],
-    #                       use_cols=[4],
-    #                       upper_bound=10.,
-    #                       lower_bound=0.1,
-    #                       ult_ubound=100,
-    #                       ult_lbound=0.01,
-    #                       spatial_reference=sr
-    #                       )
+    for i in range(len(ghb_list)):#warning in bounds
+        pf.add_parameters(filenames=ghb_list[i],
+                          par_type="constant",
+                          par_name_base=f"ghb_glayer_{i}",
+                          pargp=f"ghb_glayer_{i}",
+                          index_cols=[0,1,2],
+                          use_cols=[4],
+                          upper_bound=10.,
+                          lower_bound=0.1,
+                          ult_ubound=100,
+                          ult_lbound=0,
+                          spatial_reference=sr
+                          )
     ubnd=[1.157e-6,3.48e-8]    # transient 100% daily percol, steady 1100 mm/yr
     #be careful about this setup, review PLEASE
     for i in range(len(rch_arr_files)):        
