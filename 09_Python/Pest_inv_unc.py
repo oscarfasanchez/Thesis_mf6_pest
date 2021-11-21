@@ -14,8 +14,19 @@ import pyemu
 import shutil
 from shutil import copyfile
 
+case="model_pest"
+
 def setup_obs():
+    """
     
+
+    Returns
+    -------
+    obs_heads3 : Dataframe
+         it creates a data frame of observations with dates(rows) and
+         measument names(columns) using files coming from excel.
+
+    """
     #procedure to import dipper log head measuments
     obs_path="../04_Xls/Observ"#"../04_Xls/Observ"
     dip_log=pd.read_excel( os.path.join(obs_path,"dip_log.xlsx"),sheet_name=None)
@@ -65,7 +76,25 @@ def setup_obs():
     obs_heads3=pd.concat([vib_wir_d_2, obs_heads2], ignore_index=False, axis=1, sort=False)#, verify_integrity=True)
     return obs_heads3
 
-def modif_obs_csv(csv_file):
+def modif_obs_csv(csv_file, df_field_mea , lower=False):
+    """
+    
+
+    Parameters
+    ----------
+    csv_file : string
+        csv name of model output observations.
+    df_field_mea : Dataframe
+        dataframe of field measurament with obs name in colums and dates in index.
+    lower : Boolean, optional
+        it decides if column are in uppercase or lowercase. The default is False.
+
+    Returns
+    -------
+    df_obs_final : TYPE
+        dataframe of field observations in mf6 style.
+
+    """
     tmp_model_ws="temp_pst_model"#erase later
     df_obs=pd.read_csv(os.path.join(tmp_model_ws,csv_file),index_col=0)
     df_obs.loc[:,:]=None
@@ -73,6 +102,7 @@ def modif_obs_csv(csv_file):
     df_field_mea["time"]=df_field_mea["time"].astype("timedelta64[s]")+1 #becausesteady time shift every stress period
     df_field_mea.columns=df_field_mea.columns.str.upper()
     df_obs_final=pd.concat([df_obs,df_field_mea.set_index("TIME")], join="outer", axis=0 )
+    df_obs_final=df_obs_final.reset_index().groupby("index").max()
     
     import geopandas as gpd
     inventory=gpd.read_file("../../05_Vectorial/INV_PAS_V5_DEM.shp")
@@ -80,20 +110,23 @@ def modif_obs_csv(csv_file):
     inv.reset_index(drop=True, inplace=True)#because we erased some points
     
     df_depth=inv.loc[:,["obs_model","SAMPLE_DEM"]]
-    df_depth["obs_model"]=df_depth["obs_model"].str.upper()
+    df_depth["obs_model"]=df_depth["obs_model"].str.upper()#to operate later
     df_depth.set_index("obs_model", inplace=True)
-    # df_depth.transpose()
+    
     df_obs_final=-df_obs_final+df_depth.squeeze()
     df_obs_final.index.name="time"
-    df_obs_final.fillna(" ", inplace=True)
-    df_obs_final.to_csv(os.path.join(tmp_model_ws,csv_file))
+    df_obs_final.fillna(0, inplace=True)
+    if lower==True:
+        df_obs_final.columns = df_obs_final.columns.str.lower()
+    # df_obs_final.to_csv(os.path.join(tmp_model_ws,csv_file))#used for modify original csv output
+    
     return df_obs_final
     
     
     
     
     
-def setup_inv_model(org_ws):
+def setup_inv_model(org_ws, updt_obs_field=True):
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
@@ -114,7 +147,7 @@ def setup_inv_model(org_ws):
     # print(sr)
     #create instance of pstfrom for pest++
     template_ws = "template"
-    df=  modif_obs_csv("modelo_Norte.obs.head.csv")#create file with real obs before cloning folder
+    # df=  modif_obs_csv("modelo_Norte.obs.head.csv")#create file with real obs before cloning folder
     pf = pyemu.utils.PstFrom(original_d=tmp_model_ws,
                              new_d=template_ws,
                              remove_existing=True,
@@ -126,9 +159,9 @@ def setup_inv_model(org_ws):
    
     #add , check real head name, because there may be an error
     
-    # df = pd.read_csv(
-    #     os.path.join(tmp_model_ws,"modelo_Norte.obs.head.csv"),
-    #     index_col=0)
+    df = pd.read_csv(
+        os.path.join(tmp_model_ws,"modelo_Norte.obs.head.csv"),
+        index_col=0)
     # df=  modif_obs_csv("modelo_Norte.obs.head.csv")
     
     
@@ -138,7 +171,8 @@ def setup_inv_model(org_ws):
         index_cols="time",
         use_cols=list(df.columns.values),
         prefix="hds")
-    
+    # hds_df.loc[hds_df["obsval"]==0,["weight"]]=0 # to disable un existent observations
+    # pf.obs_dfs[0]["weight"]=hds_df
     print(hds_df)
     
     print([f for f in os.listdir(template_ws) if f.endswith(".ins")])
@@ -164,11 +198,11 @@ def setup_inv_model(org_ws):
     # maybe separate qbg from qg?
     #this charge the # of layers of every geological layer
     layers=np.loadtxt(os.path.join(tmp_model_ws,"layers"))
-    ib=np.zeros(m.dis.idomain.array.shape)
+    ib=np.zeros(tuple([layers.shape[0],int(m.dis.nrow.data), m.dis.ncol.data]))#m.dis.idomain.array.shape)
     # assign domain accordingly to the number of layers
     for i in range(layers.size):
         ib[i] = m.dis.idomain.array[int(layers[0:i].sum())]
-        ib[i][ib[i]==-1]=0
+        ib[i][ib[i]==-1]=1
         print("i= ",i," and idom(j)= ",int(layers[0:i].sum()) )
         
     # list files to modify in calibration/uncertainty
@@ -188,50 +222,50 @@ def setup_inv_model(org_ws):
                           pargp=f"hk_glayer_{i}",
                           zone_array=ib[i],
                           upper_bound=10.,
-                          lower_bound=0.01,
-                          ult_ubound=100,
-                          ult_lbound=0.001,
+                          lower_bound=0.1,
+                          ult_ubound=1e-4,
+                          ult_lbound=1e-10,
                           spatial_reference=sr,
                           geostruct=grid_gs)
-    # for i in range(len(vk_arr_files)):
-    #     pf.add_parameters(filenames=hk_arr_files[i],
-    #                       par_type="pilotpoint",
-    #                       pp_space=pp_cell_space,
-    #                       par_name_base=f"hk_glayer_{i}",
-    #                       pargp=f"vk_glayer_{i}",
-    #                       zone_array=ib[i],
-    #                       upper_bound=10.,
-    #                       lower_bound=0.1,
-    #                       ult_ubound=100,
-    #                       ult_lbound=0.01,
-    #                       spatial_reference=sr,
-    #                       geostruct=grid_gs)
-    # for i in range(len(ss_arr_files)):#warning in bounds
-    #     pf.add_parameters(filenames=hk_arr_files[i],
-    #                       par_type="pilotpoint",
-    #                       pp_space=pp_cell_space,
-    #                       par_name_base=f"ss_glayer_{i}",
-    #                       pargp=f"ss_glayer_{i}",
-    #                       zone_array=ib[i],
-    #                       upper_bound=10,
-    #                       lower_bound=0.1,
-    #                       ult_ubound=50,
-    #                       ult_lbound=0.01,
-    #                       spatial_reference=sr,
-    #                       geostruct=grid_gs)
-    # for i in range(len(sy_arr_files)):#warning in bounds
-    #     pf.add_parameters(filenames=sy_arr_files[i],
-    #                       par_type="pilotpoint",
-    #                       pp_space=pp_cell_space,
-    #                       par_name_base=f"sy_glayer_{i}",
-    #                       pargp=f"sy_glayer_{i}",
-    #                       zone_array=ib[i],
-    #                       upper_bound=3.,
-    #                       lower_bound=0.1,
-    #                       ult_ubound=5,
-    #                       ult_lbound=0.01,
-    #                       spatial_reference=sr,
-    #                       geostruct=grid_gs)
+    for i in range(len(vk_arr_files)):
+        pf.add_parameters(filenames=hk_arr_files[i],
+                          par_type="pilotpoint",
+                          pp_space=pp_cell_space,
+                          par_name_base=f"hk_glayer_{i}",
+                          pargp=f"vk_glayer_{i}",
+                          zone_array=ib[i],
+                          upper_bound=10.,
+                          lower_bound=0.1,
+                          ult_ubound=100,
+                          ult_lbound=0.01,
+                          spatial_reference=sr,
+                          geostruct=grid_gs)
+    for i in range(len(ss_arr_files)):#warning in bounds
+        pf.add_parameters(filenames=ss_arr_files[i],
+                          par_type="pilotpoint",
+                          pp_space=pp_cell_space,
+                          par_name_base=f"ss_glayer_{i}",
+                          pargp=f"ss_glayer_{i}",
+                          zone_array=ib[i],
+                          upper_bound=10,
+                          lower_bound=0.1,
+                          ult_ubound=1e-2,
+                          ult_lbound=1e-6,
+                          spatial_reference=sr,
+                          geostruct=grid_gs)
+    for i in range(len(sy_arr_files)):#warning in bounds
+        pf.add_parameters(filenames=sy_arr_files[i],
+                          par_type="pilotpoint",
+                          pp_space=pp_cell_space,
+                          par_name_base=f"sy_glayer_{i}",
+                          pargp=f"sy_glayer_{i}",
+                          zone_array=ib[i],
+                          upper_bound=3,
+                          lower_bound=0.3,
+                          ult_ubound=0.5,
+                          ult_lbound=0.01,
+                          spatial_reference=sr,
+                          geostruct=grid_gs)
     # ghb_list=[]
     # for i in range(int(layers.sum())):
     #     ghb_list.append([f for f in os.listdir(tmp_model_ws) if f"ghb_{i}" in f and f.endswith(".txt")])
@@ -267,7 +301,7 @@ def setup_inv_model(org_ws):
     
     #add run model command(run once only?), review later
     pf.mod_sys_cmds.append(exe_name)
-    pst = pf.build_pst("model_pest.pst")
+    pst = pf.build_pst(f"{case}.pst")
     
     
     # pst =pf.build_pst()#i suspect, this is necessary only when you modify something, check later
@@ -285,27 +319,57 @@ def setup_inv_model(org_ws):
     # pe = pf.draw(300, use_specsim=True)     
     # pe.to_binary(os.path.join(template_ws, "prior.jcb"))
     
-    pst = pf.build_pst("model_pest.pst")
+    if updt_obs_field:
+        
+        #process to update observations with field values
+        df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv", df_field_meas ,lower=True)
+        df_field_mf6=df_field_mf6.reset_index().melt(id_vars="time", var_name="usecol2")
+        df_field_mf6=df_field_mf6.sort_values(["usecol2", "time"])
+        df_field_mf6=df_field_mf6.astype("str")
+        df_field_mf6=df_field_mf6.astype("object")
+        
+        df_pst_obs=pst.observation_data.copy()# i need to modify this
+        df_pst_obs["usecol2"]=None
+        for i in range(df_pst_obs.shape[0]):
+            df_pst_obs["usecol2"][i]= df_pst_obs.obgnme[i].split(":")[1]
+            
+        # df_pst_obs2=df_pst_obs.astype("float64")
+        df_pst_obs2=df_pst_obs.merge(df_field_mf6, how= "outer", on=["usecol2", "time"])
+    
+        
+        
+        df_pst_obs2.loc[df_pst_obs2.value=="0.0","weight"]=0
+        df_pst_obs2.loc[df_pst_obs2.value!="0.0","obsval"]=df_pst_obs2["value"]
+        df_pst_obs2=df_pst_obs2.set_index("obsnme")
+        df_pst_obs2.obsval=df_pst_obs2.obsval.astype("float64")#to avoid problems with 
+        
+        #modifying actual pest values finallY!!!
+        #Arreglar
+        pst.observation_data.loc[pst.observation_data.index==df_pst_obs2.index,"obsval"]=df_pst_obs2["obsval"]#update values
+        pst.observation_data["weight"]=df_pst_obs2["weight"]#update weights
+    
+    # pst = pf.build_pst(f"{case}.pst")
     
     # set up control file
     pst.control_data.noptmax=0
     pst.pestpp_options["additional_ins_delimiters"] = ","
-    pst.write(os.path.join(pf.new_d, "model_pest.pst"))
+    pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
-    # run with noptmax = 0
+    # run with noptmax = 0 '''??
     exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
-    pyemu.os_utils.run(exe_p_name + " model_pest.pst", cwd=pf.new_d)
+    pyemu.os_utils.run(exe_p_name + f" {case}.pst", cwd=pf.new_d)
     
     # make sure it ran... what?
-    res_file = os.path.join(pf.new_d, "model_pest.base.rei")
+    res_file = os.path.join(pf.new_d, f"{case}.base.rei")
     assert os.path.exists(res_file), res_file
     pst.set_res(res_file)
     print(pst.phi)
     
     # now I use noptmax -1 to run prior monte carlo
-    pst.control_data.noptmax=-1
+    #noptmax 0 JUST run once
+    # pst.control_data.noptmax=-1
     #update files
-    pst.write(os.path.join(pf.new_d, "model_pest.pst"))
+    # pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     
     
@@ -314,14 +378,27 @@ def run_pest(t_d):
     exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     pyemu.os_utils.start_workers(t_d,
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
-                                  "model_pest.pst",
+                                  os.path.join("{}.pst".format(case)),
                                   num_workers=num_workers,
                                   worker_root=".",
                                   silent_master=False,
                                   verbose=True,
                                   master_dir="master")#silent_master?
     
-
+def pest_graphs(m_d):
+    pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
+    pst_a.plot(kind='1to1')
+    
+    # pst_a.plot(kind="prior")
+    pst_a.plot(kind="phi_pie")
+    # pst_a.plot()
+    pst_a.get_res_stats()
+    pst_a.phi
+    pst_a.phi_components
+    pst_a.phi_components_normalized
+    df_residuals=pst_a.res
+    obs_summary=pst_a.write_obs_summary_table()
+    par_summary=pst_a.write_par_summary_table()
     
     
     
@@ -335,9 +412,9 @@ def run_pest(t_d):
     
     
 if __name__ == "__main__":
-    df_field_mea=setup_obs()
-    # df=  modif_obs_csv("modelo_Norte.obs.head.csv")
-    setup_inv_model("data/modelo_Norte")
+    df_field_meas=setup_obs()
+    setup_inv_model("data/modelo_Norte", updt_obs_field=False )
     run_pest("template")
+    pest_graphs("master")
     
     
