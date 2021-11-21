@@ -325,6 +325,14 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         #process to update observations with field values
         df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv", df_field_meas ,lower=True)
         df_field_mf6=df_field_mf6.reset_index().melt(id_vars="time", var_name="usecol2")
+        
+
+        df_weight = pd.read_excel("../04_Xls/obs_error.xlsx")
+        df_weight.usecol2 = df_weight.usecol2.str.lower()
+        df_weight["weight2"]=1/(df_weight.desvstd**2)       
+        df_field_mf6=df_field_mf6.merge(df_weight, on="usecol2", how="left")
+        
+        
         df_field_mf6=df_field_mf6.sort_values(["usecol2", "time"])
         df_field_mf6=df_field_mf6.astype("str")
         df_field_mf6=df_field_mf6.astype("object")
@@ -334,15 +342,19 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         for i in range(df_pst_obs.shape[0]):
             df_pst_obs["usecol2"][i]= df_pst_obs.obgnme[i].split(":")[1]
             
-        # df_pst_obs2=df_pst_obs.astype("float64")
+        df_field_mf6["weight2"]=df_field_mf6.weight2.astype("float64")
         df_pst_obs2=df_pst_obs.merge(df_field_mf6, how= "outer", on=["usecol2", "time"])
     
+
         
         
         df_pst_obs2.loc[df_pst_obs2.value=="0.0","weight"]=0
+        df_pst_obs2.loc[df_pst_obs2.value!="0.0","weight"]=df_pst_obs2["weight2"]
         df_pst_obs2.loc[df_pst_obs2.value!="0.0","obsval"]=df_pst_obs2["value"]
         df_pst_obs2=df_pst_obs2.set_index("obsnme")
-        df_pst_obs2.obsval=df_pst_obs2.obsval.astype("float64")#to avoid problems with 
+        df_pst_obs2.obsval=df_pst_obs2.obsval.astype("float64")#to avoid problems with pst.set_res
+        
+        
         
         #modifying actual pest values finallY!!!
         #Arreglar
@@ -414,7 +426,7 @@ def pest_graphs(m_d):
     
 if __name__ == "__main__":
     df_field_meas=setup_obs()
-    setup_inv_model("data/modelo_Norte", updt_obs_field=False )
+    setup_inv_model("data/modelo_Norte", updt_obs_field=True )
     run_pest("template")
     pest_graphs("template")
     
