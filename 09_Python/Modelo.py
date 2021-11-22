@@ -925,17 +925,19 @@ for i in range(resultg.shape[0]):#iterate gallery cells
     for j in range(fondos.shape[0]):#iterate over layer numbers
         if height_0+resultg["lengths"][0:i].sum()*gal_slp > fondos[tuple((j,*resultg["cellids"][i]))]:
             if idom[tuple((0,*resultg["cellids"][i]))]==1:#Cambiar J?
-                gal_spd.append([j,*resultg["cellids"][i],height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i]])
+                gal_spd.append([j,*resultg["cellids"][i],
+                                height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i],"gal_flow"])
             print(int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1)
             gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=list(gal_spd)#review indent
             break
         
-        
+gal_obs={"mod_drn_gal_obs.csv":[("gal-flow", "drn", "gal_flow")]}        
 
 drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr,
                              filename=f"{model_name}_gal.drn",
                              pname="drn_gal", print_input=True,
-                             print_flows=True,save_flows=True)
+                             print_flows=True,save_flows=True,
+                             boundnames=True, observations=gal_obs)
 
 #Well gallery construction
 # i have to check gallery construction to activate wells!! :o
@@ -962,15 +964,20 @@ for i in range(resultg_w.shape[0]):
     for j in range(fondos.shape[0]):
         if fondos[tuple((j,*resultg_w["cellids"][i]))]> dem_Matrix[resultg_w["cellids"][i]] - gal_wells_depth[i]:
             if idom[tuple((0,*resultg_w["cellids"][i]))]==1:#Cambiar J?
-                gal_w_spd.append([j,*resultg_w["cellids"][i],fondos[tuple((j,*resultg_w["cellids"][i]))], gal_cond])
+                gal_w_spd.append([j,*resultg_w["cellids"][i],fondos[tuple((j,*resultg_w["cellids"][i]))], gal_cond,"gal_w_flow" ])
                 print("time= ",gal_wells_time[0:i+1].sum()+time_gal_0)
                 print("cell= ",[j,*resultg_w["cellids"][i]], "\n")
                 print(gal_w_spd, "\n")
                 
     gal_w_spd_tr[int(gal_wells_time[0:i+1].sum()+time_gal_0)]=list(gal_w_spd)
         # break
+    
+gal_w_obs={"mod_drn_gal_w_obs.csv":[("gal_w-flow", "drn", "gal_w_flow")]}   
 
-drn_gal_w=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_w_spd_tr, filename=f"{model_name}_gal_w.drn", pname="drn_gal_w", print_input=True,print_flows=True,save_flows=True)
+drn_gal_w=fp.mf6.ModflowGwfdrn(
+    gwf,stress_period_data=gal_w_spd_tr, filename=f"{model_name}_gal_w.drn",
+    pname="drn_gal_w", print_input=True,print_flows=True,save_flows=True,
+    boundnames=True, observations=gal_w_obs)
 
 # create the initial condition package
 start=np.empty((nlay,nrows,ncols))

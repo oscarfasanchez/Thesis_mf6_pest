@@ -164,6 +164,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         index_col=0)
     # df=  modif_obs_csv("modelo_Norte.obs.head.csv")
     
+    # add observations
     
     hds_df=pf.add_observations(
         "modelo_Norte.obs.head.csv",
@@ -175,9 +176,29 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     # pf.obs_dfs[0]["weight"]=hds_df
     print(hds_df)
     
+
+    df_gal = pd.read_csv(
+        os.path.join(tmp_model_ws,"mod_drn_gal_obs.csv"),
+        index_col=0)
+    gal_df=pf.add_observations(
+        "mod_drn_gal_obs.csv",
+        insfile="gal_flow.csv.ins",
+        index_cols="time",
+        use_cols=list(df_gal.columns.values),
+        prefix="gal_flow")   
+    
+    df_w_gal = pd.read_csv(
+        os.path.join(tmp_model_ws,"mod_drn_gal_w_obs.csv"),
+        index_col=0)
+    gal_w_df=pf.add_observations(
+        "mod_drn_gal_w_obs.csv",
+        insfile="gal_w_flow.csv.ins",
+        index_cols="time",
+        use_cols=list(df_w_gal.columns.values),
+        prefix="gal_flow")
+
     print([f for f in os.listdir(template_ws) if f.endswith(".ins")])
 
-    
     # add parameters
     #set variogram parameters
     pp_cell_space= 2 #each x cells a point is placed
@@ -349,8 +370,16 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         
         
         df_pst_obs2.loc[df_pst_obs2.value=="0.0","weight"]=0
+        df_pst_obs2.value = df_pst_obs2.value.fillna("0.0")
+        df_pst_obs2.weight2 = df_pst_obs2.weight2.fillna(0.0)
+        
+        df_pst_obs2.loc[df_pst_obs2.usecol2=="gal-flow","weight"]=0.0
+        df_pst_obs2.loc[df_pst_obs2.usecol2=="gal_w-flow","weight"]=0.0
+        df_pst_obs2.loc[df_pst_obs2.obsval==3e+30,"obsval"]=0.0
+        
         df_pst_obs2.loc[df_pst_obs2.value!="0.0","weight"]=df_pst_obs2["weight2"]
         df_pst_obs2.loc[df_pst_obs2.value!="0.0","obsval"]=df_pst_obs2["value"]
+
         df_pst_obs2=df_pst_obs2.set_index("obsnme")
         df_pst_obs2.obsval=df_pst_obs2.obsval.astype("float64")#to avoid problems with pst.set_res
         
@@ -366,6 +395,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     # set up control file
     pst.control_data.noptmax=0
     pst.pestpp_options["additional_ins_delimiters"] = ","
+    pst.pestpp_options["ies_bad_phi"]=1e25
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     # run with noptmax = 0 '''??
@@ -427,7 +457,7 @@ def pest_graphs(m_d):
 if __name__ == "__main__":
     df_field_meas=setup_obs()
     setup_inv_model("data/modelo_Norte", updt_obs_field=True )
-    run_pest("template")
+    # run_pest("template")
     pest_graphs("template")
     
     
