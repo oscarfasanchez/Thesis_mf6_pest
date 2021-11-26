@@ -185,7 +185,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         insfile="gal_flow.csv.ins",
         index_cols="time",
         use_cols=list(df_gal.columns.values),
-        prefix="gal_flow")   
+        prefix="flow_gal")   
     
     df_w_gal = pd.read_csv(
         os.path.join(tmp_model_ws,"mod_drn_gal_w_obs.csv"),
@@ -195,7 +195,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
         insfile="gal_w_flow.csv.ins",
         index_cols="time",
         use_cols=list(df_w_gal.columns.values),
-        prefix="gal_flow")
+        prefix="flow_gal_w")
 
     print([f for f in os.listdir(template_ws) if f.endswith(".ins")])
 
@@ -410,9 +410,9 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    # pst.control_data.noptmax=-1
+    pst.control_data.noptmax=1
     #update files
-    # pst.write(os.path.join(pf.new_d, f"{case}.pst"))
+    pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     
     
@@ -457,7 +457,7 @@ def pest_graphs(m_d):
 if __name__ == "__main__":
     df_field_meas=setup_obs()
     setup_inv_model("data/modelo_Norte", updt_obs_field=True )
-    # run_pest("template")
-    pest_graphs("template")
+    run_pest("template")
+    pest_graphs("master")
     
     
