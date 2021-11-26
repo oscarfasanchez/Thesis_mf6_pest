@@ -58,7 +58,7 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
             obs_g_df.replace([1e30,3e30,-1e30],np.nan, inplace=True)#mask empty values in GAL or dry cells
             
             [ax.plot(obs_g.time.astype("float64")/86400,obs_g_df.loc[i,obs_g.obsnme],
-                     color='g',alpha=0.5,lw=0.1) for i in obs_g_df.index]#prior graphs
+                     color='0.6',alpha=0.5,lw=0.1) for i in obs_g_df.index]#prior graphs
 
         if posterior:
         
@@ -71,7 +71,7 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
         obs_g_f=obs_g.loc[obs_g.weight!=0]#taking out non existen obs
         ax.plot(obs_g_f.time.astype("float64")/86400,obs_g_f.obsval,"x--",
                 color='red', ms="1.0",alpha=1,lw=1)#plotting field obs
-        legend.append("meas")
+
         ax.set_title("realizations "+obs_group)
         ax.set_xlabel("time[d]")
         ax.set_ylabel(obs_group.split("_")[0])
@@ -161,18 +161,22 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
 
 #setting graph for 1to1 of all ensembles
 # prior,1to1,phi_pie,phi_progress, and someday  obs_v_sim?
-def oneto1_graph(iter=None, ofilename=None):
+def oneto1_graph(iter=None, ofilename=None, post=False):
     
     obs_filename_post =case+f".{iter}.obs.csv"
-    obs_df_post = pd.read_csv(os.path.join(m_d,obs_filename_post),index_col=0)#
+    print_1to1={'0.5': obs_df}
+    if post:
+         obs_df_post = pd.read_csv(os.path.join(m_d,obs_filename_post),index_col=0)#
+         print_1to1["b"]=obs_df_post
     
     obsplusnoise_nam =case+".obs+noise.csv"
     
     obsplusnoise_df = pd.read_csv(os.path.join(m_d,obsplusnoise_nam),index_col=0)
+    
     if not ofilename==None:
         ofilename=os.path.join(ofilename,"1to1.pdf" )
     pyemu.plot_utils.ensemble_res_1to1(
-         {'0.5': obs_df, 'b': obs_df_post},
+         print_1to1,
          pst=pst,  #  pyemu.Pst() object -- this defines the groupings of the obs (so you can regroup obs here if you want more/less grnularity on the plots) 
          filename=ofilename,
          base_ensemble=obsplusnoise_df,
@@ -185,11 +189,11 @@ if __name__ == '__main__':
     if not os.path.exists(full_path):
         os.makedirs(full_path)
         
-    oneto1_graph(iter=1, ofilename=full_path)
+    oneto1_graph(iter=1, ofilename=full_path, post=False)
 
-    time_series_graphs(prior=True,posterior=True, iter=1, path=full_path)
+    time_series_graphs(prior=True,posterior=False, iter=1, path=full_path)
     
-    frequency_graphs(prior=False, posterior=True, iter=1, path=full_path)  
+    # frequency_graphs(prior=False, posterior=True, iter=1, path=full_path)  
     frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
-    frequency_graphs(prior=True, posterior=True, iter=1, path=full_path)
+    # frequency_graphs(prior=True, posterior=True, iter=1, path=full_path)
 

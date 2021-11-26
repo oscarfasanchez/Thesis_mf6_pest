@@ -1,0 +1,1795 @@
+2021-11-25 12:32:07.713359 starting: opening PstFrom.log for logging
+2021-11-25 12:32:07.713359 starting PstFrom process
+2021-11-25 12:32:07.713359 starting: setting up dirs
+2021-11-25 12:32:07.714361 starting: removing existing new_d 'template'
+2021-11-25 12:32:08.071622 finished: removing existing new_d 'template' took: 0:00:00.357261
+2021-11-25 12:32:08.071622 starting: copying original_d 'temp_pst_model' to new_d 'template'
+2021-11-25 12:32:08.678016 finished: copying original_d 'temp_pst_model' to new_d 'template' took: 0:00:00.606394
+2021-11-25 12:32:08.679017 finished: setting up dirs took: 0:00:00.965658
+2021-11-25 12:32:08.685173 starting: adding observations from tabular output file
+2021-11-25 12:32:08.685173 starting: reading list template\modelo_Norte.obs.head.csv
+2021-11-25 12:32:08.695176 finished: reading list template\modelo_Norte.obs.head.csv took: 0:00:00.010003
+2021-11-25 12:32:08.695176 starting: building insfile for tabular output file modelo_Norte.obs.head.csv
+2021-11-25 12:32:08.812375 finished: building insfile for tabular output file modelo_Norte.obs.head.csv took: 0:00:00.117199
+2021-11-25 12:32:08.812375 starting: adding observation from instruction file 'template\heads.csv.ins'
+2021-11-25 12:32:09.238471 finished: adding observation from instruction file 'template\heads.csv.ins' took: 0:00:00.426096
+2021-11-25 12:32:09.253475 finished: adding observations from tabular output file took: 0:00:00.568302
+2021-11-25 12:32:09.266478 starting: adding observations from tabular output file
+2021-11-25 12:32:09.266478 starting: reading list template\mod_drn_gal_obs.csv
+2021-11-25 12:32:09.272478 finished: reading list template\mod_drn_gal_obs.csv took: 0:00:00.006000
+2021-11-25 12:32:09.272478 starting: building insfile for tabular output file mod_drn_gal_obs.csv
+2021-11-25 12:32:09.298484 finished: building insfile for tabular output file mod_drn_gal_obs.csv took: 0:00:00.026006
+2021-11-25 12:32:09.298484 starting: adding observation from instruction file 'template\gal_flow.csv.ins'
+2021-11-25 12:32:09.336492 finished: adding observation from instruction file 'template\gal_flow.csv.ins' took: 0:00:00.038008
+2021-11-25 12:32:09.339493 finished: adding observations from tabular output file took: 0:00:00.073015
+2021-11-25 12:32:09.341493 starting: adding observations from tabular output file
+2021-11-25 12:32:09.342494 starting: reading list template\mod_drn_gal_w_obs.csv
+2021-11-25 12:32:09.348495 finished: reading list template\mod_drn_gal_w_obs.csv took: 0:00:00.006001
+2021-11-25 12:32:09.348495 starting: building insfile for tabular output file mod_drn_gal_w_obs.csv
+2021-11-25 12:32:09.373501 finished: building insfile for tabular output file mod_drn_gal_w_obs.csv took: 0:00:00.025006
+2021-11-25 12:32:09.374502 starting: adding observation from instruction file 'template\gal_w_flow.csv.ins'
+2021-11-25 12:32:09.412510 finished: adding observation from instruction file 'template\gal_w_flow.csv.ins' took: 0:00:00.038008
+2021-11-25 12:32:09.423513 finished: adding observations from tabular output file took: 0:00:00.082020
+2021-11-25 12:32:09.440517 starting: adding pilotpoint type multiplier style parameters for file(s) ['k_qbo1.txt']
+2021-11-25 12:32:09.440517 starting: loading array template\k_qbo1.txt
+2021-11-25 12:32:09.445518 finished: loading array template\k_qbo1.txt took: 0:00:00.005001
+2021-11-25 12:32:09.445518 loaded array 'k_qbo1.txt' of shape (21, 27)
+2021-11-25 12:32:09.500530 starting: writing array-based template file 'hk_glayer_0_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:09.501530 starting: setting up pilot point parameters
+2021-11-25 12:32:09.673569 96 pilot point parameters created
+2021-11-25 12:32:09.674569 pilot point 'pargp':hk_glayer_0_inst:0
+2021-11-25 12:32:09.674569 finished: setting up pilot point parameters took: 0:00:00.173039
+2021-11-25 12:32:09.688573 starting: calculating factors for pargp=hk_glayer_0_inst:0
+2021-11-25 12:32:09.689573 saving krige variance file:template\hk_glayer_0_inst0pp.var.dat
+2021-11-25 12:32:09.689573 saving krige factors file:template\hk_glayer_0_inst0pp.fac
+2021-11-25 12:32:22.997366 finished: calculating factors for pargp=hk_glayer_0_inst:0 took: 0:00:13.308793
+2021-11-25 12:32:22.998366 starting: writing array-based template file 'hk_glayer_0_inst0pp.dat.tpl'
+2021-11-25 12:32:23.008368 finished: adding pilotpoint type multiplier style parameters for file(s) ['k_qbo1.txt'] took: 0:00:13.567851
+2021-11-25 12:32:23.009369 starting: adding pilotpoint type multiplier style parameters for file(s) ['k_qbo2.txt']
+2021-11-25 12:32:23.009369 starting: loading array template\k_qbo2.txt
+2021-11-25 12:32:23.013369 finished: loading array template\k_qbo2.txt took: 0:00:00.004000
+2021-11-25 12:32:23.014370 loaded array 'k_qbo2.txt' of shape (21, 27)
+2021-11-25 12:32:23.015370 starting: writing array-based template file 'hk_glayer_1_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.015370 starting: setting up pilot point parameters
+2021-11-25 12:32:23.147400 96 pilot point parameters created
+2021-11-25 12:32:23.148400 pilot point 'pargp':hk_glayer_1_inst:0
+2021-11-25 12:32:23.148400 finished: setting up pilot point parameters took: 0:00:00.133030
+2021-11-25 12:32:23.163403 starting: writing array-based template file 'hk_glayer_1_inst0pp.dat.tpl'
+2021-11-25 12:32:23.168404 finished: adding pilotpoint type multiplier style parameters for file(s) ['k_qbo2.txt'] took: 0:00:00.159035
+2021-11-25 12:32:23.168404 starting: adding pilotpoint type multiplier style parameters for file(s) ['k_qd_qbg.txt']
+2021-11-25 12:32:23.168404 starting: loading array template\k_qd_qbg.txt
+2021-11-25 12:32:23.173405 finished: loading array template\k_qd_qbg.txt took: 0:00:00.005001
+2021-11-25 12:32:23.173405 loaded array 'k_qd_qbg.txt' of shape (21, 27)
+2021-11-25 12:32:23.174405 starting: writing array-based template file 'hk_glayer_2_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.175405 starting: setting up pilot point parameters
+2021-11-25 12:32:23.304435 96 pilot point parameters created
+2021-11-25 12:32:23.304435 pilot point 'pargp':hk_glayer_2_inst:0
+2021-11-25 12:32:23.305435 finished: setting up pilot point parameters took: 0:00:00.130030
+2021-11-25 12:32:23.320439 starting: writing array-based template file 'hk_glayer_2_inst0pp.dat.tpl'
+2021-11-25 12:32:23.325440 finished: adding pilotpoint type multiplier style parameters for file(s) ['k_qd_qbg.txt'] took: 0:00:00.157036
+2021-11-25 12:32:23.325440 starting: adding pilotpoint type multiplier style parameters for file(s) ['k_roc.txt']
+2021-11-25 12:32:23.325440 starting: loading array template\k_roc.txt
+2021-11-25 12:32:23.330441 finished: loading array template\k_roc.txt took: 0:00:00.005001
+2021-11-25 12:32:23.330441 loaded array 'k_roc.txt' of shape (21, 27)
+2021-11-25 12:32:23.331441 starting: writing array-based template file 'hk_glayer_3_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.331441 starting: setting up pilot point parameters
+2021-11-25 12:32:23.463471 96 pilot point parameters created
+2021-11-25 12:32:23.463471 pilot point 'pargp':hk_glayer_3_inst:0
+2021-11-25 12:32:23.463471 finished: setting up pilot point parameters took: 0:00:00.132030
+2021-11-25 12:32:23.478474 starting: writing array-based template file 'hk_glayer_3_inst0pp.dat.tpl'
+2021-11-25 12:32:23.483477 finished: adding pilotpoint type multiplier style parameters for file(s) ['k_roc.txt'] took: 0:00:00.158037
+2021-11-25 12:32:23.483477 starting: adding pilotpoint type multiplier style parameters for file(s) ['kv_qbo1.txt']
+2021-11-25 12:32:23.483477 starting: loading array template\kv_qbo1.txt
+2021-11-25 12:32:23.488476 finished: loading array template\kv_qbo1.txt took: 0:00:00.004999
+2021-11-25 12:32:23.488476 loaded array 'kv_qbo1.txt' of shape (21, 27)
+2021-11-25 12:32:23.489477 starting: writing array-based template file 'vk_glayer_0_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.489477 starting: setting up pilot point parameters
+2021-11-25 12:32:23.619506 96 pilot point parameters created
+2021-11-25 12:32:23.619506 pilot point 'pargp':vk_glayer_0_inst:0
+2021-11-25 12:32:23.619506 finished: setting up pilot point parameters took: 0:00:00.130029
+2021-11-25 12:32:23.634509 starting: writing array-based template file 'vk_glayer_0_inst0pp.dat.tpl'
+2021-11-25 12:32:23.639511 finished: adding pilotpoint type multiplier style parameters for file(s) ['kv_qbo1.txt'] took: 0:00:00.156034
+2021-11-25 12:32:23.639511 starting: adding pilotpoint type multiplier style parameters for file(s) ['kv_qbo2.txt']
+2021-11-25 12:32:23.639511 starting: loading array template\kv_qbo2.txt
+2021-11-25 12:32:23.644511 finished: loading array template\kv_qbo2.txt took: 0:00:00.005000
+2021-11-25 12:32:23.644511 loaded array 'kv_qbo2.txt' of shape (21, 27)
+2021-11-25 12:32:23.646512 starting: writing array-based template file 'vk_glayer_1_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.646512 starting: setting up pilot point parameters
+2021-11-25 12:32:23.776541 96 pilot point parameters created
+2021-11-25 12:32:23.776541 pilot point 'pargp':vk_glayer_1_inst:0
+2021-11-25 12:32:23.776541 finished: setting up pilot point parameters took: 0:00:00.130029
+2021-11-25 12:32:23.792544 starting: writing array-based template file 'vk_glayer_1_inst0pp.dat.tpl'
+2021-11-25 12:32:23.797545 finished: adding pilotpoint type multiplier style parameters for file(s) ['kv_qbo2.txt'] took: 0:00:00.158034
+2021-11-25 12:32:23.797545 starting: adding pilotpoint type multiplier style parameters for file(s) ['kv_qd_qbg.txt']
+2021-11-25 12:32:23.797545 starting: loading array template\kv_qd_qbg.txt
+2021-11-25 12:32:23.802547 finished: loading array template\kv_qd_qbg.txt took: 0:00:00.005002
+2021-11-25 12:32:23.802547 loaded array 'kv_qd_qbg.txt' of shape (21, 27)
+2021-11-25 12:32:23.804547 starting: writing array-based template file 'vk_glayer_2_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.804547 starting: setting up pilot point parameters
+2021-11-25 12:32:23.936577 96 pilot point parameters created
+2021-11-25 12:32:23.937577 pilot point 'pargp':vk_glayer_2_inst:0
+2021-11-25 12:32:23.937577 finished: setting up pilot point parameters took: 0:00:00.133030
+2021-11-25 12:32:23.952580 starting: writing array-based template file 'vk_glayer_2_inst0pp.dat.tpl'
+2021-11-25 12:32:23.957582 finished: adding pilotpoint type multiplier style parameters for file(s) ['kv_qd_qbg.txt'] took: 0:00:00.160037
+2021-11-25 12:32:23.957582 starting: adding pilotpoint type multiplier style parameters for file(s) ['kv_roc.txt']
+2021-11-25 12:32:23.957582 starting: loading array template\kv_roc.txt
+2021-11-25 12:32:23.962583 finished: loading array template\kv_roc.txt took: 0:00:00.005001
+2021-11-25 12:32:23.962583 loaded array 'kv_roc.txt' of shape (21, 27)
+2021-11-25 12:32:23.963583 starting: writing array-based template file 'vk_glayer_3_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:23.964583 starting: setting up pilot point parameters
+2021-11-25 12:32:24.093612 96 pilot point parameters created
+2021-11-25 12:32:24.093612 pilot point 'pargp':vk_glayer_3_inst:0
+2021-11-25 12:32:24.093612 finished: setting up pilot point parameters took: 0:00:00.129029
+2021-11-25 12:32:24.108615 starting: writing array-based template file 'vk_glayer_3_inst0pp.dat.tpl'
+2021-11-25 12:32:24.113617 finished: adding pilotpoint type multiplier style parameters for file(s) ['kv_roc.txt'] took: 0:00:00.156035
+2021-11-25 12:32:24.113617 starting: adding pilotpoint type multiplier style parameters for file(s) ['ss_qbo1.txt']
+2021-11-25 12:32:24.113617 starting: loading array template\ss_qbo1.txt
+2021-11-25 12:32:24.118618 finished: loading array template\ss_qbo1.txt took: 0:00:00.005001
+2021-11-25 12:32:24.118618 loaded array 'ss_qbo1.txt' of shape (21, 27)
+2021-11-25 12:32:24.120619 starting: writing array-based template file 'ss_glayer_0_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.120619 starting: setting up pilot point parameters
+2021-11-25 12:32:24.251648 96 pilot point parameters created
+2021-11-25 12:32:24.252648 pilot point 'pargp':ss_glayer_0_inst:0
+2021-11-25 12:32:24.252648 finished: setting up pilot point parameters took: 0:00:00.132029
+2021-11-25 12:32:24.267652 starting: writing array-based template file 'ss_glayer_0_inst0pp.dat.tpl'
+2021-11-25 12:32:24.272653 finished: adding pilotpoint type multiplier style parameters for file(s) ['ss_qbo1.txt'] took: 0:00:00.159036
+2021-11-25 12:32:24.272653 starting: adding pilotpoint type multiplier style parameters for file(s) ['ss_qbo2.txt']
+2021-11-25 12:32:24.272653 starting: loading array template\ss_qbo2.txt
+2021-11-25 12:32:24.277654 finished: loading array template\ss_qbo2.txt took: 0:00:00.005001
+2021-11-25 12:32:24.277654 loaded array 'ss_qbo2.txt' of shape (21, 27)
+2021-11-25 12:32:24.279654 starting: writing array-based template file 'ss_glayer_1_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.279654 starting: setting up pilot point parameters
+2021-11-25 12:32:24.412684 96 pilot point parameters created
+2021-11-25 12:32:24.413684 pilot point 'pargp':ss_glayer_1_inst:0
+2021-11-25 12:32:24.413684 finished: setting up pilot point parameters took: 0:00:00.134030
+2021-11-25 12:32:24.428687 starting: writing array-based template file 'ss_glayer_1_inst0pp.dat.tpl'
+2021-11-25 12:32:24.433689 finished: adding pilotpoint type multiplier style parameters for file(s) ['ss_qbo2.txt'] took: 0:00:00.161036
+2021-11-25 12:32:24.433689 starting: adding pilotpoint type multiplier style parameters for file(s) ['ss_qd_qbg.txt']
+2021-11-25 12:32:24.433689 starting: loading array template\ss_qd_qbg.txt
+2021-11-25 12:32:24.438690 finished: loading array template\ss_qd_qbg.txt took: 0:00:00.005001
+2021-11-25 12:32:24.438690 loaded array 'ss_qd_qbg.txt' of shape (21, 27)
+2021-11-25 12:32:24.440690 starting: writing array-based template file 'ss_glayer_2_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.440690 starting: setting up pilot point parameters
+2021-11-25 12:32:24.566719 96 pilot point parameters created
+2021-11-25 12:32:24.567719 pilot point 'pargp':ss_glayer_2_inst:0
+2021-11-25 12:32:24.567719 finished: setting up pilot point parameters took: 0:00:00.127029
+2021-11-25 12:32:24.582722 starting: writing array-based template file 'ss_glayer_2_inst0pp.dat.tpl'
+2021-11-25 12:32:24.587723 finished: adding pilotpoint type multiplier style parameters for file(s) ['ss_qd_qbg.txt'] took: 0:00:00.154034
+2021-11-25 12:32:24.587723 starting: adding pilotpoint type multiplier style parameters for file(s) ['ss_roc.txt']
+2021-11-25 12:32:24.587723 starting: loading array template\ss_roc.txt
+2021-11-25 12:32:24.592725 finished: loading array template\ss_roc.txt took: 0:00:00.005002
+2021-11-25 12:32:24.592725 loaded array 'ss_roc.txt' of shape (21, 27)
+2021-11-25 12:32:24.594725 starting: writing array-based template file 'ss_glayer_3_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.594725 starting: setting up pilot point parameters
+2021-11-25 12:32:24.721753 96 pilot point parameters created
+2021-11-25 12:32:24.721753 pilot point 'pargp':ss_glayer_3_inst:0
+2021-11-25 12:32:24.721753 finished: setting up pilot point parameters took: 0:00:00.127028
+2021-11-25 12:32:24.736757 starting: writing array-based template file 'ss_glayer_3_inst0pp.dat.tpl'
+2021-11-25 12:32:24.741758 finished: adding pilotpoint type multiplier style parameters for file(s) ['ss_roc.txt'] took: 0:00:00.154035
+2021-11-25 12:32:24.741758 starting: adding pilotpoint type multiplier style parameters for file(s) ['sy_qbo1.txt']
+2021-11-25 12:32:24.742758 starting: loading array template\sy_qbo1.txt
+2021-11-25 12:32:24.747759 finished: loading array template\sy_qbo1.txt took: 0:00:00.005001
+2021-11-25 12:32:24.747759 loaded array 'sy_qbo1.txt' of shape (21, 27)
+2021-11-25 12:32:24.748760 starting: writing array-based template file 'sy_glayer_0_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.748760 starting: setting up pilot point parameters
+2021-11-25 12:32:24.878788 96 pilot point parameters created
+2021-11-25 12:32:24.879789 pilot point 'pargp':sy_glayer_0_inst:0
+2021-11-25 12:32:24.879789 finished: setting up pilot point parameters took: 0:00:00.131029
+2021-11-25 12:32:24.895792 starting: writing array-based template file 'sy_glayer_0_inst0pp.dat.tpl'
+2021-11-25 12:32:24.899792 finished: adding pilotpoint type multiplier style parameters for file(s) ['sy_qbo1.txt'] took: 0:00:00.158034
+2021-11-25 12:32:24.900793 starting: adding pilotpoint type multiplier style parameters for file(s) ['sy_qbo2.txt']
+2021-11-25 12:32:24.900793 starting: loading array template\sy_qbo2.txt
+2021-11-25 12:32:24.904794 finished: loading array template\sy_qbo2.txt took: 0:00:00.004001
+2021-11-25 12:32:24.905795 loaded array 'sy_qbo2.txt' of shape (21, 27)
+2021-11-25 12:32:24.906795 starting: writing array-based template file 'sy_glayer_1_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:24.906795 starting: setting up pilot point parameters
+2021-11-25 12:32:25.035824 96 pilot point parameters created
+2021-11-25 12:32:25.036824 pilot point 'pargp':sy_glayer_1_inst:0
+2021-11-25 12:32:25.036824 finished: setting up pilot point parameters took: 0:00:00.130029
+2021-11-25 12:32:25.051828 starting: writing array-based template file 'sy_glayer_1_inst0pp.dat.tpl'
+2021-11-25 12:32:25.056829 finished: adding pilotpoint type multiplier style parameters for file(s) ['sy_qbo2.txt'] took: 0:00:00.156036
+2021-11-25 12:32:25.056829 starting: adding pilotpoint type multiplier style parameters for file(s) ['sy_qd_qbg.txt']
+2021-11-25 12:32:25.056829 starting: loading array template\sy_qd_qbg.txt
+2021-11-25 12:32:25.060830 finished: loading array template\sy_qd_qbg.txt took: 0:00:00.004001
+2021-11-25 12:32:25.061830 loaded array 'sy_qd_qbg.txt' of shape (21, 27)
+2021-11-25 12:32:25.062830 starting: writing array-based template file 'sy_glayer_2_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:25.062830 starting: setting up pilot point parameters
+2021-11-25 12:32:25.189858 96 pilot point parameters created
+2021-11-25 12:32:25.190859 pilot point 'pargp':sy_glayer_2_inst:0
+2021-11-25 12:32:25.190859 finished: setting up pilot point parameters took: 0:00:00.128029
+2021-11-25 12:32:25.205862 starting: writing array-based template file 'sy_glayer_2_inst0pp.dat.tpl'
+2021-11-25 12:32:25.210862 finished: adding pilotpoint type multiplier style parameters for file(s) ['sy_qd_qbg.txt'] took: 0:00:00.154033
+2021-11-25 12:32:25.210862 starting: adding pilotpoint type multiplier style parameters for file(s) ['sy_roc.txt']
+2021-11-25 12:32:25.210862 starting: loading array template\sy_roc.txt
+2021-11-25 12:32:25.215864 finished: loading array template\sy_roc.txt took: 0:00:00.005002
+2021-11-25 12:32:25.215864 loaded array 'sy_roc.txt' of shape (21, 27)
+2021-11-25 12:32:25.216865 starting: writing array-based template file 'sy_glayer_3_inst0_pilotpoint.csv.tpl'
+2021-11-25 12:32:25.217865 starting: setting up pilot point parameters
+2021-11-25 12:32:25.346893 96 pilot point parameters created
+2021-11-25 12:32:25.346893 pilot point 'pargp':sy_glayer_3_inst:0
+2021-11-25 12:32:25.346893 finished: setting up pilot point parameters took: 0:00:00.129028
+2021-11-25 12:32:25.361897 starting: writing array-based template file 'sy_glayer_3_inst0pp.dat.tpl'
+2021-11-25 12:32:25.366897 finished: adding pilotpoint type multiplier style parameters for file(s) ['sy_roc.txt'] took: 0:00:00.156035
+2021-11-25 12:32:25.368898 starting: adding constant type multiplier style parameters for file(s) ['ghb_0_0.txt', 'ghb_0_1.txt', 'ghb_0_10.txt', 'ghb_0_11.txt', 'ghb_0_12.txt', 'ghb_0_13.txt', 'ghb_0_14.txt', 'ghb_0_15.txt', 'ghb_0_16.txt', 'ghb_0_17.txt', 'ghb_0_18.txt', 'ghb_0_19.txt', 'ghb_0_2.txt', 'ghb_0_20.txt', 'ghb_0_21.txt', 'ghb_0_22.txt', 'ghb_0_23.txt', 'ghb_0_24.txt', 'ghb_0_25.txt', 'ghb_0_26.txt', 'ghb_0_27.txt', 'ghb_0_28.txt', 'ghb_0_29.txt', 'ghb_0_3.txt', 'ghb_0_30.txt', 'ghb_0_31.txt', 'ghb_0_32.txt', 'ghb_0_33.txt', 'ghb_0_34.txt', 'ghb_0_35.txt', 'ghb_0_36.txt', 'ghb_0_37.txt', 'ghb_0_38.txt', 'ghb_0_39.txt', 'ghb_0_4.txt', 'ghb_0_40.txt', 'ghb_0_41.txt', 'ghb_0_42.txt', 'ghb_0_43.txt', 'ghb_0_44.txt', 'ghb_0_45.txt', 'ghb_0_46.txt', 'ghb_0_47.txt', 'ghb_0_48.txt', 'ghb_0_49.txt', 'ghb_0_5.txt', 'ghb_0_50.txt', 'ghb_0_6.txt', 'ghb_0_7.txt', 'ghb_0_8.txt', 'ghb_0_9.txt']
+2021-11-25 12:32:25.368898 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:25.368898 starting: loading list template\ghb_0_0.txt
+2021-11-25 12:32:25.368898 starting: reading list template\ghb_0_0.txt
+2021-11-25 12:32:25.372900 finished: reading list template\ghb_0_0.txt took: 0:00:00.004002
+2021-11-25 12:32:25.373900 loaded list 'template\ghb_0_0.txt' of shape (20, 6)
+2021-11-25 12:32:25.374901 finished: loading list template\ghb_0_0.txt took: 0:00:00.006003
+2021-11-25 12:32:25.374901 starting: loading list template\ghb_0_1.txt
+2021-11-25 12:32:25.375900 starting: reading list template\ghb_0_1.txt
+2021-11-25 12:32:25.376901 finished: reading list template\ghb_0_1.txt took: 0:00:00.001001
+2021-11-25 12:32:25.376901 loaded list 'template\ghb_0_1.txt' of shape (20, 6)
+2021-11-25 12:32:25.378902 finished: loading list template\ghb_0_1.txt took: 0:00:00.004001
+2021-11-25 12:32:25.378902 starting: loading list template\ghb_0_10.txt
+2021-11-25 12:32:25.378902 starting: reading list template\ghb_0_10.txt
+2021-11-25 12:32:25.380902 finished: reading list template\ghb_0_10.txt took: 0:00:00.002000
+2021-11-25 12:32:25.380902 loaded list 'template\ghb_0_10.txt' of shape (20, 6)
+2021-11-25 12:32:25.381901 finished: loading list template\ghb_0_10.txt took: 0:00:00.002999
+2021-11-25 12:32:25.382902 starting: loading list template\ghb_0_11.txt
+2021-11-25 12:32:25.382902 starting: reading list template\ghb_0_11.txt
+2021-11-25 12:32:25.386903 finished: reading list template\ghb_0_11.txt took: 0:00:00.004001
+2021-11-25 12:32:25.386903 loaded list 'template\ghb_0_11.txt' of shape (20, 6)
+2021-11-25 12:32:25.387902 finished: loading list template\ghb_0_11.txt took: 0:00:00.005000
+2021-11-25 12:32:25.388902 starting: loading list template\ghb_0_12.txt
+2021-11-25 12:32:25.388902 starting: reading list template\ghb_0_12.txt
+2021-11-25 12:32:25.389902 finished: reading list template\ghb_0_12.txt took: 0:00:00.001000
+2021-11-25 12:32:25.390903 loaded list 'template\ghb_0_12.txt' of shape (20, 6)
+2021-11-25 12:32:25.391904 finished: loading list template\ghb_0_12.txt took: 0:00:00.003002
+2021-11-25 12:32:25.391904 starting: loading list template\ghb_0_13.txt
+2021-11-25 12:32:25.391904 starting: reading list template\ghb_0_13.txt
+2021-11-25 12:32:25.396906 finished: reading list template\ghb_0_13.txt took: 0:00:00.005002
+2021-11-25 12:32:25.396906 loaded list 'template\ghb_0_13.txt' of shape (20, 6)
+2021-11-25 12:32:25.397905 finished: loading list template\ghb_0_13.txt took: 0:00:00.006001
+2021-11-25 12:32:25.397905 starting: loading list template\ghb_0_14.txt
+2021-11-25 12:32:25.398906 starting: reading list template\ghb_0_14.txt
+2021-11-25 12:32:25.399905 finished: reading list template\ghb_0_14.txt took: 0:00:00.000999
+2021-11-25 12:32:25.399905 loaded list 'template\ghb_0_14.txt' of shape (20, 6)
+2021-11-25 12:32:25.401906 finished: loading list template\ghb_0_14.txt took: 0:00:00.004001
+2021-11-25 12:32:25.401906 starting: loading list template\ghb_0_15.txt
+2021-11-25 12:32:25.401906 starting: reading list template\ghb_0_15.txt
+2021-11-25 12:32:25.403907 finished: reading list template\ghb_0_15.txt took: 0:00:00.002001
+2021-11-25 12:32:25.403907 loaded list 'template\ghb_0_15.txt' of shape (20, 6)
+2021-11-25 12:32:25.404906 finished: loading list template\ghb_0_15.txt took: 0:00:00.003000
+2021-11-25 12:32:25.404906 starting: loading list template\ghb_0_16.txt
+2021-11-25 12:32:25.405907 starting: reading list template\ghb_0_16.txt
+2021-11-25 12:32:25.409908 finished: reading list template\ghb_0_16.txt took: 0:00:00.004001
+2021-11-25 12:32:25.409908 loaded list 'template\ghb_0_16.txt' of shape (20, 6)
+2021-11-25 12:32:25.410908 finished: loading list template\ghb_0_16.txt took: 0:00:00.006002
+2021-11-25 12:32:25.411909 starting: loading list template\ghb_0_17.txt
+2021-11-25 12:32:25.411909 starting: reading list template\ghb_0_17.txt
+2021-11-25 12:32:25.412908 finished: reading list template\ghb_0_17.txt took: 0:00:00.000999
+2021-11-25 12:32:25.413908 loaded list 'template\ghb_0_17.txt' of shape (20, 6)
+2021-11-25 12:32:25.414909 finished: loading list template\ghb_0_17.txt took: 0:00:00.003000
+2021-11-25 12:32:25.414909 starting: loading list template\ghb_0_18.txt
+2021-11-25 12:32:25.414909 starting: reading list template\ghb_0_18.txt
+2021-11-25 12:32:25.416910 finished: reading list template\ghb_0_18.txt took: 0:00:00.002001
+2021-11-25 12:32:25.416910 loaded list 'template\ghb_0_18.txt' of shape (20, 6)
+2021-11-25 12:32:25.417909 finished: loading list template\ghb_0_18.txt took: 0:00:00.003000
+2021-11-25 12:32:25.417909 starting: loading list template\ghb_0_19.txt
+2021-11-25 12:32:25.417909 starting: reading list template\ghb_0_19.txt
+2021-11-25 12:32:25.419910 finished: reading list template\ghb_0_19.txt took: 0:00:00.002001
+2021-11-25 12:32:25.419910 loaded list 'template\ghb_0_19.txt' of shape (20, 6)
+2021-11-25 12:32:25.420910 finished: loading list template\ghb_0_19.txt took: 0:00:00.003001
+2021-11-25 12:32:25.421911 starting: loading list template\ghb_0_2.txt
+2021-11-25 12:32:25.421911 starting: reading list template\ghb_0_2.txt
+2021-11-25 12:32:25.422911 finished: reading list template\ghb_0_2.txt took: 0:00:00.001000
+2021-11-25 12:32:25.423910 loaded list 'template\ghb_0_2.txt' of shape (20, 6)
+2021-11-25 12:32:25.424911 finished: loading list template\ghb_0_2.txt took: 0:00:00.003000
+2021-11-25 12:32:25.424911 starting: loading list template\ghb_0_20.txt
+2021-11-25 12:32:25.424911 starting: reading list template\ghb_0_20.txt
+2021-11-25 12:32:25.426911 finished: reading list template\ghb_0_20.txt took: 0:00:00.002000
+2021-11-25 12:32:25.426911 loaded list 'template\ghb_0_20.txt' of shape (20, 6)
+2021-11-25 12:32:25.427911 finished: loading list template\ghb_0_20.txt took: 0:00:00.003000
+2021-11-25 12:32:25.427911 starting: loading list template\ghb_0_21.txt
+2021-11-25 12:32:25.428911 starting: reading list template\ghb_0_21.txt
+2021-11-25 12:32:25.432912 finished: reading list template\ghb_0_21.txt took: 0:00:00.004001
+2021-11-25 12:32:25.432912 loaded list 'template\ghb_0_21.txt' of shape (20, 6)
+2021-11-25 12:32:25.433912 finished: loading list template\ghb_0_21.txt took: 0:00:00.006001
+2021-11-25 12:32:25.434912 starting: loading list template\ghb_0_22.txt
+2021-11-25 12:32:25.434912 starting: reading list template\ghb_0_22.txt
+2021-11-25 12:32:25.435914 finished: reading list template\ghb_0_22.txt took: 0:00:00.001002
+2021-11-25 12:32:25.436913 loaded list 'template\ghb_0_22.txt' of shape (20, 6)
+2021-11-25 12:32:25.437915 finished: loading list template\ghb_0_22.txt took: 0:00:00.003003
+2021-11-25 12:32:25.437915 starting: loading list template\ghb_0_23.txt
+2021-11-25 12:32:25.437915 starting: reading list template\ghb_0_23.txt
+2021-11-25 12:32:25.439914 finished: reading list template\ghb_0_23.txt took: 0:00:00.001999
+2021-11-25 12:32:25.439914 loaded list 'template\ghb_0_23.txt' of shape (20, 6)
+2021-11-25 12:32:25.440914 finished: loading list template\ghb_0_23.txt took: 0:00:00.002999
+2021-11-25 12:32:25.440914 starting: loading list template\ghb_0_24.txt
+2021-11-25 12:32:25.441914 starting: reading list template\ghb_0_24.txt
+2021-11-25 12:32:25.442914 finished: reading list template\ghb_0_24.txt took: 0:00:00.001000
+2021-11-25 12:32:25.442914 loaded list 'template\ghb_0_24.txt' of shape (20, 6)
+2021-11-25 12:32:25.443915 finished: loading list template\ghb_0_24.txt took: 0:00:00.003001
+2021-11-25 12:32:25.444915 starting: loading list template\ghb_0_25.txt
+2021-11-25 12:32:25.444915 starting: reading list template\ghb_0_25.txt
+2021-11-25 12:32:25.448916 finished: reading list template\ghb_0_25.txt took: 0:00:00.004001
+2021-11-25 12:32:25.448916 loaded list 'template\ghb_0_25.txt' of shape (20, 6)
+2021-11-25 12:32:25.450916 finished: loading list template\ghb_0_25.txt took: 0:00:00.006001
+2021-11-25 12:32:25.450916 starting: loading list template\ghb_0_26.txt
+2021-11-25 12:32:25.450916 starting: reading list template\ghb_0_26.txt
+2021-11-25 12:32:25.452917 finished: reading list template\ghb_0_26.txt took: 0:00:00.002001
+2021-11-25 12:32:25.452917 loaded list 'template\ghb_0_26.txt' of shape (20, 6)
+2021-11-25 12:32:25.453917 finished: loading list template\ghb_0_26.txt took: 0:00:00.003001
+2021-11-25 12:32:25.453917 starting: loading list template\ghb_0_27.txt
+2021-11-25 12:32:25.453917 starting: reading list template\ghb_0_27.txt
+2021-11-25 12:32:25.458920 finished: reading list template\ghb_0_27.txt took: 0:00:00.005003
+2021-11-25 12:32:25.458920 loaded list 'template\ghb_0_27.txt' of shape (20, 6)
+2021-11-25 12:32:25.460919 finished: loading list template\ghb_0_27.txt took: 0:00:00.007002
+2021-11-25 12:32:25.460919 starting: loading list template\ghb_0_28.txt
+2021-11-25 12:32:25.460919 starting: reading list template\ghb_0_28.txt
+2021-11-25 12:32:25.462919 finished: reading list template\ghb_0_28.txt took: 0:00:00.002000
+2021-11-25 12:32:25.462919 loaded list 'template\ghb_0_28.txt' of shape (20, 6)
+2021-11-25 12:32:25.463919 finished: loading list template\ghb_0_28.txt took: 0:00:00.003000
+2021-11-25 12:32:25.464921 starting: loading list template\ghb_0_29.txt
+2021-11-25 12:32:25.464921 starting: reading list template\ghb_0_29.txt
+2021-11-25 12:32:25.465920 finished: reading list template\ghb_0_29.txt took: 0:00:00.000999
+2021-11-25 12:32:25.465920 loaded list 'template\ghb_0_29.txt' of shape (20, 6)
+2021-11-25 12:32:25.467921 finished: loading list template\ghb_0_29.txt took: 0:00:00.003000
+2021-11-25 12:32:25.467921 starting: loading list template\ghb_0_3.txt
+2021-11-25 12:32:25.467921 starting: reading list template\ghb_0_3.txt
+2021-11-25 12:32:25.469922 finished: reading list template\ghb_0_3.txt took: 0:00:00.002001
+2021-11-25 12:32:25.469922 loaded list 'template\ghb_0_3.txt' of shape (20, 6)
+2021-11-25 12:32:25.470922 finished: loading list template\ghb_0_3.txt took: 0:00:00.003001
+2021-11-25 12:32:25.471922 starting: loading list template\ghb_0_30.txt
+2021-11-25 12:32:25.471922 starting: reading list template\ghb_0_30.txt
+2021-11-25 12:32:25.473922 finished: reading list template\ghb_0_30.txt took: 0:00:00.002000
+2021-11-25 12:32:25.473922 loaded list 'template\ghb_0_30.txt' of shape (20, 6)
+2021-11-25 12:32:25.474922 finished: loading list template\ghb_0_30.txt took: 0:00:00.003000
+2021-11-25 12:32:25.474922 starting: loading list template\ghb_0_31.txt
+2021-11-25 12:32:25.475923 starting: reading list template\ghb_0_31.txt
+2021-11-25 12:32:25.476923 finished: reading list template\ghb_0_31.txt took: 0:00:00.001000
+2021-11-25 12:32:25.477923 loaded list 'template\ghb_0_31.txt' of shape (20, 6)
+2021-11-25 12:32:25.478923 finished: loading list template\ghb_0_31.txt took: 0:00:00.004001
+2021-11-25 12:32:25.478923 starting: loading list template\ghb_0_32.txt
+2021-11-25 12:32:25.478923 starting: reading list template\ghb_0_32.txt
+2021-11-25 12:32:25.480924 finished: reading list template\ghb_0_32.txt took: 0:00:00.002001
+2021-11-25 12:32:25.480924 loaded list 'template\ghb_0_32.txt' of shape (20, 6)
+2021-11-25 12:32:25.481924 finished: loading list template\ghb_0_32.txt took: 0:00:00.003001
+2021-11-25 12:32:25.482924 starting: loading list template\ghb_0_33.txt
+2021-11-25 12:32:25.482924 starting: reading list template\ghb_0_33.txt
+2021-11-25 12:32:25.483925 finished: reading list template\ghb_0_33.txt took: 0:00:00.001001
+2021-11-25 12:32:25.484924 loaded list 'template\ghb_0_33.txt' of shape (20, 6)
+2021-11-25 12:32:25.485924 finished: loading list template\ghb_0_33.txt took: 0:00:00.003000
+2021-11-25 12:32:25.485924 starting: loading list template\ghb_0_34.txt
+2021-11-25 12:32:25.485924 starting: reading list template\ghb_0_34.txt
+2021-11-25 12:32:25.487926 finished: reading list template\ghb_0_34.txt took: 0:00:00.002002
+2021-11-25 12:32:25.488926 loaded list 'template\ghb_0_34.txt' of shape (20, 6)
+2021-11-25 12:32:25.489926 finished: loading list template\ghb_0_34.txt took: 0:00:00.004002
+2021-11-25 12:32:25.489926 starting: loading list template\ghb_0_35.txt
+2021-11-25 12:32:25.489926 starting: reading list template\ghb_0_35.txt
+2021-11-25 12:32:25.491926 finished: reading list template\ghb_0_35.txt took: 0:00:00.002000
+2021-11-25 12:32:25.491926 loaded list 'template\ghb_0_35.txt' of shape (20, 6)
+2021-11-25 12:32:25.492926 finished: loading list template\ghb_0_35.txt took: 0:00:00.003000
+2021-11-25 12:32:25.492926 starting: loading list template\ghb_0_36.txt
+2021-11-25 12:32:25.493926 starting: reading list template\ghb_0_36.txt
+2021-11-25 12:32:25.497928 finished: reading list template\ghb_0_36.txt took: 0:00:00.004002
+2021-11-25 12:32:25.497928 loaded list 'template\ghb_0_36.txt' of shape (20, 6)
+2021-11-25 12:32:25.499929 finished: loading list template\ghb_0_36.txt took: 0:00:00.007003
+2021-11-25 12:32:25.499929 starting: loading list template\ghb_0_37.txt
+2021-11-25 12:32:25.499929 starting: reading list template\ghb_0_37.txt
+2021-11-25 12:32:25.501929 finished: reading list template\ghb_0_37.txt took: 0:00:00.002000
+2021-11-25 12:32:25.501929 loaded list 'template\ghb_0_37.txt' of shape (20, 6)
+2021-11-25 12:32:25.503929 finished: loading list template\ghb_0_37.txt took: 0:00:00.004000
+2021-11-25 12:32:25.503929 starting: loading list template\ghb_0_38.txt
+2021-11-25 12:32:25.503929 starting: reading list template\ghb_0_38.txt
+2021-11-25 12:32:25.505929 finished: reading list template\ghb_0_38.txt took: 0:00:00.002000
+2021-11-25 12:32:25.505929 loaded list 'template\ghb_0_38.txt' of shape (20, 6)
+2021-11-25 12:32:25.506930 finished: loading list template\ghb_0_38.txt took: 0:00:00.003001
+2021-11-25 12:32:25.506930 starting: loading list template\ghb_0_39.txt
+2021-11-25 12:32:25.506930 starting: reading list template\ghb_0_39.txt
+2021-11-25 12:32:25.508930 finished: reading list template\ghb_0_39.txt took: 0:00:00.002000
+2021-11-25 12:32:25.508930 loaded list 'template\ghb_0_39.txt' of shape (20, 6)
+2021-11-25 12:32:25.509930 finished: loading list template\ghb_0_39.txt took: 0:00:00.003000
+2021-11-25 12:32:25.509930 starting: loading list template\ghb_0_4.txt
+2021-11-25 12:32:25.510930 starting: reading list template\ghb_0_4.txt
+2021-11-25 12:32:25.511931 finished: reading list template\ghb_0_4.txt took: 0:00:00.001001
+2021-11-25 12:32:25.511931 loaded list 'template\ghb_0_4.txt' of shape (20, 6)
+2021-11-25 12:32:25.513931 finished: loading list template\ghb_0_4.txt took: 0:00:00.004001
+2021-11-25 12:32:25.513931 starting: loading list template\ghb_0_40.txt
+2021-11-25 12:32:25.513931 starting: reading list template\ghb_0_40.txt
+2021-11-25 12:32:25.515931 finished: reading list template\ghb_0_40.txt took: 0:00:00.002000
+2021-11-25 12:32:25.515931 loaded list 'template\ghb_0_40.txt' of shape (20, 6)
+2021-11-25 12:32:25.516932 finished: loading list template\ghb_0_40.txt took: 0:00:00.003001
+2021-11-25 12:32:25.516932 starting: loading list template\ghb_0_41.txt
+2021-11-25 12:32:25.517932 starting: reading list template\ghb_0_41.txt
+2021-11-25 12:32:25.518933 finished: reading list template\ghb_0_41.txt took: 0:00:00.001001
+2021-11-25 12:32:25.519932 loaded list 'template\ghb_0_41.txt' of shape (20, 6)
+2021-11-25 12:32:25.520933 finished: loading list template\ghb_0_41.txt took: 0:00:00.004001
+2021-11-25 12:32:25.520933 starting: loading list template\ghb_0_42.txt
+2021-11-25 12:32:25.520933 starting: reading list template\ghb_0_42.txt
+2021-11-25 12:32:25.525934 finished: reading list template\ghb_0_42.txt took: 0:00:00.005001
+2021-11-25 12:32:25.525934 loaded list 'template\ghb_0_42.txt' of shape (20, 6)
+2021-11-25 12:32:25.526934 finished: loading list template\ghb_0_42.txt took: 0:00:00.006001
+2021-11-25 12:32:25.527934 starting: loading list template\ghb_0_43.txt
+2021-11-25 12:32:25.527934 starting: reading list template\ghb_0_43.txt
+2021-11-25 12:32:25.531935 finished: reading list template\ghb_0_43.txt took: 0:00:00.004001
+2021-11-25 12:32:25.532935 loaded list 'template\ghb_0_43.txt' of shape (20, 6)
+2021-11-25 12:32:25.533936 finished: loading list template\ghb_0_43.txt took: 0:00:00.006002
+2021-11-25 12:32:25.533936 starting: loading list template\ghb_0_44.txt
+2021-11-25 12:32:25.534936 starting: reading list template\ghb_0_44.txt
+2021-11-25 12:32:25.535936 finished: reading list template\ghb_0_44.txt took: 0:00:00.001000
+2021-11-25 12:32:25.536936 loaded list 'template\ghb_0_44.txt' of shape (20, 6)
+2021-11-25 12:32:25.537937 finished: loading list template\ghb_0_44.txt took: 0:00:00.004001
+2021-11-25 12:32:25.537937 starting: loading list template\ghb_0_45.txt
+2021-11-25 12:32:25.537937 starting: reading list template\ghb_0_45.txt
+2021-11-25 12:32:25.539937 finished: reading list template\ghb_0_45.txt took: 0:00:00.002000
+2021-11-25 12:32:25.539937 loaded list 'template\ghb_0_45.txt' of shape (20, 6)
+2021-11-25 12:32:25.540937 finished: loading list template\ghb_0_45.txt took: 0:00:00.003000
+2021-11-25 12:32:25.541937 starting: loading list template\ghb_0_46.txt
+2021-11-25 12:32:25.541937 starting: reading list template\ghb_0_46.txt
+2021-11-25 12:32:25.543938 finished: reading list template\ghb_0_46.txt took: 0:00:00.002001
+2021-11-25 12:32:25.543938 loaded list 'template\ghb_0_46.txt' of shape (20, 6)
+2021-11-25 12:32:25.544938 finished: loading list template\ghb_0_46.txt took: 0:00:00.003001
+2021-11-25 12:32:25.545938 starting: loading list template\ghb_0_47.txt
+2021-11-25 12:32:25.545938 starting: reading list template\ghb_0_47.txt
+2021-11-25 12:32:25.546938 finished: reading list template\ghb_0_47.txt took: 0:00:00.001000
+2021-11-25 12:32:25.546938 loaded list 'template\ghb_0_47.txt' of shape (20, 6)
+2021-11-25 12:32:25.548939 finished: loading list template\ghb_0_47.txt took: 0:00:00.003001
+2021-11-25 12:32:25.548939 starting: loading list template\ghb_0_48.txt
+2021-11-25 12:32:25.548939 starting: reading list template\ghb_0_48.txt
+2021-11-25 12:32:25.550939 finished: reading list template\ghb_0_48.txt took: 0:00:00.002000
+2021-11-25 12:32:25.550939 loaded list 'template\ghb_0_48.txt' of shape (20, 6)
+2021-11-25 12:32:25.551940 finished: loading list template\ghb_0_48.txt took: 0:00:00.003001
+2021-11-25 12:32:25.551940 starting: loading list template\ghb_0_49.txt
+2021-11-25 12:32:25.552939 starting: reading list template\ghb_0_49.txt
+2021-11-25 12:32:25.553940 finished: reading list template\ghb_0_49.txt took: 0:00:00.001001
+2021-11-25 12:32:25.553940 loaded list 'template\ghb_0_49.txt' of shape (20, 6)
+2021-11-25 12:32:25.555941 finished: loading list template\ghb_0_49.txt took: 0:00:00.004001
+2021-11-25 12:32:25.555941 starting: loading list template\ghb_0_5.txt
+2021-11-25 12:32:25.555941 starting: reading list template\ghb_0_5.txt
+2021-11-25 12:32:25.557941 finished: reading list template\ghb_0_5.txt took: 0:00:00.002000
+2021-11-25 12:32:25.557941 loaded list 'template\ghb_0_5.txt' of shape (20, 6)
+2021-11-25 12:32:25.558942 finished: loading list template\ghb_0_5.txt took: 0:00:00.003001
+2021-11-25 12:32:25.558942 starting: loading list template\ghb_0_50.txt
+2021-11-25 12:32:25.558942 starting: reading list template\ghb_0_50.txt
+2021-11-25 12:32:25.560943 finished: reading list template\ghb_0_50.txt took: 0:00:00.002001
+2021-11-25 12:32:25.560943 loaded list 'template\ghb_0_50.txt' of shape (20, 6)
+2021-11-25 12:32:25.562943 finished: loading list template\ghb_0_50.txt took: 0:00:00.004001
+2021-11-25 12:32:25.562943 starting: loading list template\ghb_0_6.txt
+2021-11-25 12:32:25.562943 starting: reading list template\ghb_0_6.txt
+2021-11-25 12:32:25.564943 finished: reading list template\ghb_0_6.txt took: 0:00:00.002000
+2021-11-25 12:32:25.564943 loaded list 'template\ghb_0_6.txt' of shape (20, 6)
+2021-11-25 12:32:25.566944 finished: loading list template\ghb_0_6.txt took: 0:00:00.004001
+2021-11-25 12:32:25.566944 starting: loading list template\ghb_0_7.txt
+2021-11-25 12:32:25.566944 starting: reading list template\ghb_0_7.txt
+2021-11-25 12:32:25.568944 finished: reading list template\ghb_0_7.txt took: 0:00:00.002000
+2021-11-25 12:32:25.568944 loaded list 'template\ghb_0_7.txt' of shape (20, 6)
+2021-11-25 12:32:25.569944 finished: loading list template\ghb_0_7.txt took: 0:00:00.003000
+2021-11-25 12:32:25.569944 starting: loading list template\ghb_0_8.txt
+2021-11-25 12:32:25.569944 starting: reading list template\ghb_0_8.txt
+2021-11-25 12:32:25.571945 finished: reading list template\ghb_0_8.txt took: 0:00:00.002001
+2021-11-25 12:32:25.571945 loaded list 'template\ghb_0_8.txt' of shape (20, 6)
+2021-11-25 12:32:25.573945 finished: loading list template\ghb_0_8.txt took: 0:00:00.004001
+2021-11-25 12:32:25.573945 starting: loading list template\ghb_0_9.txt
+2021-11-25 12:32:25.573945 starting: reading list template\ghb_0_9.txt
+2021-11-25 12:32:25.577946 finished: reading list template\ghb_0_9.txt took: 0:00:00.004001
+2021-11-25 12:32:25.577946 loaded list 'template\ghb_0_9.txt' of shape (20, 6)
+2021-11-25 12:32:25.579946 finished: loading list template\ghb_0_9.txt took: 0:00:00.006001
+2021-11-25 12:32:25.581946 starting: writing list-based template file 'ghb_glayer_0_inst0_constant.csv.tpl'
+2021-11-25 12:32:25.624956 finished: writing list-based template file 'ghb_glayer_0_inst0_constant.csv.tpl' took: 0:00:00.043010
+2021-11-25 12:32:25.631957 finished: adding constant type multiplier style parameters for file(s) ['ghb_0_0.txt', 'ghb_0_1.txt', 'ghb_0_10.txt', 'ghb_0_11.txt', 'ghb_0_12.txt', 'ghb_0_13.txt', 'ghb_0_14.txt', 'ghb_0_15.txt', 'ghb_0_16.txt', 'ghb_0_17.txt', 'ghb_0_18.txt', 'ghb_0_19.txt', 'ghb_0_2.txt', 'ghb_0_20.txt', 'ghb_0_21.txt', 'ghb_0_22.txt', 'ghb_0_23.txt', 'ghb_0_24.txt', 'ghb_0_25.txt', 'ghb_0_26.txt', 'ghb_0_27.txt', 'ghb_0_28.txt', 'ghb_0_29.txt', 'ghb_0_3.txt', 'ghb_0_30.txt', 'ghb_0_31.txt', 'ghb_0_32.txt', 'ghb_0_33.txt', 'ghb_0_34.txt', 'ghb_0_35.txt', 'ghb_0_36.txt', 'ghb_0_37.txt', 'ghb_0_38.txt', 'ghb_0_39.txt', 'ghb_0_4.txt', 'ghb_0_40.txt', 'ghb_0_41.txt', 'ghb_0_42.txt', 'ghb_0_43.txt', 'ghb_0_44.txt', 'ghb_0_45.txt', 'ghb_0_46.txt', 'ghb_0_47.txt', 'ghb_0_48.txt', 'ghb_0_49.txt', 'ghb_0_5.txt', 'ghb_0_50.txt', 'ghb_0_6.txt', 'ghb_0_7.txt', 'ghb_0_8.txt', 'ghb_0_9.txt'] took: 0:00:00.263059
+2021-11-25 12:32:25.632958 starting: adding constant type multiplier style parameters for file(s) ['ghb_1_0.txt', 'ghb_1_1.txt', 'ghb_1_10.txt', 'ghb_1_11.txt', 'ghb_1_12.txt', 'ghb_1_13.txt', 'ghb_1_14.txt', 'ghb_1_15.txt', 'ghb_1_16.txt', 'ghb_1_17.txt', 'ghb_1_18.txt', 'ghb_1_19.txt', 'ghb_1_2.txt', 'ghb_1_20.txt', 'ghb_1_21.txt', 'ghb_1_22.txt', 'ghb_1_23.txt', 'ghb_1_24.txt', 'ghb_1_25.txt', 'ghb_1_26.txt', 'ghb_1_27.txt', 'ghb_1_28.txt', 'ghb_1_29.txt', 'ghb_1_3.txt', 'ghb_1_30.txt', 'ghb_1_31.txt', 'ghb_1_32.txt', 'ghb_1_33.txt', 'ghb_1_34.txt', 'ghb_1_35.txt', 'ghb_1_36.txt', 'ghb_1_37.txt', 'ghb_1_38.txt', 'ghb_1_39.txt', 'ghb_1_4.txt', 'ghb_1_40.txt', 'ghb_1_41.txt', 'ghb_1_42.txt', 'ghb_1_43.txt', 'ghb_1_44.txt', 'ghb_1_45.txt', 'ghb_1_46.txt', 'ghb_1_47.txt', 'ghb_1_48.txt', 'ghb_1_49.txt', 'ghb_1_5.txt', 'ghb_1_50.txt', 'ghb_1_6.txt', 'ghb_1_7.txt', 'ghb_1_8.txt', 'ghb_1_9.txt']
+2021-11-25 12:32:25.632958 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:25.632958 starting: loading list template\ghb_1_0.txt
+2021-11-25 12:32:25.632958 starting: reading list template\ghb_1_0.txt
+2021-11-25 12:32:25.634959 finished: reading list template\ghb_1_0.txt took: 0:00:00.002001
+2021-11-25 12:32:25.634959 loaded list 'template\ghb_1_0.txt' of shape (20, 6)
+2021-11-25 12:32:25.635959 finished: loading list template\ghb_1_0.txt took: 0:00:00.003001
+2021-11-25 12:32:25.636959 starting: loading list template\ghb_1_1.txt
+2021-11-25 12:32:25.636959 starting: reading list template\ghb_1_1.txt
+2021-11-25 12:32:25.637959 finished: reading list template\ghb_1_1.txt took: 0:00:00.001000
+2021-11-25 12:32:25.637959 loaded list 'template\ghb_1_1.txt' of shape (20, 6)
+2021-11-25 12:32:25.639960 finished: loading list template\ghb_1_1.txt took: 0:00:00.003001
+2021-11-25 12:32:25.639960 starting: loading list template\ghb_1_10.txt
+2021-11-25 12:32:25.639960 starting: reading list template\ghb_1_10.txt
+2021-11-25 12:32:25.640960 finished: reading list template\ghb_1_10.txt took: 0:00:00.001000
+2021-11-25 12:32:25.641960 loaded list 'template\ghb_1_10.txt' of shape (20, 6)
+2021-11-25 12:32:25.642961 finished: loading list template\ghb_1_10.txt took: 0:00:00.003001
+2021-11-25 12:32:25.642961 starting: loading list template\ghb_1_11.txt
+2021-11-25 12:32:25.642961 starting: reading list template\ghb_1_11.txt
+2021-11-25 12:32:25.644961 finished: reading list template\ghb_1_11.txt took: 0:00:00.002000
+2021-11-25 12:32:25.644961 loaded list 'template\ghb_1_11.txt' of shape (20, 6)
+2021-11-25 12:32:25.646962 finished: loading list template\ghb_1_11.txt took: 0:00:00.004001
+2021-11-25 12:32:25.646962 starting: loading list template\ghb_1_12.txt
+2021-11-25 12:32:25.646962 starting: reading list template\ghb_1_12.txt
+2021-11-25 12:32:25.647961 finished: reading list template\ghb_1_12.txt took: 0:00:00.000999
+2021-11-25 12:32:25.648961 loaded list 'template\ghb_1_12.txt' of shape (20, 6)
+2021-11-25 12:32:25.649961 finished: loading list template\ghb_1_12.txt took: 0:00:00.002999
+2021-11-25 12:32:25.649961 starting: loading list template\ghb_1_13.txt
+2021-11-25 12:32:25.649961 starting: reading list template\ghb_1_13.txt
+2021-11-25 12:32:25.651962 finished: reading list template\ghb_1_13.txt took: 0:00:00.002001
+2021-11-25 12:32:25.651962 loaded list 'template\ghb_1_13.txt' of shape (20, 6)
+2021-11-25 12:32:25.652962 finished: loading list template\ghb_1_13.txt took: 0:00:00.003001
+2021-11-25 12:32:25.652962 starting: loading list template\ghb_1_14.txt
+2021-11-25 12:32:25.653963 starting: reading list template\ghb_1_14.txt
+2021-11-25 12:32:25.657964 finished: reading list template\ghb_1_14.txt took: 0:00:00.004001
+2021-11-25 12:32:25.657964 loaded list 'template\ghb_1_14.txt' of shape (20, 6)
+2021-11-25 12:32:25.659964 finished: loading list template\ghb_1_14.txt took: 0:00:00.007002
+2021-11-25 12:32:25.659964 starting: loading list template\ghb_1_15.txt
+2021-11-25 12:32:25.659964 starting: reading list template\ghb_1_15.txt
+2021-11-25 12:32:25.661965 finished: reading list template\ghb_1_15.txt took: 0:00:00.002001
+2021-11-25 12:32:25.661965 loaded list 'template\ghb_1_15.txt' of shape (20, 6)
+2021-11-25 12:32:25.662964 finished: loading list template\ghb_1_15.txt took: 0:00:00.003000
+2021-11-25 12:32:25.662964 starting: loading list template\ghb_1_16.txt
+2021-11-25 12:32:25.663965 starting: reading list template\ghb_1_16.txt
+2021-11-25 12:32:25.664965 finished: reading list template\ghb_1_16.txt took: 0:00:00.001000
+2021-11-25 12:32:25.664965 loaded list 'template\ghb_1_16.txt' of shape (20, 6)
+2021-11-25 12:32:25.665965 finished: loading list template\ghb_1_16.txt took: 0:00:00.003001
+2021-11-25 12:32:25.666966 starting: loading list template\ghb_1_17.txt
+2021-11-25 12:32:25.666966 starting: reading list template\ghb_1_17.txt
+2021-11-25 12:32:25.668967 finished: reading list template\ghb_1_17.txt took: 0:00:00.002001
+2021-11-25 12:32:25.668967 loaded list 'template\ghb_1_17.txt' of shape (20, 6)
+2021-11-25 12:32:25.669966 finished: loading list template\ghb_1_17.txt took: 0:00:00.003000
+2021-11-25 12:32:25.669966 starting: loading list template\ghb_1_18.txt
+2021-11-25 12:32:25.669966 starting: reading list template\ghb_1_18.txt
+2021-11-25 12:32:25.671967 finished: reading list template\ghb_1_18.txt took: 0:00:00.002001
+2021-11-25 12:32:25.671967 loaded list 'template\ghb_1_18.txt' of shape (20, 6)
+2021-11-25 12:32:25.673967 finished: loading list template\ghb_1_18.txt took: 0:00:00.004001
+2021-11-25 12:32:25.673967 starting: loading list template\ghb_1_19.txt
+2021-11-25 12:32:25.673967 starting: reading list template\ghb_1_19.txt
+2021-11-25 12:32:25.674967 finished: reading list template\ghb_1_19.txt took: 0:00:00.001000
+2021-11-25 12:32:25.675968 loaded list 'template\ghb_1_19.txt' of shape (20, 6)
+2021-11-25 12:32:25.676968 finished: loading list template\ghb_1_19.txt took: 0:00:00.003001
+2021-11-25 12:32:25.676968 starting: loading list template\ghb_1_2.txt
+2021-11-25 12:32:25.677968 starting: reading list template\ghb_1_2.txt
+2021-11-25 12:32:25.678969 finished: reading list template\ghb_1_2.txt took: 0:00:00.001001
+2021-11-25 12:32:25.678969 loaded list 'template\ghb_1_2.txt' of shape (20, 6)
+2021-11-25 12:32:25.679969 finished: loading list template\ghb_1_2.txt took: 0:00:00.003001
+2021-11-25 12:32:25.680968 starting: loading list template\ghb_1_20.txt
+2021-11-25 12:32:25.680968 starting: reading list template\ghb_1_20.txt
+2021-11-25 12:32:25.684969 finished: reading list template\ghb_1_20.txt took: 0:00:00.004001
+2021-11-25 12:32:25.684969 loaded list 'template\ghb_1_20.txt' of shape (20, 6)
+2021-11-25 12:32:25.686970 finished: loading list template\ghb_1_20.txt took: 0:00:00.006002
+2021-11-25 12:32:25.686970 starting: loading list template\ghb_1_21.txt
+2021-11-25 12:32:25.686970 starting: reading list template\ghb_1_21.txt
+2021-11-25 12:32:25.688970 finished: reading list template\ghb_1_21.txt took: 0:00:00.002000
+2021-11-25 12:32:25.688970 loaded list 'template\ghb_1_21.txt' of shape (20, 6)
+2021-11-25 12:32:25.689971 finished: loading list template\ghb_1_21.txt took: 0:00:00.003001
+2021-11-25 12:32:25.689971 starting: loading list template\ghb_1_22.txt
+2021-11-25 12:32:25.689971 starting: reading list template\ghb_1_22.txt
+2021-11-25 12:32:25.693971 finished: reading list template\ghb_1_22.txt took: 0:00:00.004000
+2021-11-25 12:32:25.694972 loaded list 'template\ghb_1_22.txt' of shape (20, 6)
+2021-11-25 12:32:25.695972 finished: loading list template\ghb_1_22.txt took: 0:00:00.006001
+2021-11-25 12:32:25.695972 starting: loading list template\ghb_1_23.txt
+2021-11-25 12:32:25.696972 starting: reading list template\ghb_1_23.txt
+2021-11-25 12:32:25.697972 finished: reading list template\ghb_1_23.txt took: 0:00:00.001000
+2021-11-25 12:32:25.697972 loaded list 'template\ghb_1_23.txt' of shape (20, 6)
+2021-11-25 12:32:25.699973 finished: loading list template\ghb_1_23.txt took: 0:00:00.004001
+2021-11-25 12:32:25.699973 starting: loading list template\ghb_1_24.txt
+2021-11-25 12:32:25.699973 starting: reading list template\ghb_1_24.txt
+2021-11-25 12:32:25.701973 finished: reading list template\ghb_1_24.txt took: 0:00:00.002000
+2021-11-25 12:32:25.701973 loaded list 'template\ghb_1_24.txt' of shape (20, 6)
+2021-11-25 12:32:25.702974 finished: loading list template\ghb_1_24.txt took: 0:00:00.003001
+2021-11-25 12:32:25.702974 starting: loading list template\ghb_1_25.txt
+2021-11-25 12:32:25.702974 starting: reading list template\ghb_1_25.txt
+2021-11-25 12:32:25.704975 finished: reading list template\ghb_1_25.txt took: 0:00:00.002001
+2021-11-25 12:32:25.704975 loaded list 'template\ghb_1_25.txt' of shape (20, 6)
+2021-11-25 12:32:25.705975 finished: loading list template\ghb_1_25.txt took: 0:00:00.003001
+2021-11-25 12:32:25.706974 starting: loading list template\ghb_1_26.txt
+2021-11-25 12:32:25.706974 starting: reading list template\ghb_1_26.txt
+2021-11-25 12:32:25.707975 finished: reading list template\ghb_1_26.txt took: 0:00:00.001001
+2021-11-25 12:32:25.708975 loaded list 'template\ghb_1_26.txt' of shape (20, 6)
+2021-11-25 12:32:25.709975 finished: loading list template\ghb_1_26.txt took: 0:00:00.003001
+2021-11-25 12:32:25.709975 starting: loading list template\ghb_1_27.txt
+2021-11-25 12:32:25.709975 starting: reading list template\ghb_1_27.txt
+2021-11-25 12:32:25.711976 finished: reading list template\ghb_1_27.txt took: 0:00:00.002001
+2021-11-25 12:32:25.711976 loaded list 'template\ghb_1_27.txt' of shape (20, 6)
+2021-11-25 12:32:25.712976 finished: loading list template\ghb_1_27.txt took: 0:00:00.003001
+2021-11-25 12:32:25.713976 starting: loading list template\ghb_1_28.txt
+2021-11-25 12:32:25.713976 starting: reading list template\ghb_1_28.txt
+2021-11-25 12:32:25.714975 finished: reading list template\ghb_1_28.txt took: 0:00:00.000999
+2021-11-25 12:32:25.715976 loaded list 'template\ghb_1_28.txt' of shape (20, 6)
+2021-11-25 12:32:25.716976 finished: loading list template\ghb_1_28.txt took: 0:00:00.003000
+2021-11-25 12:32:25.716976 starting: loading list template\ghb_1_29.txt
+2021-11-25 12:32:25.716976 starting: reading list template\ghb_1_29.txt
+2021-11-25 12:32:25.722979 finished: reading list template\ghb_1_29.txt took: 0:00:00.006003
+2021-11-25 12:32:25.722979 loaded list 'template\ghb_1_29.txt' of shape (20, 6)
+2021-11-25 12:32:25.723979 finished: loading list template\ghb_1_29.txt took: 0:00:00.007003
+2021-11-25 12:32:25.724979 starting: loading list template\ghb_1_3.txt
+2021-11-25 12:32:25.724979 starting: reading list template\ghb_1_3.txt
+2021-11-25 12:32:25.726980 finished: reading list template\ghb_1_3.txt took: 0:00:00.002001
+2021-11-25 12:32:25.726980 loaded list 'template\ghb_1_3.txt' of shape (20, 6)
+2021-11-25 12:32:25.727979 finished: loading list template\ghb_1_3.txt took: 0:00:00.003000
+2021-11-25 12:32:25.727979 starting: loading list template\ghb_1_30.txt
+2021-11-25 12:32:25.727979 starting: reading list template\ghb_1_30.txt
+2021-11-25 12:32:25.729980 finished: reading list template\ghb_1_30.txt took: 0:00:00.002001
+2021-11-25 12:32:25.729980 loaded list 'template\ghb_1_30.txt' of shape (20, 6)
+2021-11-25 12:32:25.731980 finished: loading list template\ghb_1_30.txt took: 0:00:00.004001
+2021-11-25 12:32:25.731980 starting: loading list template\ghb_1_31.txt
+2021-11-25 12:32:25.731980 starting: reading list template\ghb_1_31.txt
+2021-11-25 12:32:25.732981 finished: reading list template\ghb_1_31.txt took: 0:00:00.001001
+2021-11-25 12:32:25.733981 loaded list 'template\ghb_1_31.txt' of shape (20, 6)
+2021-11-25 12:32:25.734981 finished: loading list template\ghb_1_31.txt took: 0:00:00.003001
+2021-11-25 12:32:25.734981 starting: loading list template\ghb_1_32.txt
+2021-11-25 12:32:25.734981 starting: reading list template\ghb_1_32.txt
+2021-11-25 12:32:25.736982 finished: reading list template\ghb_1_32.txt took: 0:00:00.002001
+2021-11-25 12:32:25.736982 loaded list 'template\ghb_1_32.txt' of shape (20, 6)
+2021-11-25 12:32:25.738982 finished: loading list template\ghb_1_32.txt took: 0:00:00.004001
+2021-11-25 12:32:25.738982 starting: loading list template\ghb_1_33.txt
+2021-11-25 12:32:25.738982 starting: reading list template\ghb_1_33.txt
+2021-11-25 12:32:25.740982 finished: reading list template\ghb_1_33.txt took: 0:00:00.002000
+2021-11-25 12:32:25.740982 loaded list 'template\ghb_1_33.txt' of shape (20, 6)
+2021-11-25 12:32:25.741983 finished: loading list template\ghb_1_33.txt took: 0:00:00.003001
+2021-11-25 12:32:25.741983 starting: loading list template\ghb_1_34.txt
+2021-11-25 12:32:25.741983 starting: reading list template\ghb_1_34.txt
+2021-11-25 12:32:25.743983 finished: reading list template\ghb_1_34.txt took: 0:00:00.002000
+2021-11-25 12:32:25.743983 loaded list 'template\ghb_1_34.txt' of shape (20, 6)
+2021-11-25 12:32:25.744983 finished: loading list template\ghb_1_34.txt took: 0:00:00.003000
+2021-11-25 12:32:25.745982 starting: loading list template\ghb_1_35.txt
+2021-11-25 12:32:25.745982 starting: reading list template\ghb_1_35.txt
+2021-11-25 12:32:25.749984 finished: reading list template\ghb_1_35.txt took: 0:00:00.004002
+2021-11-25 12:32:25.749984 loaded list 'template\ghb_1_35.txt' of shape (20, 6)
+2021-11-25 12:32:25.751985 finished: loading list template\ghb_1_35.txt took: 0:00:00.006003
+2021-11-25 12:32:25.751985 starting: loading list template\ghb_1_36.txt
+2021-11-25 12:32:25.751985 starting: reading list template\ghb_1_36.txt
+2021-11-25 12:32:25.752985 finished: reading list template\ghb_1_36.txt took: 0:00:00.001000
+2021-11-25 12:32:25.753985 loaded list 'template\ghb_1_36.txt' of shape (20, 6)
+2021-11-25 12:32:25.754985 finished: loading list template\ghb_1_36.txt took: 0:00:00.003000
+2021-11-25 12:32:25.754985 starting: loading list template\ghb_1_37.txt
+2021-11-25 12:32:25.754985 starting: reading list template\ghb_1_37.txt
+2021-11-25 12:32:25.759986 finished: reading list template\ghb_1_37.txt took: 0:00:00.005001
+2021-11-25 12:32:25.759986 loaded list 'template\ghb_1_37.txt' of shape (20, 6)
+2021-11-25 12:32:25.760987 finished: loading list template\ghb_1_37.txt took: 0:00:00.006002
+2021-11-25 12:32:25.761987 starting: loading list template\ghb_1_38.txt
+2021-11-25 12:32:25.761987 starting: reading list template\ghb_1_38.txt
+2021-11-25 12:32:25.765988 finished: reading list template\ghb_1_38.txt took: 0:00:00.004001
+2021-11-25 12:32:25.765988 loaded list 'template\ghb_1_38.txt' of shape (20, 6)
+2021-11-25 12:32:25.766988 finished: loading list template\ghb_1_38.txt took: 0:00:00.005001
+2021-11-25 12:32:25.767988 starting: loading list template\ghb_1_39.txt
+2021-11-25 12:32:25.767988 starting: reading list template\ghb_1_39.txt
+2021-11-25 12:32:25.771989 finished: reading list template\ghb_1_39.txt took: 0:00:00.004001
+2021-11-25 12:32:25.771989 loaded list 'template\ghb_1_39.txt' of shape (20, 6)
+2021-11-25 12:32:25.773990 finished: loading list template\ghb_1_39.txt took: 0:00:00.006002
+2021-11-25 12:32:25.773990 starting: loading list template\ghb_1_4.txt
+2021-11-25 12:32:25.773990 starting: reading list template\ghb_1_4.txt
+2021-11-25 12:32:25.777990 finished: reading list template\ghb_1_4.txt took: 0:00:00.004000
+2021-11-25 12:32:25.777990 loaded list 'template\ghb_1_4.txt' of shape (20, 6)
+2021-11-25 12:32:25.779991 finished: loading list template\ghb_1_4.txt took: 0:00:00.006001
+2021-11-25 12:32:25.779991 starting: loading list template\ghb_1_40.txt
+2021-11-25 12:32:25.779991 starting: reading list template\ghb_1_40.txt
+2021-11-25 12:32:25.783992 finished: reading list template\ghb_1_40.txt took: 0:00:00.004001
+2021-11-25 12:32:25.783992 loaded list 'template\ghb_1_40.txt' of shape (20, 6)
+2021-11-25 12:32:25.785993 finished: loading list template\ghb_1_40.txt took: 0:00:00.006002
+2021-11-25 12:32:25.785993 starting: loading list template\ghb_1_41.txt
+2021-11-25 12:32:25.785993 starting: reading list template\ghb_1_41.txt
+2021-11-25 12:32:25.787993 finished: reading list template\ghb_1_41.txt took: 0:00:00.002000
+2021-11-25 12:32:25.787993 loaded list 'template\ghb_1_41.txt' of shape (20, 6)
+2021-11-25 12:32:25.788993 finished: loading list template\ghb_1_41.txt took: 0:00:00.003000
+2021-11-25 12:32:25.789992 starting: loading list template\ghb_1_42.txt
+2021-11-25 12:32:25.789992 starting: reading list template\ghb_1_42.txt
+2021-11-25 12:32:25.790993 finished: reading list template\ghb_1_42.txt took: 0:00:00.001001
+2021-11-25 12:32:25.791993 loaded list 'template\ghb_1_42.txt' of shape (20, 6)
+2021-11-25 12:32:25.792994 finished: loading list template\ghb_1_42.txt took: 0:00:00.003002
+2021-11-25 12:32:25.792994 starting: loading list template\ghb_1_43.txt
+2021-11-25 12:32:25.792994 starting: reading list template\ghb_1_43.txt
+2021-11-25 12:32:25.794994 finished: reading list template\ghb_1_43.txt took: 0:00:00.002000
+2021-11-25 12:32:25.794994 loaded list 'template\ghb_1_43.txt' of shape (20, 6)
+2021-11-25 12:32:25.795995 finished: loading list template\ghb_1_43.txt took: 0:00:00.003001
+2021-11-25 12:32:25.796995 starting: loading list template\ghb_1_44.txt
+2021-11-25 12:32:25.796995 starting: reading list template\ghb_1_44.txt
+2021-11-25 12:32:25.797995 finished: reading list template\ghb_1_44.txt took: 0:00:00.001000
+2021-11-25 12:32:25.798995 loaded list 'template\ghb_1_44.txt' of shape (20, 6)
+2021-11-25 12:32:25.799995 finished: loading list template\ghb_1_44.txt took: 0:00:00.003000
+2021-11-25 12:32:25.799995 starting: loading list template\ghb_1_45.txt
+2021-11-25 12:32:25.799995 starting: reading list template\ghb_1_45.txt
+2021-11-25 12:32:25.801996 finished: reading list template\ghb_1_45.txt took: 0:00:00.002001
+2021-11-25 12:32:25.801996 loaded list 'template\ghb_1_45.txt' of shape (20, 6)
+2021-11-25 12:32:25.803997 finished: loading list template\ghb_1_45.txt took: 0:00:00.004002
+2021-11-25 12:32:25.803997 starting: loading list template\ghb_1_46.txt
+2021-11-25 12:32:25.803997 starting: reading list template\ghb_1_46.txt
+2021-11-25 12:32:25.805997 finished: reading list template\ghb_1_46.txt took: 0:00:00.002000
+2021-11-25 12:32:25.805997 loaded list 'template\ghb_1_46.txt' of shape (20, 6)
+2021-11-25 12:32:25.806997 finished: loading list template\ghb_1_46.txt took: 0:00:00.003000
+2021-11-25 12:32:25.807996 starting: loading list template\ghb_1_47.txt
+2021-11-25 12:32:25.807996 starting: reading list template\ghb_1_47.txt
+2021-11-25 12:32:25.808997 finished: reading list template\ghb_1_47.txt took: 0:00:00.001001
+2021-11-25 12:32:25.809997 loaded list 'template\ghb_1_47.txt' of shape (20, 6)
+2021-11-25 12:32:25.810998 finished: loading list template\ghb_1_47.txt took: 0:00:00.003002
+2021-11-25 12:32:25.810998 starting: loading list template\ghb_1_48.txt
+2021-11-25 12:32:25.811998 starting: reading list template\ghb_1_48.txt
+2021-11-25 12:32:25.812999 finished: reading list template\ghb_1_48.txt took: 0:00:00.001001
+2021-11-25 12:32:25.812999 loaded list 'template\ghb_1_48.txt' of shape (20, 6)
+2021-11-25 12:32:25.817000 finished: loading list template\ghb_1_48.txt took: 0:00:00.006002
+2021-11-25 12:32:25.817000 starting: loading list template\ghb_1_49.txt
+2021-11-25 12:32:25.817000 starting: reading list template\ghb_1_49.txt
+2021-11-25 12:32:25.819000 finished: reading list template\ghb_1_49.txt took: 0:00:00.002000
+2021-11-25 12:32:25.819000 loaded list 'template\ghb_1_49.txt' of shape (20, 6)
+2021-11-25 12:32:25.820000 finished: loading list template\ghb_1_49.txt took: 0:00:00.003000
+2021-11-25 12:32:25.821000 starting: loading list template\ghb_1_5.txt
+2021-11-25 12:32:25.821000 starting: reading list template\ghb_1_5.txt
+2021-11-25 12:32:25.822000 finished: reading list template\ghb_1_5.txt took: 0:00:00.001000
+2021-11-25 12:32:25.823001 loaded list 'template\ghb_1_5.txt' of shape (20, 6)
+2021-11-25 12:32:25.824001 finished: loading list template\ghb_1_5.txt took: 0:00:00.003001
+2021-11-25 12:32:25.824001 starting: loading list template\ghb_1_50.txt
+2021-11-25 12:32:25.824001 starting: reading list template\ghb_1_50.txt
+2021-11-25 12:32:25.826001 finished: reading list template\ghb_1_50.txt took: 0:00:00.002000
+2021-11-25 12:32:25.826001 loaded list 'template\ghb_1_50.txt' of shape (20, 6)
+2021-11-25 12:32:25.828002 finished: loading list template\ghb_1_50.txt took: 0:00:00.004001
+2021-11-25 12:32:25.828002 starting: loading list template\ghb_1_6.txt
+2021-11-25 12:32:25.828002 starting: reading list template\ghb_1_6.txt
+2021-11-25 12:32:25.829002 finished: reading list template\ghb_1_6.txt took: 0:00:00.001000
+2021-11-25 12:32:25.830002 loaded list 'template\ghb_1_6.txt' of shape (20, 6)
+2021-11-25 12:32:25.831002 finished: loading list template\ghb_1_6.txt took: 0:00:00.003000
+2021-11-25 12:32:25.831002 starting: loading list template\ghb_1_7.txt
+2021-11-25 12:32:25.831002 starting: reading list template\ghb_1_7.txt
+2021-11-25 12:32:25.835003 finished: reading list template\ghb_1_7.txt took: 0:00:00.004001
+2021-11-25 12:32:25.835003 loaded list 'template\ghb_1_7.txt' of shape (20, 6)
+2021-11-25 12:32:25.837004 finished: loading list template\ghb_1_7.txt took: 0:00:00.006002
+2021-11-25 12:32:25.837004 starting: loading list template\ghb_1_8.txt
+2021-11-25 12:32:25.838004 starting: reading list template\ghb_1_8.txt
+2021-11-25 12:32:25.839004 finished: reading list template\ghb_1_8.txt took: 0:00:00.001000
+2021-11-25 12:32:25.839004 loaded list 'template\ghb_1_8.txt' of shape (20, 6)
+2021-11-25 12:32:25.841005 finished: loading list template\ghb_1_8.txt took: 0:00:00.004001
+2021-11-25 12:32:25.841005 starting: loading list template\ghb_1_9.txt
+2021-11-25 12:32:25.841005 starting: reading list template\ghb_1_9.txt
+2021-11-25 12:32:25.843005 finished: reading list template\ghb_1_9.txt took: 0:00:00.002000
+2021-11-25 12:32:25.843005 loaded list 'template\ghb_1_9.txt' of shape (20, 6)
+2021-11-25 12:32:25.844005 finished: loading list template\ghb_1_9.txt took: 0:00:00.003000
+2021-11-25 12:32:25.846005 starting: writing list-based template file 'ghb_glayer_1_inst0_constant.csv.tpl'
+2021-11-25 12:32:25.890014 finished: writing list-based template file 'ghb_glayer_1_inst0_constant.csv.tpl' took: 0:00:00.044009
+2021-11-25 12:32:25.897016 finished: adding constant type multiplier style parameters for file(s) ['ghb_1_0.txt', 'ghb_1_1.txt', 'ghb_1_10.txt', 'ghb_1_11.txt', 'ghb_1_12.txt', 'ghb_1_13.txt', 'ghb_1_14.txt', 'ghb_1_15.txt', 'ghb_1_16.txt', 'ghb_1_17.txt', 'ghb_1_18.txt', 'ghb_1_19.txt', 'ghb_1_2.txt', 'ghb_1_20.txt', 'ghb_1_21.txt', 'ghb_1_22.txt', 'ghb_1_23.txt', 'ghb_1_24.txt', 'ghb_1_25.txt', 'ghb_1_26.txt', 'ghb_1_27.txt', 'ghb_1_28.txt', 'ghb_1_29.txt', 'ghb_1_3.txt', 'ghb_1_30.txt', 'ghb_1_31.txt', 'ghb_1_32.txt', 'ghb_1_33.txt', 'ghb_1_34.txt', 'ghb_1_35.txt', 'ghb_1_36.txt', 'ghb_1_37.txt', 'ghb_1_38.txt', 'ghb_1_39.txt', 'ghb_1_4.txt', 'ghb_1_40.txt', 'ghb_1_41.txt', 'ghb_1_42.txt', 'ghb_1_43.txt', 'ghb_1_44.txt', 'ghb_1_45.txt', 'ghb_1_46.txt', 'ghb_1_47.txt', 'ghb_1_48.txt', 'ghb_1_49.txt', 'ghb_1_5.txt', 'ghb_1_50.txt', 'ghb_1_6.txt', 'ghb_1_7.txt', 'ghb_1_8.txt', 'ghb_1_9.txt'] took: 0:00:00.264058
+2021-11-25 12:32:25.897016 starting: adding constant type multiplier style parameters for file(s) ['ghb_2_0.txt', 'ghb_2_1.txt', 'ghb_2_10.txt', 'ghb_2_11.txt', 'ghb_2_12.txt', 'ghb_2_13.txt', 'ghb_2_14.txt', 'ghb_2_15.txt', 'ghb_2_16.txt', 'ghb_2_17.txt', 'ghb_2_18.txt', 'ghb_2_19.txt', 'ghb_2_2.txt', 'ghb_2_20.txt', 'ghb_2_21.txt', 'ghb_2_22.txt', 'ghb_2_23.txt', 'ghb_2_24.txt', 'ghb_2_25.txt', 'ghb_2_26.txt', 'ghb_2_27.txt', 'ghb_2_28.txt', 'ghb_2_29.txt', 'ghb_2_3.txt', 'ghb_2_30.txt', 'ghb_2_31.txt', 'ghb_2_32.txt', 'ghb_2_33.txt', 'ghb_2_34.txt', 'ghb_2_35.txt', 'ghb_2_36.txt', 'ghb_2_37.txt', 'ghb_2_38.txt', 'ghb_2_39.txt', 'ghb_2_4.txt', 'ghb_2_40.txt', 'ghb_2_41.txt', 'ghb_2_42.txt', 'ghb_2_43.txt', 'ghb_2_44.txt', 'ghb_2_45.txt', 'ghb_2_46.txt', 'ghb_2_47.txt', 'ghb_2_48.txt', 'ghb_2_49.txt', 'ghb_2_5.txt', 'ghb_2_50.txt', 'ghb_2_6.txt', 'ghb_2_7.txt', 'ghb_2_8.txt', 'ghb_2_9.txt']
+2021-11-25 12:32:25.897016 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:25.897016 starting: loading list template\ghb_2_0.txt
+2021-11-25 12:32:25.898016 starting: reading list template\ghb_2_0.txt
+2021-11-25 12:32:25.899016 finished: reading list template\ghb_2_0.txt took: 0:00:00.001000
+2021-11-25 12:32:25.899016 loaded list 'template\ghb_2_0.txt' of shape (20, 6)
+2021-11-25 12:32:25.901017 finished: loading list template\ghb_2_0.txt took: 0:00:00.004001
+2021-11-25 12:32:25.901017 starting: loading list template\ghb_2_1.txt
+2021-11-25 12:32:25.901017 starting: reading list template\ghb_2_1.txt
+2021-11-25 12:32:25.903017 finished: reading list template\ghb_2_1.txt took: 0:00:00.002000
+2021-11-25 12:32:25.903017 loaded list 'template\ghb_2_1.txt' of shape (20, 6)
+2021-11-25 12:32:25.904018 finished: loading list template\ghb_2_1.txt took: 0:00:00.003001
+2021-11-25 12:32:25.904018 starting: loading list template\ghb_2_10.txt
+2021-11-25 12:32:25.905018 starting: reading list template\ghb_2_10.txt
+2021-11-25 12:32:25.909019 finished: reading list template\ghb_2_10.txt took: 0:00:00.004001
+2021-11-25 12:32:25.909019 loaded list 'template\ghb_2_10.txt' of shape (20, 6)
+2021-11-25 12:32:25.910019 finished: loading list template\ghb_2_10.txt took: 0:00:00.006001
+2021-11-25 12:32:25.910019 starting: loading list template\ghb_2_11.txt
+2021-11-25 12:32:25.911019 starting: reading list template\ghb_2_11.txt
+2021-11-25 12:32:25.912019 finished: reading list template\ghb_2_11.txt took: 0:00:00.001000
+2021-11-25 12:32:25.912019 loaded list 'template\ghb_2_11.txt' of shape (20, 6)
+2021-11-25 12:32:25.913020 finished: loading list template\ghb_2_11.txt took: 0:00:00.003001
+2021-11-25 12:32:25.914020 starting: loading list template\ghb_2_12.txt
+2021-11-25 12:32:25.914020 starting: reading list template\ghb_2_12.txt
+2021-11-25 12:32:25.918021 finished: reading list template\ghb_2_12.txt took: 0:00:00.004001
+2021-11-25 12:32:25.918021 loaded list 'template\ghb_2_12.txt' of shape (20, 6)
+2021-11-25 12:32:25.920021 finished: loading list template\ghb_2_12.txt took: 0:00:00.006001
+2021-11-25 12:32:25.920021 starting: loading list template\ghb_2_13.txt
+2021-11-25 12:32:25.920021 starting: reading list template\ghb_2_13.txt
+2021-11-25 12:32:25.924022 finished: reading list template\ghb_2_13.txt took: 0:00:00.004001
+2021-11-25 12:32:25.924022 loaded list 'template\ghb_2_13.txt' of shape (20, 6)
+2021-11-25 12:32:25.925022 finished: loading list template\ghb_2_13.txt took: 0:00:00.005001
+2021-11-25 12:32:25.926023 starting: loading list template\ghb_2_14.txt
+2021-11-25 12:32:25.926023 starting: reading list template\ghb_2_14.txt
+2021-11-25 12:32:25.927023 finished: reading list template\ghb_2_14.txt took: 0:00:00.001000
+2021-11-25 12:32:25.927023 loaded list 'template\ghb_2_14.txt' of shape (20, 6)
+2021-11-25 12:32:25.929023 finished: loading list template\ghb_2_14.txt took: 0:00:00.003000
+2021-11-25 12:32:25.929023 starting: loading list template\ghb_2_15.txt
+2021-11-25 12:32:25.929023 starting: reading list template\ghb_2_15.txt
+2021-11-25 12:32:25.933024 finished: reading list template\ghb_2_15.txt took: 0:00:00.004001
+2021-11-25 12:32:25.933024 loaded list 'template\ghb_2_15.txt' of shape (20, 6)
+2021-11-25 12:32:25.935025 finished: loading list template\ghb_2_15.txt took: 0:00:00.006002
+2021-11-25 12:32:25.935025 starting: loading list template\ghb_2_16.txt
+2021-11-25 12:32:25.935025 starting: reading list template\ghb_2_16.txt
+2021-11-25 12:32:25.937025 finished: reading list template\ghb_2_16.txt took: 0:00:00.002000
+2021-11-25 12:32:25.937025 loaded list 'template\ghb_2_16.txt' of shape (20, 6)
+2021-11-25 12:32:25.938026 finished: loading list template\ghb_2_16.txt took: 0:00:00.003001
+2021-11-25 12:32:25.938026 starting: loading list template\ghb_2_17.txt
+2021-11-25 12:32:25.938026 starting: reading list template\ghb_2_17.txt
+2021-11-25 12:32:25.940026 finished: reading list template\ghb_2_17.txt took: 0:00:00.002000
+2021-11-25 12:32:25.940026 loaded list 'template\ghb_2_17.txt' of shape (20, 6)
+2021-11-25 12:32:25.941026 finished: loading list template\ghb_2_17.txt took: 0:00:00.003000
+2021-11-25 12:32:25.941026 starting: loading list template\ghb_2_18.txt
+2021-11-25 12:32:25.942026 starting: reading list template\ghb_2_18.txt
+2021-11-25 12:32:25.943026 finished: reading list template\ghb_2_18.txt took: 0:00:00.001000
+2021-11-25 12:32:25.943026 loaded list 'template\ghb_2_18.txt' of shape (20, 6)
+2021-11-25 12:32:25.945027 finished: loading list template\ghb_2_18.txt took: 0:00:00.004001
+2021-11-25 12:32:25.945027 starting: loading list template\ghb_2_19.txt
+2021-11-25 12:32:25.945027 starting: reading list template\ghb_2_19.txt
+2021-11-25 12:32:25.946027 finished: reading list template\ghb_2_19.txt took: 0:00:00.001000
+2021-11-25 12:32:25.947027 loaded list 'template\ghb_2_19.txt' of shape (20, 6)
+2021-11-25 12:32:25.948027 finished: loading list template\ghb_2_19.txt took: 0:00:00.003000
+2021-11-25 12:32:25.949028 starting: loading list template\ghb_2_2.txt
+2021-11-25 12:32:25.949028 starting: reading list template\ghb_2_2.txt
+2021-11-25 12:32:25.951028 finished: reading list template\ghb_2_2.txt took: 0:00:00.002000
+2021-11-25 12:32:25.951028 loaded list 'template\ghb_2_2.txt' of shape (20, 6)
+2021-11-25 12:32:25.952029 finished: loading list template\ghb_2_2.txt took: 0:00:00.003001
+2021-11-25 12:32:25.952029 starting: loading list template\ghb_2_20.txt
+2021-11-25 12:32:25.953029 starting: reading list template\ghb_2_20.txt
+2021-11-25 12:32:25.954030 finished: reading list template\ghb_2_20.txt took: 0:00:00.001001
+2021-11-25 12:32:25.954030 loaded list 'template\ghb_2_20.txt' of shape (20, 6)
+2021-11-25 12:32:25.956031 finished: loading list template\ghb_2_20.txt took: 0:00:00.004002
+2021-11-25 12:32:25.956031 starting: loading list template\ghb_2_21.txt
+2021-11-25 12:32:25.956031 starting: reading list template\ghb_2_21.txt
+2021-11-25 12:32:25.957031 finished: reading list template\ghb_2_21.txt took: 0:00:00.001000
+2021-11-25 12:32:25.957031 loaded list 'template\ghb_2_21.txt' of shape (20, 6)
+2021-11-25 12:32:25.959031 finished: loading list template\ghb_2_21.txt took: 0:00:00.003000
+2021-11-25 12:32:25.959031 starting: loading list template\ghb_2_22.txt
+2021-11-25 12:32:25.959031 starting: reading list template\ghb_2_22.txt
+2021-11-25 12:32:25.964032 finished: reading list template\ghb_2_22.txt took: 0:00:00.005001
+2021-11-25 12:32:25.964032 loaded list 'template\ghb_2_22.txt' of shape (20, 6)
+2021-11-25 12:32:25.966033 finished: loading list template\ghb_2_22.txt took: 0:00:00.007002
+2021-11-25 12:32:25.966033 starting: loading list template\ghb_2_23.txt
+2021-11-25 12:32:25.966033 starting: reading list template\ghb_2_23.txt
+2021-11-25 12:32:25.970034 finished: reading list template\ghb_2_23.txt took: 0:00:00.004001
+2021-11-25 12:32:25.971034 loaded list 'template\ghb_2_23.txt' of shape (20, 6)
+2021-11-25 12:32:25.972034 finished: loading list template\ghb_2_23.txt took: 0:00:00.006001
+2021-11-25 12:32:25.972034 starting: loading list template\ghb_2_24.txt
+2021-11-25 12:32:25.973035 starting: reading list template\ghb_2_24.txt
+2021-11-25 12:32:25.974035 finished: reading list template\ghb_2_24.txt took: 0:00:00.001000
+2021-11-25 12:32:25.974035 loaded list 'template\ghb_2_24.txt' of shape (20, 6)
+2021-11-25 12:32:25.976035 finished: loading list template\ghb_2_24.txt took: 0:00:00.004001
+2021-11-25 12:32:25.976035 starting: loading list template\ghb_2_25.txt
+2021-11-25 12:32:25.976035 starting: reading list template\ghb_2_25.txt
+2021-11-25 12:32:25.977036 finished: reading list template\ghb_2_25.txt took: 0:00:00.001001
+2021-11-25 12:32:25.978036 loaded list 'template\ghb_2_25.txt' of shape (20, 6)
+2021-11-25 12:32:25.979036 finished: loading list template\ghb_2_25.txt took: 0:00:00.003001
+2021-11-25 12:32:25.979036 starting: loading list template\ghb_2_26.txt
+2021-11-25 12:32:25.979036 starting: reading list template\ghb_2_26.txt
+2021-11-25 12:32:25.981036 finished: reading list template\ghb_2_26.txt took: 0:00:00.002000
+2021-11-25 12:32:25.981036 loaded list 'template\ghb_2_26.txt' of shape (20, 6)
+2021-11-25 12:32:25.982037 finished: loading list template\ghb_2_26.txt took: 0:00:00.003001
+2021-11-25 12:32:25.982037 starting: loading list template\ghb_2_27.txt
+2021-11-25 12:32:25.982037 starting: reading list template\ghb_2_27.txt
+2021-11-25 12:32:25.987038 finished: reading list template\ghb_2_27.txt took: 0:00:00.005001
+2021-11-25 12:32:25.987038 loaded list 'template\ghb_2_27.txt' of shape (20, 6)
+2021-11-25 12:32:25.988038 finished: loading list template\ghb_2_27.txt took: 0:00:00.006001
+2021-11-25 12:32:25.989038 starting: loading list template\ghb_2_28.txt
+2021-11-25 12:32:25.989038 starting: reading list template\ghb_2_28.txt
+2021-11-25 12:32:25.993039 finished: reading list template\ghb_2_28.txt took: 0:00:00.004001
+2021-11-25 12:32:25.993039 loaded list 'template\ghb_2_28.txt' of shape (20, 6)
+2021-11-25 12:32:25.995039 finished: loading list template\ghb_2_28.txt took: 0:00:00.006001
+2021-11-25 12:32:25.995039 starting: loading list template\ghb_2_29.txt
+2021-11-25 12:32:25.995039 starting: reading list template\ghb_2_29.txt
+2021-11-25 12:32:25.996040 finished: reading list template\ghb_2_29.txt took: 0:00:00.001001
+2021-11-25 12:32:25.997040 loaded list 'template\ghb_2_29.txt' of shape (20, 6)
+2021-11-25 12:32:25.998040 finished: loading list template\ghb_2_29.txt took: 0:00:00.003001
+2021-11-25 12:32:25.998040 starting: loading list template\ghb_2_3.txt
+2021-11-25 12:32:25.998040 starting: reading list template\ghb_2_3.txt
+2021-11-25 12:32:26.000040 finished: reading list template\ghb_2_3.txt took: 0:00:00.002000
+2021-11-25 12:32:26.000040 loaded list 'template\ghb_2_3.txt' of shape (20, 6)
+2021-11-25 12:32:26.001041 finished: loading list template\ghb_2_3.txt took: 0:00:00.003001
+2021-11-25 12:32:26.001041 starting: loading list template\ghb_2_30.txt
+2021-11-25 12:32:26.001041 starting: reading list template\ghb_2_30.txt
+2021-11-25 12:32:26.003042 finished: reading list template\ghb_2_30.txt took: 0:00:00.002001
+2021-11-25 12:32:26.003042 loaded list 'template\ghb_2_30.txt' of shape (20, 6)
+2021-11-25 12:32:26.004042 finished: loading list template\ghb_2_30.txt took: 0:00:00.003001
+2021-11-25 12:32:26.004042 starting: loading list template\ghb_2_31.txt
+2021-11-25 12:32:26.005042 starting: reading list template\ghb_2_31.txt
+2021-11-25 12:32:26.006042 finished: reading list template\ghb_2_31.txt took: 0:00:00.001000
+2021-11-25 12:32:26.006042 loaded list 'template\ghb_2_31.txt' of shape (20, 6)
+2021-11-25 12:32:26.007042 finished: loading list template\ghb_2_31.txt took: 0:00:00.003000
+2021-11-25 12:32:26.007042 starting: loading list template\ghb_2_32.txt
+2021-11-25 12:32:26.008044 starting: reading list template\ghb_2_32.txt
+2021-11-25 12:32:26.012043 finished: reading list template\ghb_2_32.txt took: 0:00:00.003999
+2021-11-25 12:32:26.012043 loaded list 'template\ghb_2_32.txt' of shape (20, 6)
+2021-11-25 12:32:26.014044 finished: loading list template\ghb_2_32.txt took: 0:00:00.007002
+2021-11-25 12:32:26.014044 starting: loading list template\ghb_2_33.txt
+2021-11-25 12:32:26.014044 starting: reading list template\ghb_2_33.txt
+2021-11-25 12:32:26.016045 finished: reading list template\ghb_2_33.txt took: 0:00:00.002001
+2021-11-25 12:32:26.016045 loaded list 'template\ghb_2_33.txt' of shape (20, 6)
+2021-11-25 12:32:26.017045 finished: loading list template\ghb_2_33.txt took: 0:00:00.003001
+2021-11-25 12:32:26.017045 starting: loading list template\ghb_2_34.txt
+2021-11-25 12:32:26.018045 starting: reading list template\ghb_2_34.txt
+2021-11-25 12:32:26.019045 finished: reading list template\ghb_2_34.txt took: 0:00:00.001000
+2021-11-25 12:32:26.019045 loaded list 'template\ghb_2_34.txt' of shape (20, 6)
+2021-11-25 12:32:26.020045 finished: loading list template\ghb_2_34.txt took: 0:00:00.003000
+2021-11-25 12:32:26.020045 starting: loading list template\ghb_2_35.txt
+2021-11-25 12:32:26.021046 starting: reading list template\ghb_2_35.txt
+2021-11-25 12:32:26.022046 finished: reading list template\ghb_2_35.txt took: 0:00:00.001000
+2021-11-25 12:32:26.022046 loaded list 'template\ghb_2_35.txt' of shape (20, 6)
+2021-11-25 12:32:26.024046 finished: loading list template\ghb_2_35.txt took: 0:00:00.004001
+2021-11-25 12:32:26.024046 starting: loading list template\ghb_2_36.txt
+2021-11-25 12:32:26.024046 starting: reading list template\ghb_2_36.txt
+2021-11-25 12:32:26.028047 finished: reading list template\ghb_2_36.txt took: 0:00:00.004001
+2021-11-25 12:32:26.029047 loaded list 'template\ghb_2_36.txt' of shape (20, 6)
+2021-11-25 12:32:26.030047 finished: loading list template\ghb_2_36.txt took: 0:00:00.006001
+2021-11-25 12:32:26.030047 starting: loading list template\ghb_2_37.txt
+2021-11-25 12:32:26.030047 starting: reading list template\ghb_2_37.txt
+2021-11-25 12:32:26.034048 finished: reading list template\ghb_2_37.txt took: 0:00:00.004001
+2021-11-25 12:32:26.035049 loaded list 'template\ghb_2_37.txt' of shape (20, 6)
+2021-11-25 12:32:26.036049 finished: loading list template\ghb_2_37.txt took: 0:00:00.006002
+2021-11-25 12:32:26.036049 starting: loading list template\ghb_2_38.txt
+2021-11-25 12:32:26.036049 starting: reading list template\ghb_2_38.txt
+2021-11-25 12:32:26.038049 finished: reading list template\ghb_2_38.txt took: 0:00:00.002000
+2021-11-25 12:32:26.038049 loaded list 'template\ghb_2_38.txt' of shape (20, 6)
+2021-11-25 12:32:26.039050 finished: loading list template\ghb_2_38.txt took: 0:00:00.003001
+2021-11-25 12:32:26.039050 starting: loading list template\ghb_2_39.txt
+2021-11-25 12:32:26.040050 starting: reading list template\ghb_2_39.txt
+2021-11-25 12:32:26.041050 finished: reading list template\ghb_2_39.txt took: 0:00:00.001000
+2021-11-25 12:32:26.041050 loaded list 'template\ghb_2_39.txt' of shape (20, 6)
+2021-11-25 12:32:26.042050 finished: loading list template\ghb_2_39.txt took: 0:00:00.003000
+2021-11-25 12:32:26.043050 starting: loading list template\ghb_2_4.txt
+2021-11-25 12:32:26.043050 starting: reading list template\ghb_2_4.txt
+2021-11-25 12:32:26.044051 finished: reading list template\ghb_2_4.txt took: 0:00:00.001001
+2021-11-25 12:32:26.044051 loaded list 'template\ghb_2_4.txt' of shape (20, 6)
+2021-11-25 12:32:26.046051 finished: loading list template\ghb_2_4.txt took: 0:00:00.003001
+2021-11-25 12:32:26.046051 starting: loading list template\ghb_2_40.txt
+2021-11-25 12:32:26.046051 starting: reading list template\ghb_2_40.txt
+2021-11-25 12:32:26.050052 finished: reading list template\ghb_2_40.txt took: 0:00:00.004001
+2021-11-25 12:32:26.050052 loaded list 'template\ghb_2_40.txt' of shape (20, 6)
+2021-11-25 12:32:26.052052 finished: loading list template\ghb_2_40.txt took: 0:00:00.006001
+2021-11-25 12:32:26.052052 starting: loading list template\ghb_2_41.txt
+2021-11-25 12:32:26.052052 starting: reading list template\ghb_2_41.txt
+2021-11-25 12:32:26.054053 finished: reading list template\ghb_2_41.txt took: 0:00:00.002001
+2021-11-25 12:32:26.054053 loaded list 'template\ghb_2_41.txt' of shape (20, 6)
+2021-11-25 12:32:26.055053 finished: loading list template\ghb_2_41.txt took: 0:00:00.003001
+2021-11-25 12:32:26.055053 starting: loading list template\ghb_2_42.txt
+2021-11-25 12:32:26.056053 starting: reading list template\ghb_2_42.txt
+2021-11-25 12:32:26.060054 finished: reading list template\ghb_2_42.txt took: 0:00:00.004001
+2021-11-25 12:32:26.060054 loaded list 'template\ghb_2_42.txt' of shape (20, 6)
+2021-11-25 12:32:26.061055 finished: loading list template\ghb_2_42.txt took: 0:00:00.006002
+2021-11-25 12:32:26.062055 starting: loading list template\ghb_2_43.txt
+2021-11-25 12:32:26.062055 starting: reading list template\ghb_2_43.txt
+2021-11-25 12:32:26.063055 finished: reading list template\ghb_2_43.txt took: 0:00:00.001000
+2021-11-25 12:32:26.063055 loaded list 'template\ghb_2_43.txt' of shape (20, 6)
+2021-11-25 12:32:26.065056 finished: loading list template\ghb_2_43.txt took: 0:00:00.003001
+2021-11-25 12:32:26.065056 starting: loading list template\ghb_2_44.txt
+2021-11-25 12:32:26.065056 starting: reading list template\ghb_2_44.txt
+2021-11-25 12:32:26.066056 finished: reading list template\ghb_2_44.txt took: 0:00:00.001000
+2021-11-25 12:32:26.067056 loaded list 'template\ghb_2_44.txt' of shape (20, 6)
+2021-11-25 12:32:26.068056 finished: loading list template\ghb_2_44.txt took: 0:00:00.003000
+2021-11-25 12:32:26.068056 starting: loading list template\ghb_2_45.txt
+2021-11-25 12:32:26.068056 starting: reading list template\ghb_2_45.txt
+2021-11-25 12:32:26.070056 finished: reading list template\ghb_2_45.txt took: 0:00:00.002000
+2021-11-25 12:32:26.070056 loaded list 'template\ghb_2_45.txt' of shape (20, 6)
+2021-11-25 12:32:26.072057 finished: loading list template\ghb_2_45.txt took: 0:00:00.004001
+2021-11-25 12:32:26.072057 starting: loading list template\ghb_2_46.txt
+2021-11-25 12:32:26.072057 starting: reading list template\ghb_2_46.txt
+2021-11-25 12:32:26.076058 finished: reading list template\ghb_2_46.txt took: 0:00:00.004001
+2021-11-25 12:32:26.077058 loaded list 'template\ghb_2_46.txt' of shape (20, 6)
+2021-11-25 12:32:26.078058 finished: loading list template\ghb_2_46.txt took: 0:00:00.006001
+2021-11-25 12:32:26.078058 starting: loading list template\ghb_2_47.txt
+2021-11-25 12:32:26.078058 starting: reading list template\ghb_2_47.txt
+2021-11-25 12:32:26.080059 finished: reading list template\ghb_2_47.txt took: 0:00:00.002001
+2021-11-25 12:32:26.080059 loaded list 'template\ghb_2_47.txt' of shape (20, 6)
+2021-11-25 12:32:26.082059 finished: loading list template\ghb_2_47.txt took: 0:00:00.004001
+2021-11-25 12:32:26.082059 starting: loading list template\ghb_2_48.txt
+2021-11-25 12:32:26.082059 starting: reading list template\ghb_2_48.txt
+2021-11-25 12:32:26.086060 finished: reading list template\ghb_2_48.txt took: 0:00:00.004001
+2021-11-25 12:32:26.087060 loaded list 'template\ghb_2_48.txt' of shape (20, 6)
+2021-11-25 12:32:26.088060 finished: loading list template\ghb_2_48.txt took: 0:00:00.006001
+2021-11-25 12:32:26.088060 starting: loading list template\ghb_2_49.txt
+2021-11-25 12:32:26.088060 starting: reading list template\ghb_2_49.txt
+2021-11-25 12:32:26.090061 finished: reading list template\ghb_2_49.txt took: 0:00:00.002001
+2021-11-25 12:32:26.091061 loaded list 'template\ghb_2_49.txt' of shape (20, 6)
+2021-11-25 12:32:26.092061 finished: loading list template\ghb_2_49.txt took: 0:00:00.004001
+2021-11-25 12:32:26.092061 starting: loading list template\ghb_2_5.txt
+2021-11-25 12:32:26.092061 starting: reading list template\ghb_2_5.txt
+2021-11-25 12:32:26.094062 finished: reading list template\ghb_2_5.txt took: 0:00:00.002001
+2021-11-25 12:32:26.094062 loaded list 'template\ghb_2_5.txt' of shape (20, 6)
+2021-11-25 12:32:26.095062 finished: loading list template\ghb_2_5.txt took: 0:00:00.003001
+2021-11-25 12:32:26.095062 starting: loading list template\ghb_2_50.txt
+2021-11-25 12:32:26.096062 starting: reading list template\ghb_2_50.txt
+2021-11-25 12:32:26.097063 finished: reading list template\ghb_2_50.txt took: 0:00:00.001001
+2021-11-25 12:32:26.097063 loaded list 'template\ghb_2_50.txt' of shape (20, 6)
+2021-11-25 12:32:26.099063 finished: loading list template\ghb_2_50.txt took: 0:00:00.004001
+2021-11-25 12:32:26.099063 starting: loading list template\ghb_2_6.txt
+2021-11-25 12:32:26.099063 starting: reading list template\ghb_2_6.txt
+2021-11-25 12:32:26.100062 finished: reading list template\ghb_2_6.txt took: 0:00:00.000999
+2021-11-25 12:32:26.101063 loaded list 'template\ghb_2_6.txt' of shape (20, 6)
+2021-11-25 12:32:26.102064 finished: loading list template\ghb_2_6.txt took: 0:00:00.003001
+2021-11-25 12:32:26.102064 starting: loading list template\ghb_2_7.txt
+2021-11-25 12:32:26.102064 starting: reading list template\ghb_2_7.txt
+2021-11-25 12:32:26.103064 finished: reading list template\ghb_2_7.txt took: 0:00:00.001000
+2021-11-25 12:32:26.104064 loaded list 'template\ghb_2_7.txt' of shape (20, 6)
+2021-11-25 12:32:26.105064 finished: loading list template\ghb_2_7.txt took: 0:00:00.003000
+2021-11-25 12:32:26.105064 starting: loading list template\ghb_2_8.txt
+2021-11-25 12:32:26.105064 starting: reading list template\ghb_2_8.txt
+2021-11-25 12:32:26.107065 finished: reading list template\ghb_2_8.txt took: 0:00:00.002001
+2021-11-25 12:32:26.107065 loaded list 'template\ghb_2_8.txt' of shape (20, 6)
+2021-11-25 12:32:26.108065 finished: loading list template\ghb_2_8.txt took: 0:00:00.003001
+2021-11-25 12:32:26.109065 starting: loading list template\ghb_2_9.txt
+2021-11-25 12:32:26.109065 starting: reading list template\ghb_2_9.txt
+2021-11-25 12:32:26.110065 finished: reading list template\ghb_2_9.txt took: 0:00:00.001000
+2021-11-25 12:32:26.111066 loaded list 'template\ghb_2_9.txt' of shape (20, 6)
+2021-11-25 12:32:26.112066 finished: loading list template\ghb_2_9.txt took: 0:00:00.003001
+2021-11-25 12:32:26.114066 starting: writing list-based template file 'ghb_glayer_2_inst0_constant.csv.tpl'
+2021-11-25 12:32:26.157076 finished: writing list-based template file 'ghb_glayer_2_inst0_constant.csv.tpl' took: 0:00:00.043010
+2021-11-25 12:32:26.163077 finished: adding constant type multiplier style parameters for file(s) ['ghb_2_0.txt', 'ghb_2_1.txt', 'ghb_2_10.txt', 'ghb_2_11.txt', 'ghb_2_12.txt', 'ghb_2_13.txt', 'ghb_2_14.txt', 'ghb_2_15.txt', 'ghb_2_16.txt', 'ghb_2_17.txt', 'ghb_2_18.txt', 'ghb_2_19.txt', 'ghb_2_2.txt', 'ghb_2_20.txt', 'ghb_2_21.txt', 'ghb_2_22.txt', 'ghb_2_23.txt', 'ghb_2_24.txt', 'ghb_2_25.txt', 'ghb_2_26.txt', 'ghb_2_27.txt', 'ghb_2_28.txt', 'ghb_2_29.txt', 'ghb_2_3.txt', 'ghb_2_30.txt', 'ghb_2_31.txt', 'ghb_2_32.txt', 'ghb_2_33.txt', 'ghb_2_34.txt', 'ghb_2_35.txt', 'ghb_2_36.txt', 'ghb_2_37.txt', 'ghb_2_38.txt', 'ghb_2_39.txt', 'ghb_2_4.txt', 'ghb_2_40.txt', 'ghb_2_41.txt', 'ghb_2_42.txt', 'ghb_2_43.txt', 'ghb_2_44.txt', 'ghb_2_45.txt', 'ghb_2_46.txt', 'ghb_2_47.txt', 'ghb_2_48.txt', 'ghb_2_49.txt', 'ghb_2_5.txt', 'ghb_2_50.txt', 'ghb_2_6.txt', 'ghb_2_7.txt', 'ghb_2_8.txt', 'ghb_2_9.txt'] took: 0:00:00.266061
+2021-11-25 12:32:26.164078 starting: adding constant type multiplier style parameters for file(s) ['ghb_3_0.txt', 'ghb_3_1.txt', 'ghb_3_10.txt', 'ghb_3_11.txt', 'ghb_3_12.txt', 'ghb_3_13.txt', 'ghb_3_14.txt', 'ghb_3_15.txt', 'ghb_3_16.txt', 'ghb_3_17.txt', 'ghb_3_18.txt', 'ghb_3_19.txt', 'ghb_3_2.txt', 'ghb_3_20.txt', 'ghb_3_21.txt', 'ghb_3_22.txt', 'ghb_3_23.txt', 'ghb_3_24.txt', 'ghb_3_25.txt', 'ghb_3_26.txt', 'ghb_3_27.txt', 'ghb_3_28.txt', 'ghb_3_29.txt', 'ghb_3_3.txt', 'ghb_3_30.txt', 'ghb_3_31.txt', 'ghb_3_32.txt', 'ghb_3_33.txt', 'ghb_3_34.txt', 'ghb_3_35.txt', 'ghb_3_36.txt', 'ghb_3_37.txt', 'ghb_3_38.txt', 'ghb_3_39.txt', 'ghb_3_4.txt', 'ghb_3_40.txt', 'ghb_3_41.txt', 'ghb_3_42.txt', 'ghb_3_43.txt', 'ghb_3_44.txt', 'ghb_3_45.txt', 'ghb_3_46.txt', 'ghb_3_47.txt', 'ghb_3_48.txt', 'ghb_3_49.txt', 'ghb_3_5.txt', 'ghb_3_50.txt', 'ghb_3_6.txt', 'ghb_3_7.txt', 'ghb_3_8.txt', 'ghb_3_9.txt']
+2021-11-25 12:32:26.164078 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:26.164078 starting: loading list template\ghb_3_0.txt
+2021-11-25 12:32:26.164078 starting: reading list template\ghb_3_0.txt
+2021-11-25 12:32:26.169079 finished: reading list template\ghb_3_0.txt took: 0:00:00.005001
+2021-11-25 12:32:26.170079 loaded list 'template\ghb_3_0.txt' of shape (20, 6)
+2021-11-25 12:32:26.171079 finished: loading list template\ghb_3_0.txt took: 0:00:00.007001
+2021-11-25 12:32:26.171079 starting: loading list template\ghb_3_1.txt
+2021-11-25 12:32:26.172079 starting: reading list template\ghb_3_1.txt
+2021-11-25 12:32:26.173080 finished: reading list template\ghb_3_1.txt took: 0:00:00.001001
+2021-11-25 12:32:26.174080 loaded list 'template\ghb_3_1.txt' of shape (20, 6)
+2021-11-25 12:32:26.175080 finished: loading list template\ghb_3_1.txt took: 0:00:00.004001
+2021-11-25 12:32:26.175080 starting: loading list template\ghb_3_10.txt
+2021-11-25 12:32:26.175080 starting: reading list template\ghb_3_10.txt
+2021-11-25 12:32:26.177080 finished: reading list template\ghb_3_10.txt took: 0:00:00.002000
+2021-11-25 12:32:26.177080 loaded list 'template\ghb_3_10.txt' of shape (20, 6)
+2021-11-25 12:32:26.179081 finished: loading list template\ghb_3_10.txt took: 0:00:00.004001
+2021-11-25 12:32:26.179081 starting: loading list template\ghb_3_11.txt
+2021-11-25 12:32:26.179081 starting: reading list template\ghb_3_11.txt
+2021-11-25 12:32:26.181082 finished: reading list template\ghb_3_11.txt took: 0:00:00.002001
+2021-11-25 12:32:26.181082 loaded list 'template\ghb_3_11.txt' of shape (20, 6)
+2021-11-25 12:32:26.182082 finished: loading list template\ghb_3_11.txt took: 0:00:00.003001
+2021-11-25 12:32:26.183082 starting: loading list template\ghb_3_12.txt
+2021-11-25 12:32:26.183082 starting: reading list template\ghb_3_12.txt
+2021-11-25 12:32:26.185083 finished: reading list template\ghb_3_12.txt took: 0:00:00.002001
+2021-11-25 12:32:26.185083 loaded list 'template\ghb_3_12.txt' of shape (20, 6)
+2021-11-25 12:32:26.187083 finished: loading list template\ghb_3_12.txt took: 0:00:00.004001
+2021-11-25 12:32:26.187083 starting: loading list template\ghb_3_13.txt
+2021-11-25 12:32:26.187083 starting: reading list template\ghb_3_13.txt
+2021-11-25 12:32:26.189083 finished: reading list template\ghb_3_13.txt took: 0:00:00.002000
+2021-11-25 12:32:26.189083 loaded list 'template\ghb_3_13.txt' of shape (20, 6)
+2021-11-25 12:32:26.190084 finished: loading list template\ghb_3_13.txt took: 0:00:00.003001
+2021-11-25 12:32:26.190084 starting: loading list template\ghb_3_14.txt
+2021-11-25 12:32:26.190084 starting: reading list template\ghb_3_14.txt
+2021-11-25 12:32:26.192084 finished: reading list template\ghb_3_14.txt took: 0:00:00.002000
+2021-11-25 12:32:26.193084 loaded list 'template\ghb_3_14.txt' of shape (20, 6)
+2021-11-25 12:32:26.194084 finished: loading list template\ghb_3_14.txt took: 0:00:00.004000
+2021-11-25 12:32:26.194084 starting: loading list template\ghb_3_15.txt
+2021-11-25 12:32:26.194084 starting: reading list template\ghb_3_15.txt
+2021-11-25 12:32:26.196085 finished: reading list template\ghb_3_15.txt took: 0:00:00.002001
+2021-11-25 12:32:26.196085 loaded list 'template\ghb_3_15.txt' of shape (20, 6)
+2021-11-25 12:32:26.198085 finished: loading list template\ghb_3_15.txt took: 0:00:00.004001
+2021-11-25 12:32:26.198085 starting: loading list template\ghb_3_16.txt
+2021-11-25 12:32:26.198085 starting: reading list template\ghb_3_16.txt
+2021-11-25 12:32:26.203086 finished: reading list template\ghb_3_16.txt took: 0:00:00.005001
+2021-11-25 12:32:26.203086 loaded list 'template\ghb_3_16.txt' of shape (20, 6)
+2021-11-25 12:32:26.204087 finished: loading list template\ghb_3_16.txt took: 0:00:00.006002
+2021-11-25 12:32:26.204087 starting: loading list template\ghb_3_17.txt
+2021-11-25 12:32:26.205087 starting: reading list template\ghb_3_17.txt
+2021-11-25 12:32:26.206087 finished: reading list template\ghb_3_17.txt took: 0:00:00.001000
+2021-11-25 12:32:26.206087 loaded list 'template\ghb_3_17.txt' of shape (20, 6)
+2021-11-25 12:32:26.208087 finished: loading list template\ghb_3_17.txt took: 0:00:00.004000
+2021-11-25 12:32:26.208087 starting: loading list template\ghb_3_18.txt
+2021-11-25 12:32:26.208087 starting: reading list template\ghb_3_18.txt
+2021-11-25 12:32:26.210088 finished: reading list template\ghb_3_18.txt took: 0:00:00.002001
+2021-11-25 12:32:26.210088 loaded list 'template\ghb_3_18.txt' of shape (20, 6)
+2021-11-25 12:32:26.211088 finished: loading list template\ghb_3_18.txt took: 0:00:00.003001
+2021-11-25 12:32:26.212089 starting: loading list template\ghb_3_19.txt
+2021-11-25 12:32:26.212089 starting: reading list template\ghb_3_19.txt
+2021-11-25 12:32:26.213089 finished: reading list template\ghb_3_19.txt took: 0:00:00.001000
+2021-11-25 12:32:26.213089 loaded list 'template\ghb_3_19.txt' of shape (20, 6)
+2021-11-25 12:32:26.215089 finished: loading list template\ghb_3_19.txt took: 0:00:00.003000
+2021-11-25 12:32:26.215089 starting: loading list template\ghb_3_2.txt
+2021-11-25 12:32:26.215089 starting: reading list template\ghb_3_2.txt
+2021-11-25 12:32:26.220090 finished: reading list template\ghb_3_2.txt took: 0:00:00.005001
+2021-11-25 12:32:26.220090 loaded list 'template\ghb_3_2.txt' of shape (20, 6)
+2021-11-25 12:32:26.221091 finished: loading list template\ghb_3_2.txt took: 0:00:00.006002
+2021-11-25 12:32:26.222091 starting: loading list template\ghb_3_20.txt
+2021-11-25 12:32:26.222091 starting: reading list template\ghb_3_20.txt
+2021-11-25 12:32:26.223091 finished: reading list template\ghb_3_20.txt took: 0:00:00.001000
+2021-11-25 12:32:26.224091 loaded list 'template\ghb_3_20.txt' of shape (20, 6)
+2021-11-25 12:32:26.225091 finished: loading list template\ghb_3_20.txt took: 0:00:00.003000
+2021-11-25 12:32:26.225091 starting: loading list template\ghb_3_21.txt
+2021-11-25 12:32:26.226091 starting: reading list template\ghb_3_21.txt
+2021-11-25 12:32:26.227092 finished: reading list template\ghb_3_21.txt took: 0:00:00.001001
+2021-11-25 12:32:26.228092 loaded list 'template\ghb_3_21.txt' of shape (20, 6)
+2021-11-25 12:32:26.229092 finished: loading list template\ghb_3_21.txt took: 0:00:00.004001
+2021-11-25 12:32:26.229092 starting: loading list template\ghb_3_22.txt
+2021-11-25 12:32:26.229092 starting: reading list template\ghb_3_22.txt
+2021-11-25 12:32:26.234093 finished: reading list template\ghb_3_22.txt took: 0:00:00.005001
+2021-11-25 12:32:26.234093 loaded list 'template\ghb_3_22.txt' of shape (20, 6)
+2021-11-25 12:32:26.236094 finished: loading list template\ghb_3_22.txt took: 0:00:00.007002
+2021-11-25 12:32:26.236094 starting: loading list template\ghb_3_23.txt
+2021-11-25 12:32:26.237094 starting: reading list template\ghb_3_23.txt
+2021-11-25 12:32:26.238094 finished: reading list template\ghb_3_23.txt took: 0:00:00.001000
+2021-11-25 12:32:26.239094 loaded list 'template\ghb_3_23.txt' of shape (20, 6)
+2021-11-25 12:32:26.240095 finished: loading list template\ghb_3_23.txt took: 0:00:00.004001
+2021-11-25 12:32:26.240095 starting: loading list template\ghb_3_24.txt
+2021-11-25 12:32:26.240095 starting: reading list template\ghb_3_24.txt
+2021-11-25 12:32:26.245096 finished: reading list template\ghb_3_24.txt took: 0:00:00.005001
+2021-11-25 12:32:26.245096 loaded list 'template\ghb_3_24.txt' of shape (20, 6)
+2021-11-25 12:32:26.247096 finished: loading list template\ghb_3_24.txt took: 0:00:00.007001
+2021-11-25 12:32:26.247096 starting: loading list template\ghb_3_25.txt
+2021-11-25 12:32:26.247096 starting: reading list template\ghb_3_25.txt
+2021-11-25 12:32:26.252097 finished: reading list template\ghb_3_25.txt took: 0:00:00.005001
+2021-11-25 12:32:26.252097 loaded list 'template\ghb_3_25.txt' of shape (20, 6)
+2021-11-25 12:32:26.253098 finished: loading list template\ghb_3_25.txt took: 0:00:00.006002
+2021-11-25 12:32:26.254098 starting: loading list template\ghb_3_26.txt
+2021-11-25 12:32:26.254098 starting: reading list template\ghb_3_26.txt
+2021-11-25 12:32:26.258099 finished: reading list template\ghb_3_26.txt took: 0:00:00.004001
+2021-11-25 12:32:26.258099 loaded list 'template\ghb_3_26.txt' of shape (20, 6)
+2021-11-25 12:32:26.259099 finished: loading list template\ghb_3_26.txt took: 0:00:00.005001
+2021-11-25 12:32:26.260099 starting: loading list template\ghb_3_27.txt
+2021-11-25 12:32:26.260099 starting: reading list template\ghb_3_27.txt
+2021-11-25 12:32:26.261099 finished: reading list template\ghb_3_27.txt took: 0:00:00.001000
+2021-11-25 12:32:26.262099 loaded list 'template\ghb_3_27.txt' of shape (20, 6)
+2021-11-25 12:32:26.263100 finished: loading list template\ghb_3_27.txt took: 0:00:00.003001
+2021-11-25 12:32:26.263100 starting: loading list template\ghb_3_28.txt
+2021-11-25 12:32:26.263100 starting: reading list template\ghb_3_28.txt
+2021-11-25 12:32:26.268101 finished: reading list template\ghb_3_28.txt took: 0:00:00.005001
+2021-11-25 12:32:26.268101 loaded list 'template\ghb_3_28.txt' of shape (20, 6)
+2021-11-25 12:32:26.269101 finished: loading list template\ghb_3_28.txt took: 0:00:00.006001
+2021-11-25 12:32:26.270101 starting: loading list template\ghb_3_29.txt
+2021-11-25 12:32:26.270101 starting: reading list template\ghb_3_29.txt
+2021-11-25 12:32:26.274102 finished: reading list template\ghb_3_29.txt took: 0:00:00.004001
+2021-11-25 12:32:26.275102 loaded list 'template\ghb_3_29.txt' of shape (20, 6)
+2021-11-25 12:32:26.276103 finished: loading list template\ghb_3_29.txt took: 0:00:00.006002
+2021-11-25 12:32:26.276103 starting: loading list template\ghb_3_3.txt
+2021-11-25 12:32:26.277103 starting: reading list template\ghb_3_3.txt
+2021-11-25 12:32:26.281104 finished: reading list template\ghb_3_3.txt took: 0:00:00.004001
+2021-11-25 12:32:26.282104 loaded list 'template\ghb_3_3.txt' of shape (20, 6)
+2021-11-25 12:32:26.283104 finished: loading list template\ghb_3_3.txt took: 0:00:00.007001
+2021-11-25 12:32:26.283104 starting: loading list template\ghb_3_30.txt
+2021-11-25 12:32:26.284104 starting: reading list template\ghb_3_30.txt
+2021-11-25 12:32:26.285105 finished: reading list template\ghb_3_30.txt took: 0:00:00.001001
+2021-11-25 12:32:26.285105 loaded list 'template\ghb_3_30.txt' of shape (20, 6)
+2021-11-25 12:32:26.287105 finished: loading list template\ghb_3_30.txt took: 0:00:00.004001
+2021-11-25 12:32:26.287105 starting: loading list template\ghb_3_31.txt
+2021-11-25 12:32:26.287105 starting: reading list template\ghb_3_31.txt
+2021-11-25 12:32:26.289106 finished: reading list template\ghb_3_31.txt took: 0:00:00.002001
+2021-11-25 12:32:26.289106 loaded list 'template\ghb_3_31.txt' of shape (20, 6)
+2021-11-25 12:32:26.290106 finished: loading list template\ghb_3_31.txt took: 0:00:00.003001
+2021-11-25 12:32:26.290106 starting: loading list template\ghb_3_32.txt
+2021-11-25 12:32:26.291106 starting: reading list template\ghb_3_32.txt
+2021-11-25 12:32:26.292106 finished: reading list template\ghb_3_32.txt took: 0:00:00.001000
+2021-11-25 12:32:26.292106 loaded list 'template\ghb_3_32.txt' of shape (20, 6)
+2021-11-25 12:32:26.294107 finished: loading list template\ghb_3_32.txt took: 0:00:00.004001
+2021-11-25 12:32:26.294107 starting: loading list template\ghb_3_33.txt
+2021-11-25 12:32:26.294107 starting: reading list template\ghb_3_33.txt
+2021-11-25 12:32:26.296106 finished: reading list template\ghb_3_33.txt took: 0:00:00.001999
+2021-11-25 12:32:26.296106 loaded list 'template\ghb_3_33.txt' of shape (20, 6)
+2021-11-25 12:32:26.297107 finished: loading list template\ghb_3_33.txt took: 0:00:00.003000
+2021-11-25 12:32:26.297107 starting: loading list template\ghb_3_34.txt
+2021-11-25 12:32:26.298108 starting: reading list template\ghb_3_34.txt
+2021-11-25 12:32:26.302109 finished: reading list template\ghb_3_34.txt took: 0:00:00.004001
+2021-11-25 12:32:26.302109 loaded list 'template\ghb_3_34.txt' of shape (20, 6)
+2021-11-25 12:32:26.304109 finished: loading list template\ghb_3_34.txt took: 0:00:00.007002
+2021-11-25 12:32:26.304109 starting: loading list template\ghb_3_35.txt
+2021-11-25 12:32:26.304109 starting: reading list template\ghb_3_35.txt
+2021-11-25 12:32:26.306110 finished: reading list template\ghb_3_35.txt took: 0:00:00.002001
+2021-11-25 12:32:26.306110 loaded list 'template\ghb_3_35.txt' of shape (20, 6)
+2021-11-25 12:32:26.307110 finished: loading list template\ghb_3_35.txt took: 0:00:00.003001
+2021-11-25 12:32:26.308110 starting: loading list template\ghb_3_36.txt
+2021-11-25 12:32:26.308110 starting: reading list template\ghb_3_36.txt
+2021-11-25 12:32:26.309110 finished: reading list template\ghb_3_36.txt took: 0:00:00.001000
+2021-11-25 12:32:26.310109 loaded list 'template\ghb_3_36.txt' of shape (20, 6)
+2021-11-25 12:32:26.311111 finished: loading list template\ghb_3_36.txt took: 0:00:00.003001
+2021-11-25 12:32:26.311111 starting: loading list template\ghb_3_37.txt
+2021-11-25 12:32:26.311111 starting: reading list template\ghb_3_37.txt
+2021-11-25 12:32:26.313111 finished: reading list template\ghb_3_37.txt took: 0:00:00.002000
+2021-11-25 12:32:26.313111 loaded list 'template\ghb_3_37.txt' of shape (20, 6)
+2021-11-25 12:32:26.314111 finished: loading list template\ghb_3_37.txt took: 0:00:00.003000
+2021-11-25 12:32:26.314111 starting: loading list template\ghb_3_38.txt
+2021-11-25 12:32:26.315112 starting: reading list template\ghb_3_38.txt
+2021-11-25 12:32:26.316112 finished: reading list template\ghb_3_38.txt took: 0:00:00.001000
+2021-11-25 12:32:26.316112 loaded list 'template\ghb_3_38.txt' of shape (20, 6)
+2021-11-25 12:32:26.318112 finished: loading list template\ghb_3_38.txt took: 0:00:00.004001
+2021-11-25 12:32:26.318112 starting: loading list template\ghb_3_39.txt
+2021-11-25 12:32:26.318112 starting: reading list template\ghb_3_39.txt
+2021-11-25 12:32:26.319112 finished: reading list template\ghb_3_39.txt took: 0:00:00.001000
+2021-11-25 12:32:26.320111 loaded list 'template\ghb_3_39.txt' of shape (20, 6)
+2021-11-25 12:32:26.321113 finished: loading list template\ghb_3_39.txt took: 0:00:00.003001
+2021-11-25 12:32:26.321113 starting: loading list template\ghb_3_4.txt
+2021-11-25 12:32:26.322113 starting: reading list template\ghb_3_4.txt
+2021-11-25 12:32:26.326114 finished: reading list template\ghb_3_4.txt took: 0:00:00.004001
+2021-11-25 12:32:26.326114 loaded list 'template\ghb_3_4.txt' of shape (20, 6)
+2021-11-25 12:32:26.328113 finished: loading list template\ghb_3_4.txt took: 0:00:00.007000
+2021-11-25 12:32:26.328113 starting: loading list template\ghb_3_40.txt
+2021-11-25 12:32:26.328113 starting: reading list template\ghb_3_40.txt
+2021-11-25 12:32:26.330115 finished: reading list template\ghb_3_40.txt took: 0:00:00.002002
+2021-11-25 12:32:26.330115 loaded list 'template\ghb_3_40.txt' of shape (20, 6)
+2021-11-25 12:32:26.331114 finished: loading list template\ghb_3_40.txt took: 0:00:00.003001
+2021-11-25 12:32:26.332116 starting: loading list template\ghb_3_41.txt
+2021-11-25 12:32:26.332116 starting: reading list template\ghb_3_41.txt
+2021-11-25 12:32:26.334116 finished: reading list template\ghb_3_41.txt took: 0:00:00.002000
+2021-11-25 12:32:26.334116 loaded list 'template\ghb_3_41.txt' of shape (20, 6)
+2021-11-25 12:32:26.335116 finished: loading list template\ghb_3_41.txt took: 0:00:00.003000
+2021-11-25 12:32:26.336116 starting: loading list template\ghb_3_42.txt
+2021-11-25 12:32:26.336116 starting: reading list template\ghb_3_42.txt
+2021-11-25 12:32:26.340117 finished: reading list template\ghb_3_42.txt took: 0:00:00.004001
+2021-11-25 12:32:26.340117 loaded list 'template\ghb_3_42.txt' of shape (20, 6)
+2021-11-25 12:32:26.342118 finished: loading list template\ghb_3_42.txt took: 0:00:00.006002
+2021-11-25 12:32:26.342118 starting: loading list template\ghb_3_43.txt
+2021-11-25 12:32:26.342118 starting: reading list template\ghb_3_43.txt
+2021-11-25 12:32:26.344118 finished: reading list template\ghb_3_43.txt took: 0:00:00.002000
+2021-11-25 12:32:26.344118 loaded list 'template\ghb_3_43.txt' of shape (20, 6)
+2021-11-25 12:32:26.345118 finished: loading list template\ghb_3_43.txt took: 0:00:00.003000
+2021-11-25 12:32:26.345118 starting: loading list template\ghb_3_44.txt
+2021-11-25 12:32:26.345118 starting: reading list template\ghb_3_44.txt
+2021-11-25 12:32:26.347119 finished: reading list template\ghb_3_44.txt took: 0:00:00.002001
+2021-11-25 12:32:26.347119 loaded list 'template\ghb_3_44.txt' of shape (20, 6)
+2021-11-25 12:32:26.349119 finished: loading list template\ghb_3_44.txt took: 0:00:00.004001
+2021-11-25 12:32:26.349119 starting: loading list template\ghb_3_45.txt
+2021-11-25 12:32:26.349119 starting: reading list template\ghb_3_45.txt
+2021-11-25 12:32:26.351120 finished: reading list template\ghb_3_45.txt took: 0:00:00.002001
+2021-11-25 12:32:26.351120 loaded list 'template\ghb_3_45.txt' of shape (20, 6)
+2021-11-25 12:32:26.352120 finished: loading list template\ghb_3_45.txt took: 0:00:00.003001
+2021-11-25 12:32:26.353120 starting: loading list template\ghb_3_46.txt
+2021-11-25 12:32:26.353120 starting: reading list template\ghb_3_46.txt
+2021-11-25 12:32:26.354120 finished: reading list template\ghb_3_46.txt took: 0:00:00.001000
+2021-11-25 12:32:26.354120 loaded list 'template\ghb_3_46.txt' of shape (20, 6)
+2021-11-25 12:32:26.356121 finished: loading list template\ghb_3_46.txt took: 0:00:00.003001
+2021-11-25 12:32:26.356121 starting: loading list template\ghb_3_47.txt
+2021-11-25 12:32:26.356121 starting: reading list template\ghb_3_47.txt
+2021-11-25 12:32:26.357121 finished: reading list template\ghb_3_47.txt took: 0:00:00.001000
+2021-11-25 12:32:26.358121 loaded list 'template\ghb_3_47.txt' of shape (20, 6)
+2021-11-25 12:32:26.359121 finished: loading list template\ghb_3_47.txt took: 0:00:00.003000
+2021-11-25 12:32:26.359121 starting: loading list template\ghb_3_48.txt
+2021-11-25 12:32:26.359121 starting: reading list template\ghb_3_48.txt
+2021-11-25 12:32:26.361122 finished: reading list template\ghb_3_48.txt took: 0:00:00.002001
+2021-11-25 12:32:26.361122 loaded list 'template\ghb_3_48.txt' of shape (20, 6)
+2021-11-25 12:32:26.362122 finished: loading list template\ghb_3_48.txt took: 0:00:00.003001
+2021-11-25 12:32:26.362122 starting: loading list template\ghb_3_49.txt
+2021-11-25 12:32:26.363123 starting: reading list template\ghb_3_49.txt
+2021-11-25 12:32:26.364123 finished: reading list template\ghb_3_49.txt took: 0:00:00.001000
+2021-11-25 12:32:26.364123 loaded list 'template\ghb_3_49.txt' of shape (20, 6)
+2021-11-25 12:32:26.366123 finished: loading list template\ghb_3_49.txt took: 0:00:00.004001
+2021-11-25 12:32:26.366123 starting: loading list template\ghb_3_5.txt
+2021-11-25 12:32:26.366123 starting: reading list template\ghb_3_5.txt
+2021-11-25 12:32:26.367123 finished: reading list template\ghb_3_5.txt took: 0:00:00.001000
+2021-11-25 12:32:26.367123 loaded list 'template\ghb_3_5.txt' of shape (20, 6)
+2021-11-25 12:32:26.369124 finished: loading list template\ghb_3_5.txt took: 0:00:00.003001
+2021-11-25 12:32:26.369124 starting: loading list template\ghb_3_50.txt
+2021-11-25 12:32:26.369124 starting: reading list template\ghb_3_50.txt
+2021-11-25 12:32:26.371123 finished: reading list template\ghb_3_50.txt took: 0:00:00.001999
+2021-11-25 12:32:26.371123 loaded list 'template\ghb_3_50.txt' of shape (20, 6)
+2021-11-25 12:32:26.372123 finished: loading list template\ghb_3_50.txt took: 0:00:00.002999
+2021-11-25 12:32:26.372123 starting: loading list template\ghb_3_6.txt
+2021-11-25 12:32:26.373124 starting: reading list template\ghb_3_6.txt
+2021-11-25 12:32:26.377126 finished: reading list template\ghb_3_6.txt took: 0:00:00.004002
+2021-11-25 12:32:26.377126 loaded list 'template\ghb_3_6.txt' of shape (20, 6)
+2021-11-25 12:32:26.378126 finished: loading list template\ghb_3_6.txt took: 0:00:00.006003
+2021-11-25 12:32:26.379126 starting: loading list template\ghb_3_7.txt
+2021-11-25 12:32:26.379126 starting: reading list template\ghb_3_7.txt
+2021-11-25 12:32:26.380125 finished: reading list template\ghb_3_7.txt took: 0:00:00.000999
+2021-11-25 12:32:26.381126 loaded list 'template\ghb_3_7.txt' of shape (20, 6)
+2021-11-25 12:32:26.382127 finished: loading list template\ghb_3_7.txt took: 0:00:00.003001
+2021-11-25 12:32:26.382127 starting: loading list template\ghb_3_8.txt
+2021-11-25 12:32:26.382127 starting: reading list template\ghb_3_8.txt
+2021-11-25 12:32:26.384127 finished: reading list template\ghb_3_8.txt took: 0:00:00.002000
+2021-11-25 12:32:26.384127 loaded list 'template\ghb_3_8.txt' of shape (20, 6)
+2021-11-25 12:32:26.386127 finished: loading list template\ghb_3_8.txt took: 0:00:00.004000
+2021-11-25 12:32:26.386127 starting: loading list template\ghb_3_9.txt
+2021-11-25 12:32:26.386127 starting: reading list template\ghb_3_9.txt
+2021-11-25 12:32:26.388127 finished: reading list template\ghb_3_9.txt took: 0:00:00.002000
+2021-11-25 12:32:26.388127 loaded list 'template\ghb_3_9.txt' of shape (20, 6)
+2021-11-25 12:32:26.389127 finished: loading list template\ghb_3_9.txt took: 0:00:00.003000
+2021-11-25 12:32:26.391128 starting: writing list-based template file 'ghb_glayer_3_inst0_constant.csv.tpl'
+2021-11-25 12:32:26.435138 finished: writing list-based template file 'ghb_glayer_3_inst0_constant.csv.tpl' took: 0:00:00.044010
+2021-11-25 12:32:26.441139 finished: adding constant type multiplier style parameters for file(s) ['ghb_3_0.txt', 'ghb_3_1.txt', 'ghb_3_10.txt', 'ghb_3_11.txt', 'ghb_3_12.txt', 'ghb_3_13.txt', 'ghb_3_14.txt', 'ghb_3_15.txt', 'ghb_3_16.txt', 'ghb_3_17.txt', 'ghb_3_18.txt', 'ghb_3_19.txt', 'ghb_3_2.txt', 'ghb_3_20.txt', 'ghb_3_21.txt', 'ghb_3_22.txt', 'ghb_3_23.txt', 'ghb_3_24.txt', 'ghb_3_25.txt', 'ghb_3_26.txt', 'ghb_3_27.txt', 'ghb_3_28.txt', 'ghb_3_29.txt', 'ghb_3_3.txt', 'ghb_3_30.txt', 'ghb_3_31.txt', 'ghb_3_32.txt', 'ghb_3_33.txt', 'ghb_3_34.txt', 'ghb_3_35.txt', 'ghb_3_36.txt', 'ghb_3_37.txt', 'ghb_3_38.txt', 'ghb_3_39.txt', 'ghb_3_4.txt', 'ghb_3_40.txt', 'ghb_3_41.txt', 'ghb_3_42.txt', 'ghb_3_43.txt', 'ghb_3_44.txt', 'ghb_3_45.txt', 'ghb_3_46.txt', 'ghb_3_47.txt', 'ghb_3_48.txt', 'ghb_3_49.txt', 'ghb_3_5.txt', 'ghb_3_50.txt', 'ghb_3_6.txt', 'ghb_3_7.txt', 'ghb_3_8.txt', 'ghb_3_9.txt'] took: 0:00:00.277061
+2021-11-25 12:32:26.442139 starting: adding constant type multiplier style parameters for file(s) ['ghb_4_0.txt', 'ghb_4_1.txt', 'ghb_4_10.txt', 'ghb_4_11.txt', 'ghb_4_12.txt', 'ghb_4_13.txt', 'ghb_4_14.txt', 'ghb_4_15.txt', 'ghb_4_16.txt', 'ghb_4_17.txt', 'ghb_4_18.txt', 'ghb_4_19.txt', 'ghb_4_2.txt', 'ghb_4_20.txt', 'ghb_4_21.txt', 'ghb_4_22.txt', 'ghb_4_23.txt', 'ghb_4_24.txt', 'ghb_4_25.txt', 'ghb_4_26.txt', 'ghb_4_27.txt', 'ghb_4_28.txt', 'ghb_4_29.txt', 'ghb_4_3.txt', 'ghb_4_30.txt', 'ghb_4_31.txt', 'ghb_4_32.txt', 'ghb_4_33.txt', 'ghb_4_34.txt', 'ghb_4_35.txt', 'ghb_4_36.txt', 'ghb_4_37.txt', 'ghb_4_38.txt', 'ghb_4_39.txt', 'ghb_4_4.txt', 'ghb_4_40.txt', 'ghb_4_41.txt', 'ghb_4_42.txt', 'ghb_4_43.txt', 'ghb_4_44.txt', 'ghb_4_45.txt', 'ghb_4_46.txt', 'ghb_4_47.txt', 'ghb_4_48.txt', 'ghb_4_49.txt', 'ghb_4_5.txt', 'ghb_4_50.txt', 'ghb_4_6.txt', 'ghb_4_7.txt', 'ghb_4_8.txt', 'ghb_4_9.txt']
+2021-11-25 12:32:26.442139 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:26.442139 starting: loading list template\ghb_4_0.txt
+2021-11-25 12:32:26.442139 starting: reading list template\ghb_4_0.txt
+2021-11-25 12:32:26.447141 finished: reading list template\ghb_4_0.txt took: 0:00:00.005002
+2021-11-25 12:32:26.447141 loaded list 'template\ghb_4_0.txt' of shape (20, 6)
+2021-11-25 12:32:26.449141 finished: loading list template\ghb_4_0.txt took: 0:00:00.007002
+2021-11-25 12:32:26.449141 starting: loading list template\ghb_4_1.txt
+2021-11-25 12:32:26.449141 starting: reading list template\ghb_4_1.txt
+2021-11-25 12:32:26.450141 finished: reading list template\ghb_4_1.txt took: 0:00:00.001000
+2021-11-25 12:32:26.451142 loaded list 'template\ghb_4_1.txt' of shape (20, 6)
+2021-11-25 12:32:26.452143 finished: loading list template\ghb_4_1.txt took: 0:00:00.003002
+2021-11-25 12:32:26.453142 starting: loading list template\ghb_4_10.txt
+2021-11-25 12:32:26.453142 starting: reading list template\ghb_4_10.txt
+2021-11-25 12:32:26.455142 finished: reading list template\ghb_4_10.txt took: 0:00:00.002000
+2021-11-25 12:32:26.455142 loaded list 'template\ghb_4_10.txt' of shape (20, 6)
+2021-11-25 12:32:26.456142 finished: loading list template\ghb_4_10.txt took: 0:00:00.003000
+2021-11-25 12:32:26.456142 starting: loading list template\ghb_4_11.txt
+2021-11-25 12:32:26.457144 starting: reading list template\ghb_4_11.txt
+2021-11-25 12:32:26.458143 finished: reading list template\ghb_4_11.txt took: 0:00:00.000999
+2021-11-25 12:32:26.458143 loaded list 'template\ghb_4_11.txt' of shape (20, 6)
+2021-11-25 12:32:26.460144 finished: loading list template\ghb_4_11.txt took: 0:00:00.004002
+2021-11-25 12:32:26.460144 starting: loading list template\ghb_4_12.txt
+2021-11-25 12:32:26.460144 starting: reading list template\ghb_4_12.txt
+2021-11-25 12:32:26.462145 finished: reading list template\ghb_4_12.txt took: 0:00:00.002001
+2021-11-25 12:32:26.462145 loaded list 'template\ghb_4_12.txt' of shape (20, 6)
+2021-11-25 12:32:26.463145 finished: loading list template\ghb_4_12.txt took: 0:00:00.003001
+2021-11-25 12:32:26.463145 starting: loading list template\ghb_4_13.txt
+2021-11-25 12:32:26.464145 starting: reading list template\ghb_4_13.txt
+2021-11-25 12:32:26.468146 finished: reading list template\ghb_4_13.txt took: 0:00:00.004001
+2021-11-25 12:32:26.468146 loaded list 'template\ghb_4_13.txt' of shape (20, 6)
+2021-11-25 12:32:26.469146 finished: loading list template\ghb_4_13.txt took: 0:00:00.006001
+2021-11-25 12:32:26.470147 starting: loading list template\ghb_4_14.txt
+2021-11-25 12:32:26.470147 starting: reading list template\ghb_4_14.txt
+2021-11-25 12:32:26.474147 finished: reading list template\ghb_4_14.txt took: 0:00:00.004000
+2021-11-25 12:32:26.474147 loaded list 'template\ghb_4_14.txt' of shape (20, 6)
+2021-11-25 12:32:26.476147 finished: loading list template\ghb_4_14.txt took: 0:00:00.006000
+2021-11-25 12:32:26.476147 starting: loading list template\ghb_4_15.txt
+2021-11-25 12:32:26.476147 starting: reading list template\ghb_4_15.txt
+2021-11-25 12:32:26.478148 finished: reading list template\ghb_4_15.txt took: 0:00:00.002001
+2021-11-25 12:32:26.478148 loaded list 'template\ghb_4_15.txt' of shape (20, 6)
+2021-11-25 12:32:26.479148 finished: loading list template\ghb_4_15.txt took: 0:00:00.003001
+2021-11-25 12:32:26.480149 starting: loading list template\ghb_4_16.txt
+2021-11-25 12:32:26.480149 starting: reading list template\ghb_4_16.txt
+2021-11-25 12:32:26.481148 finished: reading list template\ghb_4_16.txt took: 0:00:00.000999
+2021-11-25 12:32:26.482149 loaded list 'template\ghb_4_16.txt' of shape (20, 6)
+2021-11-25 12:32:26.483148 finished: loading list template\ghb_4_16.txt took: 0:00:00.002999
+2021-11-25 12:32:26.483148 starting: loading list template\ghb_4_17.txt
+2021-11-25 12:32:26.484149 starting: reading list template\ghb_4_17.txt
+2021-11-25 12:32:26.485149 finished: reading list template\ghb_4_17.txt took: 0:00:00.001000
+2021-11-25 12:32:26.486149 loaded list 'template\ghb_4_17.txt' of shape (20, 6)
+2021-11-25 12:32:26.487150 finished: loading list template\ghb_4_17.txt took: 0:00:00.004002
+2021-11-25 12:32:26.488150 starting: loading list template\ghb_4_18.txt
+2021-11-25 12:32:26.488150 starting: reading list template\ghb_4_18.txt
+2021-11-25 12:32:26.490151 finished: reading list template\ghb_4_18.txt took: 0:00:00.002001
+2021-11-25 12:32:26.490151 loaded list 'template\ghb_4_18.txt' of shape (20, 6)
+2021-11-25 12:32:26.491150 finished: loading list template\ghb_4_18.txt took: 0:00:00.003000
+2021-11-25 12:32:26.491150 starting: loading list template\ghb_4_19.txt
+2021-11-25 12:32:26.492151 starting: reading list template\ghb_4_19.txt
+2021-11-25 12:32:26.493151 finished: reading list template\ghb_4_19.txt took: 0:00:00.001000
+2021-11-25 12:32:26.493151 loaded list 'template\ghb_4_19.txt' of shape (20, 6)
+2021-11-25 12:32:26.495151 finished: loading list template\ghb_4_19.txt took: 0:00:00.004001
+2021-11-25 12:32:26.495151 starting: loading list template\ghb_4_2.txt
+2021-11-25 12:32:26.495151 starting: reading list template\ghb_4_2.txt
+2021-11-25 12:32:26.497152 finished: reading list template\ghb_4_2.txt took: 0:00:00.002001
+2021-11-25 12:32:26.497152 loaded list 'template\ghb_4_2.txt' of shape (20, 6)
+2021-11-25 12:32:26.498152 finished: loading list template\ghb_4_2.txt took: 0:00:00.003001
+2021-11-25 12:32:26.498152 starting: loading list template\ghb_4_20.txt
+2021-11-25 12:32:26.498152 starting: reading list template\ghb_4_20.txt
+2021-11-25 12:32:26.500153 finished: reading list template\ghb_4_20.txt took: 0:00:00.002001
+2021-11-25 12:32:26.500153 loaded list 'template\ghb_4_20.txt' of shape (20, 6)
+2021-11-25 12:32:26.501153 finished: loading list template\ghb_4_20.txt took: 0:00:00.003001
+2021-11-25 12:32:26.502153 starting: loading list template\ghb_4_21.txt
+2021-11-25 12:32:26.502153 starting: reading list template\ghb_4_21.txt
+2021-11-25 12:32:26.506154 finished: reading list template\ghb_4_21.txt took: 0:00:00.004001
+2021-11-25 12:32:26.506154 loaded list 'template\ghb_4_21.txt' of shape (20, 6)
+2021-11-25 12:32:26.508154 finished: loading list template\ghb_4_21.txt took: 0:00:00.006001
+2021-11-25 12:32:26.508154 starting: loading list template\ghb_4_22.txt
+2021-11-25 12:32:26.508154 starting: reading list template\ghb_4_22.txt
+2021-11-25 12:32:26.512155 finished: reading list template\ghb_4_22.txt took: 0:00:00.004001
+2021-11-25 12:32:26.512155 loaded list 'template\ghb_4_22.txt' of shape (20, 6)
+2021-11-25 12:32:26.514156 finished: loading list template\ghb_4_22.txt took: 0:00:00.006002
+2021-11-25 12:32:26.514156 starting: loading list template\ghb_4_23.txt
+2021-11-25 12:32:26.514156 starting: reading list template\ghb_4_23.txt
+2021-11-25 12:32:26.518156 finished: reading list template\ghb_4_23.txt took: 0:00:00.004000
+2021-11-25 12:32:26.518156 loaded list 'template\ghb_4_23.txt' of shape (20, 6)
+2021-11-25 12:32:26.520156 finished: loading list template\ghb_4_23.txt took: 0:00:00.006000
+2021-11-25 12:32:26.520156 starting: loading list template\ghb_4_24.txt
+2021-11-25 12:32:26.520156 starting: reading list template\ghb_4_24.txt
+2021-11-25 12:32:26.521156 finished: reading list template\ghb_4_24.txt took: 0:00:00.001000
+2021-11-25 12:32:26.522157 loaded list 'template\ghb_4_24.txt' of shape (20, 6)
+2021-11-25 12:32:26.523157 finished: loading list template\ghb_4_24.txt took: 0:00:00.003001
+2021-11-25 12:32:26.523157 starting: loading list template\ghb_4_25.txt
+2021-11-25 12:32:26.523157 starting: reading list template\ghb_4_25.txt
+2021-11-25 12:32:26.525157 finished: reading list template\ghb_4_25.txt took: 0:00:00.002000
+2021-11-25 12:32:26.525157 loaded list 'template\ghb_4_25.txt' of shape (20, 6)
+2021-11-25 12:32:26.526158 finished: loading list template\ghb_4_25.txt took: 0:00:00.003001
+2021-11-25 12:32:26.526158 starting: loading list template\ghb_4_26.txt
+2021-11-25 12:32:26.527158 starting: reading list template\ghb_4_26.txt
+2021-11-25 12:32:26.528159 finished: reading list template\ghb_4_26.txt took: 0:00:00.001001
+2021-11-25 12:32:26.528159 loaded list 'template\ghb_4_26.txt' of shape (20, 6)
+2021-11-25 12:32:26.530160 finished: loading list template\ghb_4_26.txt took: 0:00:00.004002
+2021-11-25 12:32:26.530160 starting: loading list template\ghb_4_27.txt
+2021-11-25 12:32:26.530160 starting: reading list template\ghb_4_27.txt
+2021-11-25 12:32:26.534160 finished: reading list template\ghb_4_27.txt took: 0:00:00.004000
+2021-11-25 12:32:26.535160 loaded list 'template\ghb_4_27.txt' of shape (20, 6)
+2021-11-25 12:32:26.536161 finished: loading list template\ghb_4_27.txt took: 0:00:00.006001
+2021-11-25 12:32:26.536161 starting: loading list template\ghb_4_28.txt
+2021-11-25 12:32:26.537161 starting: reading list template\ghb_4_28.txt
+2021-11-25 12:32:26.538161 finished: reading list template\ghb_4_28.txt took: 0:00:00.001000
+2021-11-25 12:32:26.539161 loaded list 'template\ghb_4_28.txt' of shape (20, 6)
+2021-11-25 12:32:26.540162 finished: loading list template\ghb_4_28.txt took: 0:00:00.004001
+2021-11-25 12:32:26.540162 starting: loading list template\ghb_4_29.txt
+2021-11-25 12:32:26.540162 starting: reading list template\ghb_4_29.txt
+2021-11-25 12:32:26.542162 finished: reading list template\ghb_4_29.txt took: 0:00:00.002000
+2021-11-25 12:32:26.542162 loaded list 'template\ghb_4_29.txt' of shape (20, 6)
+2021-11-25 12:32:26.543163 finished: loading list template\ghb_4_29.txt took: 0:00:00.003001
+2021-11-25 12:32:26.543163 starting: loading list template\ghb_4_3.txt
+2021-11-25 12:32:26.544163 starting: reading list template\ghb_4_3.txt
+2021-11-25 12:32:26.545163 finished: reading list template\ghb_4_3.txt took: 0:00:00.001000
+2021-11-25 12:32:26.546163 loaded list 'template\ghb_4_3.txt' of shape (20, 6)
+2021-11-25 12:32:26.547164 finished: loading list template\ghb_4_3.txt took: 0:00:00.004001
+2021-11-25 12:32:26.547164 starting: loading list template\ghb_4_30.txt
+2021-11-25 12:32:26.547164 starting: reading list template\ghb_4_30.txt
+2021-11-25 12:32:26.549164 finished: reading list template\ghb_4_30.txt took: 0:00:00.002000
+2021-11-25 12:32:26.549164 loaded list 'template\ghb_4_30.txt' of shape (20, 6)
+2021-11-25 12:32:26.551164 finished: loading list template\ghb_4_30.txt took: 0:00:00.004000
+2021-11-25 12:32:26.551164 starting: loading list template\ghb_4_31.txt
+2021-11-25 12:32:26.551164 starting: reading list template\ghb_4_31.txt
+2021-11-25 12:32:26.553165 finished: reading list template\ghb_4_31.txt took: 0:00:00.002001
+2021-11-25 12:32:26.553165 loaded list 'template\ghb_4_31.txt' of shape (20, 6)
+2021-11-25 12:32:26.554165 finished: loading list template\ghb_4_31.txt took: 0:00:00.003001
+2021-11-25 12:32:26.554165 starting: loading list template\ghb_4_32.txt
+2021-11-25 12:32:26.555165 starting: reading list template\ghb_4_32.txt
+2021-11-25 12:32:26.556165 finished: reading list template\ghb_4_32.txt took: 0:00:00.001000
+2021-11-25 12:32:26.556165 loaded list 'template\ghb_4_32.txt' of shape (20, 6)
+2021-11-25 12:32:26.558166 finished: loading list template\ghb_4_32.txt took: 0:00:00.004001
+2021-11-25 12:32:26.558166 starting: loading list template\ghb_4_33.txt
+2021-11-25 12:32:26.558166 starting: reading list template\ghb_4_33.txt
+2021-11-25 12:32:26.560166 finished: reading list template\ghb_4_33.txt took: 0:00:00.002000
+2021-11-25 12:32:26.560166 loaded list 'template\ghb_4_33.txt' of shape (20, 6)
+2021-11-25 12:32:26.562168 finished: loading list template\ghb_4_33.txt took: 0:00:00.004002
+2021-11-25 12:32:26.562168 starting: loading list template\ghb_4_34.txt
+2021-11-25 12:32:26.562168 starting: reading list template\ghb_4_34.txt
+2021-11-25 12:32:26.564167 finished: reading list template\ghb_4_34.txt took: 0:00:00.001999
+2021-11-25 12:32:26.564167 loaded list 'template\ghb_4_34.txt' of shape (20, 6)
+2021-11-25 12:32:26.565167 finished: loading list template\ghb_4_34.txt took: 0:00:00.002999
+2021-11-25 12:32:26.565167 starting: loading list template\ghb_4_35.txt
+2021-11-25 12:32:26.565167 starting: reading list template\ghb_4_35.txt
+2021-11-25 12:32:26.567168 finished: reading list template\ghb_4_35.txt took: 0:00:00.002001
+2021-11-25 12:32:26.567168 loaded list 'template\ghb_4_35.txt' of shape (20, 6)
+2021-11-25 12:32:26.568168 finished: loading list template\ghb_4_35.txt took: 0:00:00.003001
+2021-11-25 12:32:26.569168 starting: loading list template\ghb_4_36.txt
+2021-11-25 12:32:26.569168 starting: reading list template\ghb_4_36.txt
+2021-11-25 12:32:26.570168 finished: reading list template\ghb_4_36.txt took: 0:00:00.001000
+2021-11-25 12:32:26.570168 loaded list 'template\ghb_4_36.txt' of shape (20, 6)
+2021-11-25 12:32:26.572169 finished: loading list template\ghb_4_36.txt took: 0:00:00.003001
+2021-11-25 12:32:26.572169 starting: loading list template\ghb_4_37.txt
+2021-11-25 12:32:26.572169 starting: reading list template\ghb_4_37.txt
+2021-11-25 12:32:26.576170 finished: reading list template\ghb_4_37.txt took: 0:00:00.004001
+2021-11-25 12:32:26.577170 loaded list 'template\ghb_4_37.txt' of shape (20, 6)
+2021-11-25 12:32:26.578170 finished: loading list template\ghb_4_37.txt took: 0:00:00.006001
+2021-11-25 12:32:26.578170 starting: loading list template\ghb_4_38.txt
+2021-11-25 12:32:26.578170 starting: reading list template\ghb_4_38.txt
+2021-11-25 12:32:26.580171 finished: reading list template\ghb_4_38.txt took: 0:00:00.002001
+2021-11-25 12:32:26.580171 loaded list 'template\ghb_4_38.txt' of shape (20, 6)
+2021-11-25 12:32:26.581171 finished: loading list template\ghb_4_38.txt took: 0:00:00.003001
+2021-11-25 12:32:26.582171 starting: loading list template\ghb_4_39.txt
+2021-11-25 12:32:26.582171 starting: reading list template\ghb_4_39.txt
+2021-11-25 12:32:26.583171 finished: reading list template\ghb_4_39.txt took: 0:00:00.001000
+2021-11-25 12:32:26.584171 loaded list 'template\ghb_4_39.txt' of shape (20, 6)
+2021-11-25 12:32:26.585172 finished: loading list template\ghb_4_39.txt took: 0:00:00.003001
+2021-11-25 12:32:26.585172 starting: loading list template\ghb_4_4.txt
+2021-11-25 12:32:26.585172 starting: reading list template\ghb_4_4.txt
+2021-11-25 12:32:26.587172 finished: reading list template\ghb_4_4.txt took: 0:00:00.002000
+2021-11-25 12:32:26.587172 loaded list 'template\ghb_4_4.txt' of shape (20, 6)
+2021-11-25 12:32:26.589173 finished: loading list template\ghb_4_4.txt took: 0:00:00.004001
+2021-11-25 12:32:26.589173 starting: loading list template\ghb_4_40.txt
+2021-11-25 12:32:26.589173 starting: reading list template\ghb_4_40.txt
+2021-11-25 12:32:26.591173 finished: reading list template\ghb_4_40.txt took: 0:00:00.002000
+2021-11-25 12:32:26.591173 loaded list 'template\ghb_4_40.txt' of shape (20, 6)
+2021-11-25 12:32:26.592174 finished: loading list template\ghb_4_40.txt took: 0:00:00.003001
+2021-11-25 12:32:26.592174 starting: loading list template\ghb_4_41.txt
+2021-11-25 12:32:26.593174 starting: reading list template\ghb_4_41.txt
+2021-11-25 12:32:26.595175 finished: reading list template\ghb_4_41.txt took: 0:00:00.002001
+2021-11-25 12:32:26.595175 loaded list 'template\ghb_4_41.txt' of shape (20, 6)
+2021-11-25 12:32:26.596175 finished: loading list template\ghb_4_41.txt took: 0:00:00.004001
+2021-11-25 12:32:26.596175 starting: loading list template\ghb_4_42.txt
+2021-11-25 12:32:26.597175 starting: reading list template\ghb_4_42.txt
+2021-11-25 12:32:26.598175 finished: reading list template\ghb_4_42.txt took: 0:00:00.001000
+2021-11-25 12:32:26.599175 loaded list 'template\ghb_4_42.txt' of shape (20, 6)
+2021-11-25 12:32:26.600175 finished: loading list template\ghb_4_42.txt took: 0:00:00.004000
+2021-11-25 12:32:26.600175 starting: loading list template\ghb_4_43.txt
+2021-11-25 12:32:26.600175 starting: reading list template\ghb_4_43.txt
+2021-11-25 12:32:26.605177 finished: reading list template\ghb_4_43.txt took: 0:00:00.005002
+2021-11-25 12:32:26.605177 loaded list 'template\ghb_4_43.txt' of shape (20, 6)
+2021-11-25 12:32:26.607177 finished: loading list template\ghb_4_43.txt took: 0:00:00.007002
+2021-11-25 12:32:26.607177 starting: loading list template\ghb_4_44.txt
+2021-11-25 12:32:26.607177 starting: reading list template\ghb_4_44.txt
+2021-11-25 12:32:26.609177 finished: reading list template\ghb_4_44.txt took: 0:00:00.002000
+2021-11-25 12:32:26.609177 loaded list 'template\ghb_4_44.txt' of shape (20, 6)
+2021-11-25 12:32:26.610177 finished: loading list template\ghb_4_44.txt took: 0:00:00.003000
+2021-11-25 12:32:26.610177 starting: loading list template\ghb_4_45.txt
+2021-11-25 12:32:26.610177 starting: reading list template\ghb_4_45.txt
+2021-11-25 12:32:26.612178 finished: reading list template\ghb_4_45.txt took: 0:00:00.002001
+2021-11-25 12:32:26.612178 loaded list 'template\ghb_4_45.txt' of shape (20, 6)
+2021-11-25 12:32:26.613178 finished: loading list template\ghb_4_45.txt took: 0:00:00.003001
+2021-11-25 12:32:26.614179 starting: loading list template\ghb_4_46.txt
+2021-11-25 12:32:26.614179 starting: reading list template\ghb_4_46.txt
+2021-11-25 12:32:26.615179 finished: reading list template\ghb_4_46.txt took: 0:00:00.001000
+2021-11-25 12:32:26.616178 loaded list 'template\ghb_4_46.txt' of shape (20, 6)
+2021-11-25 12:32:26.617179 finished: loading list template\ghb_4_46.txt took: 0:00:00.003000
+2021-11-25 12:32:26.617179 starting: loading list template\ghb_4_47.txt
+2021-11-25 12:32:26.617179 starting: reading list template\ghb_4_47.txt
+2021-11-25 12:32:26.619179 finished: reading list template\ghb_4_47.txt took: 0:00:00.002000
+2021-11-25 12:32:26.619179 loaded list 'template\ghb_4_47.txt' of shape (20, 6)
+2021-11-25 12:32:26.621180 finished: loading list template\ghb_4_47.txt took: 0:00:00.004001
+2021-11-25 12:32:26.621180 starting: loading list template\ghb_4_48.txt
+2021-11-25 12:32:26.621180 starting: reading list template\ghb_4_48.txt
+2021-11-25 12:32:26.623180 finished: reading list template\ghb_4_48.txt took: 0:00:00.002000
+2021-11-25 12:32:26.623180 loaded list 'template\ghb_4_48.txt' of shape (20, 6)
+2021-11-25 12:32:26.624180 finished: loading list template\ghb_4_48.txt took: 0:00:00.003000
+2021-11-25 12:32:26.625180 starting: loading list template\ghb_4_49.txt
+2021-11-25 12:32:26.625180 starting: reading list template\ghb_4_49.txt
+2021-11-25 12:32:26.627181 finished: reading list template\ghb_4_49.txt took: 0:00:00.002001
+2021-11-25 12:32:26.627181 loaded list 'template\ghb_4_49.txt' of shape (20, 6)
+2021-11-25 12:32:26.628181 finished: loading list template\ghb_4_49.txt took: 0:00:00.003001
+2021-11-25 12:32:26.628181 starting: loading list template\ghb_4_5.txt
+2021-11-25 12:32:26.628181 starting: reading list template\ghb_4_5.txt
+2021-11-25 12:32:26.633183 finished: reading list template\ghb_4_5.txt took: 0:00:00.005002
+2021-11-25 12:32:26.633183 loaded list 'template\ghb_4_5.txt' of shape (20, 6)
+2021-11-25 12:32:26.634183 finished: loading list template\ghb_4_5.txt took: 0:00:00.006002
+2021-11-25 12:32:26.635183 starting: loading list template\ghb_4_50.txt
+2021-11-25 12:32:26.635183 starting: reading list template\ghb_4_50.txt
+2021-11-25 12:32:26.639184 finished: reading list template\ghb_4_50.txt took: 0:00:00.004001
+2021-11-25 12:32:26.639184 loaded list 'template\ghb_4_50.txt' of shape (20, 6)
+2021-11-25 12:32:26.641185 finished: loading list template\ghb_4_50.txt took: 0:00:00.006002
+2021-11-25 12:32:26.641185 starting: loading list template\ghb_4_6.txt
+2021-11-25 12:32:26.641185 starting: reading list template\ghb_4_6.txt
+2021-11-25 12:32:26.645185 finished: reading list template\ghb_4_6.txt took: 0:00:00.004000
+2021-11-25 12:32:26.645185 loaded list 'template\ghb_4_6.txt' of shape (20, 6)
+2021-11-25 12:32:26.647186 finished: loading list template\ghb_4_6.txt took: 0:00:00.006001
+2021-11-25 12:32:26.647186 starting: loading list template\ghb_4_7.txt
+2021-11-25 12:32:26.647186 starting: reading list template\ghb_4_7.txt
+2021-11-25 12:32:26.651187 finished: reading list template\ghb_4_7.txt took: 0:00:00.004001
+2021-11-25 12:32:26.651187 loaded list 'template\ghb_4_7.txt' of shape (20, 6)
+2021-11-25 12:32:26.653187 finished: loading list template\ghb_4_7.txt took: 0:00:00.006001
+2021-11-25 12:32:26.653187 starting: loading list template\ghb_4_8.txt
+2021-11-25 12:32:26.653187 starting: reading list template\ghb_4_8.txt
+2021-11-25 12:32:26.655188 finished: reading list template\ghb_4_8.txt took: 0:00:00.002001
+2021-11-25 12:32:26.655188 loaded list 'template\ghb_4_8.txt' of shape (20, 6)
+2021-11-25 12:32:26.657189 finished: loading list template\ghb_4_8.txt took: 0:00:00.004002
+2021-11-25 12:32:26.657189 starting: loading list template\ghb_4_9.txt
+2021-11-25 12:32:26.657189 starting: reading list template\ghb_4_9.txt
+2021-11-25 12:32:26.659189 finished: reading list template\ghb_4_9.txt took: 0:00:00.002000
+2021-11-25 12:32:26.659189 loaded list 'template\ghb_4_9.txt' of shape (20, 6)
+2021-11-25 12:32:26.660189 finished: loading list template\ghb_4_9.txt took: 0:00:00.003000
+2021-11-25 12:32:26.662189 starting: writing list-based template file 'ghb_glayer_4_inst0_constant.csv.tpl'
+2021-11-25 12:32:26.706199 finished: writing list-based template file 'ghb_glayer_4_inst0_constant.csv.tpl' took: 0:00:00.044010
+2021-11-25 12:32:26.712200 finished: adding constant type multiplier style parameters for file(s) ['ghb_4_0.txt', 'ghb_4_1.txt', 'ghb_4_10.txt', 'ghb_4_11.txt', 'ghb_4_12.txt', 'ghb_4_13.txt', 'ghb_4_14.txt', 'ghb_4_15.txt', 'ghb_4_16.txt', 'ghb_4_17.txt', 'ghb_4_18.txt', 'ghb_4_19.txt', 'ghb_4_2.txt', 'ghb_4_20.txt', 'ghb_4_21.txt', 'ghb_4_22.txt', 'ghb_4_23.txt', 'ghb_4_24.txt', 'ghb_4_25.txt', 'ghb_4_26.txt', 'ghb_4_27.txt', 'ghb_4_28.txt', 'ghb_4_29.txt', 'ghb_4_3.txt', 'ghb_4_30.txt', 'ghb_4_31.txt', 'ghb_4_32.txt', 'ghb_4_33.txt', 'ghb_4_34.txt', 'ghb_4_35.txt', 'ghb_4_36.txt', 'ghb_4_37.txt', 'ghb_4_38.txt', 'ghb_4_39.txt', 'ghb_4_4.txt', 'ghb_4_40.txt', 'ghb_4_41.txt', 'ghb_4_42.txt', 'ghb_4_43.txt', 'ghb_4_44.txt', 'ghb_4_45.txt', 'ghb_4_46.txt', 'ghb_4_47.txt', 'ghb_4_48.txt', 'ghb_4_49.txt', 'ghb_4_5.txt', 'ghb_4_50.txt', 'ghb_4_6.txt', 'ghb_4_7.txt', 'ghb_4_8.txt', 'ghb_4_9.txt'] took: 0:00:00.270061
+2021-11-25 12:32:26.713200 starting: adding constant type multiplier style parameters for file(s) ['ghb_5_0.txt', 'ghb_5_1.txt', 'ghb_5_10.txt', 'ghb_5_11.txt', 'ghb_5_12.txt', 'ghb_5_13.txt', 'ghb_5_14.txt', 'ghb_5_15.txt', 'ghb_5_16.txt', 'ghb_5_17.txt', 'ghb_5_18.txt', 'ghb_5_19.txt', 'ghb_5_2.txt', 'ghb_5_20.txt', 'ghb_5_21.txt', 'ghb_5_22.txt', 'ghb_5_23.txt', 'ghb_5_24.txt', 'ghb_5_25.txt', 'ghb_5_26.txt', 'ghb_5_27.txt', 'ghb_5_28.txt', 'ghb_5_29.txt', 'ghb_5_3.txt', 'ghb_5_30.txt', 'ghb_5_31.txt', 'ghb_5_32.txt', 'ghb_5_33.txt', 'ghb_5_34.txt', 'ghb_5_35.txt', 'ghb_5_36.txt', 'ghb_5_37.txt', 'ghb_5_38.txt', 'ghb_5_39.txt', 'ghb_5_4.txt', 'ghb_5_40.txt', 'ghb_5_41.txt', 'ghb_5_42.txt', 'ghb_5_43.txt', 'ghb_5_44.txt', 'ghb_5_45.txt', 'ghb_5_46.txt', 'ghb_5_47.txt', 'ghb_5_48.txt', 'ghb_5_49.txt', 'ghb_5_5.txt', 'ghb_5_50.txt', 'ghb_5_6.txt', 'ghb_5_7.txt', 'ghb_5_8.txt', 'ghb_5_9.txt']
+2021-11-25 12:32:26.713200 WARNING: Discrepancy between number of filenames (51) and number of formatter strings (1). Will repeat first (free)
+2021-11-25 12:32:26.713200 starting: loading list template\ghb_5_0.txt
+2021-11-25 12:32:26.713200 starting: reading list template\ghb_5_0.txt
+2021-11-25 12:32:26.714201 finished: reading list template\ghb_5_0.txt took: 0:00:00.001001
+2021-11-25 12:32:26.715201 loaded list 'template\ghb_5_0.txt' of shape (20, 6)
+2021-11-25 12:32:26.716201 finished: loading list template\ghb_5_0.txt took: 0:00:00.003001
+2021-11-25 12:32:26.716201 starting: loading list template\ghb_5_1.txt
+2021-11-25 12:32:26.717202 starting: reading list template\ghb_5_1.txt
+2021-11-25 12:32:26.718202 finished: reading list template\ghb_5_1.txt took: 0:00:00.001000
+2021-11-25 12:32:26.719202 loaded list 'template\ghb_5_1.txt' of shape (20, 6)
+2021-11-25 12:32:26.720203 finished: loading list template\ghb_5_1.txt took: 0:00:00.004002
+2021-11-25 12:32:26.720203 starting: loading list template\ghb_5_10.txt
+2021-11-25 12:32:26.720203 starting: reading list template\ghb_5_10.txt
+2021-11-25 12:32:26.724204 finished: reading list template\ghb_5_10.txt took: 0:00:00.004001
+2021-11-25 12:32:26.725203 loaded list 'template\ghb_5_10.txt' of shape (20, 6)
+2021-11-25 12:32:26.726204 finished: loading list template\ghb_5_10.txt took: 0:00:00.006001
+2021-11-25 12:32:26.726204 starting: loading list template\ghb_5_11.txt
+2021-11-25 12:32:26.726204 starting: reading list template\ghb_5_11.txt
+2021-11-25 12:32:26.728204 finished: reading list template\ghb_5_11.txt took: 0:00:00.002000
+2021-11-25 12:32:26.728204 loaded list 'template\ghb_5_11.txt' of shape (20, 6)
+2021-11-25 12:32:26.729204 finished: loading list template\ghb_5_11.txt took: 0:00:00.003000
+2021-11-25 12:32:26.730205 starting: loading list template\ghb_5_12.txt
+2021-11-25 12:32:26.730205 starting: reading list template\ghb_5_12.txt
+2021-11-25 12:32:26.732205 finished: reading list template\ghb_5_12.txt took: 0:00:00.002000
+2021-11-25 12:32:26.732205 loaded list 'template\ghb_5_12.txt' of shape (20, 6)
+2021-11-25 12:32:26.733205 finished: loading list template\ghb_5_12.txt took: 0:00:00.003000
+2021-11-25 12:32:26.733205 starting: loading list template\ghb_5_13.txt
+2021-11-25 12:32:26.734204 starting: reading list template\ghb_5_13.txt
+2021-11-25 12:32:26.738206 finished: reading list template\ghb_5_13.txt took: 0:00:00.004002
+2021-11-25 12:32:26.738206 loaded list 'template\ghb_5_13.txt' of shape (20, 6)
+2021-11-25 12:32:26.739207 finished: loading list template\ghb_5_13.txt took: 0:00:00.006002
+2021-11-25 12:32:26.739207 starting: loading list template\ghb_5_14.txt
+2021-11-25 12:32:26.740207 starting: reading list template\ghb_5_14.txt
+2021-11-25 12:32:26.741207 finished: reading list template\ghb_5_14.txt took: 0:00:00.001000
+2021-11-25 12:32:26.742207 loaded list 'template\ghb_5_14.txt' of shape (20, 6)
+2021-11-25 12:32:26.743207 finished: loading list template\ghb_5_14.txt took: 0:00:00.004000
+2021-11-25 12:32:26.743207 starting: loading list template\ghb_5_15.txt
+2021-11-25 12:32:26.743207 starting: reading list template\ghb_5_15.txt
+2021-11-25 12:32:26.745208 finished: reading list template\ghb_5_15.txt took: 0:00:00.002001
+2021-11-25 12:32:26.745208 loaded list 'template\ghb_5_15.txt' of shape (20, 6)
+2021-11-25 12:32:26.746208 finished: loading list template\ghb_5_15.txt took: 0:00:00.003001
+2021-11-25 12:32:26.747208 starting: loading list template\ghb_5_16.txt
+2021-11-25 12:32:26.747208 starting: reading list template\ghb_5_16.txt
+2021-11-25 12:32:26.748208 finished: reading list template\ghb_5_16.txt took: 0:00:00.001000
+2021-11-25 12:32:26.748208 loaded list 'template\ghb_5_16.txt' of shape (20, 6)
+2021-11-25 12:32:26.750210 finished: loading list template\ghb_5_16.txt took: 0:00:00.003002
+2021-11-25 12:32:26.750210 starting: loading list template\ghb_5_17.txt
+2021-11-25 12:32:26.750210 starting: reading list template\ghb_5_17.txt
+2021-11-25 12:32:26.752210 finished: reading list template\ghb_5_17.txt took: 0:00:00.002000
+2021-11-25 12:32:26.752210 loaded list 'template\ghb_5_17.txt' of shape (20, 6)
+2021-11-25 12:32:26.753210 finished: loading list template\ghb_5_17.txt took: 0:00:00.003000
+2021-11-25 12:32:26.753210 starting: loading list template\ghb_5_18.txt
+2021-11-25 12:32:26.753210 starting: reading list template\ghb_5_18.txt
+2021-11-25 12:32:26.755210 finished: reading list template\ghb_5_18.txt took: 0:00:00.002000
+2021-11-25 12:32:26.755210 loaded list 'template\ghb_5_18.txt' of shape (20, 6)
+2021-11-25 12:32:26.757211 finished: loading list template\ghb_5_18.txt took: 0:00:00.004001
+2021-11-25 12:32:26.757211 starting: loading list template\ghb_5_19.txt
+2021-11-25 12:32:26.757211 starting: reading list template\ghb_5_19.txt
+2021-11-25 12:32:26.761211 finished: reading list template\ghb_5_19.txt took: 0:00:00.004000
+2021-11-25 12:32:26.761211 loaded list 'template\ghb_5_19.txt' of shape (20, 6)
+2021-11-25 12:32:26.763212 finished: loading list template\ghb_5_19.txt took: 0:00:00.006001
+2021-11-25 12:32:26.763212 starting: loading list template\ghb_5_2.txt
+2021-11-25 12:32:26.763212 starting: reading list template\ghb_5_2.txt
+2021-11-25 12:32:26.765212 finished: reading list template\ghb_5_2.txt took: 0:00:00.002000
+2021-11-25 12:32:26.765212 loaded list 'template\ghb_5_2.txt' of shape (20, 6)
+2021-11-25 12:32:26.767213 finished: loading list template\ghb_5_2.txt took: 0:00:00.004001
+2021-11-25 12:32:26.767213 starting: loading list template\ghb_5_20.txt
+2021-11-25 12:32:26.767213 starting: reading list template\ghb_5_20.txt
+2021-11-25 12:32:26.768213 finished: reading list template\ghb_5_20.txt took: 0:00:00.001000
+2021-11-25 12:32:26.769213 loaded list 'template\ghb_5_20.txt' of shape (20, 6)
+2021-11-25 12:32:26.770213 finished: loading list template\ghb_5_20.txt took: 0:00:00.003000
+2021-11-25 12:32:26.770213 starting: loading list template\ghb_5_21.txt
+2021-11-25 12:32:26.771213 starting: reading list template\ghb_5_21.txt
+2021-11-25 12:32:26.775215 finished: reading list template\ghb_5_21.txt took: 0:00:00.004002
+2021-11-25 12:32:26.775215 loaded list 'template\ghb_5_21.txt' of shape (20, 6)
+2021-11-25 12:32:26.776215 finished: loading list template\ghb_5_21.txt took: 0:00:00.006002
+2021-11-25 12:32:26.776215 starting: loading list template\ghb_5_22.txt
+2021-11-25 12:32:26.776215 starting: reading list template\ghb_5_22.txt
+2021-11-25 12:32:26.778216 finished: reading list template\ghb_5_22.txt took: 0:00:00.002001
+2021-11-25 12:32:26.778216 loaded list 'template\ghb_5_22.txt' of shape (20, 6)
+2021-11-25 12:32:26.780216 finished: loading list template\ghb_5_22.txt took: 0:00:00.004001
+2021-11-25 12:32:26.780216 starting: loading list template\ghb_5_23.txt
+2021-11-25 12:32:26.780216 starting: reading list template\ghb_5_23.txt
+2021-11-25 12:32:26.782217 finished: reading list template\ghb_5_23.txt took: 0:00:00.002001
+2021-11-25 12:32:26.782217 loaded list 'template\ghb_5_23.txt' of shape (20, 6)
+2021-11-25 12:32:26.783217 finished: loading list template\ghb_5_23.txt took: 0:00:00.003001
+2021-11-25 12:32:26.783217 starting: loading list template\ghb_5_24.txt
+2021-11-25 12:32:26.783217 starting: reading list template\ghb_5_24.txt
+2021-11-25 12:32:26.785218 finished: reading list template\ghb_5_24.txt took: 0:00:00.002001
+2021-11-25 12:32:26.785218 loaded list 'template\ghb_5_24.txt' of shape (20, 6)
+2021-11-25 12:32:26.786217 finished: loading list template\ghb_5_24.txt took: 0:00:00.003000
+2021-11-25 12:32:26.786217 starting: loading list template\ghb_5_25.txt
+2021-11-25 12:32:26.787217 starting: reading list template\ghb_5_25.txt
+2021-11-25 12:32:26.788218 finished: reading list template\ghb_5_25.txt took: 0:00:00.001001
+2021-11-25 12:32:26.788218 loaded list 'template\ghb_5_25.txt' of shape (20, 6)
+2021-11-25 12:32:26.789218 finished: loading list template\ghb_5_25.txt took: 0:00:00.003001
+2021-11-25 12:32:26.790218 starting: loading list template\ghb_5_26.txt
+2021-11-25 12:32:26.790218 starting: reading list template\ghb_5_26.txt
+2021-11-25 12:32:26.791218 finished: reading list template\ghb_5_26.txt took: 0:00:00.001000
+2021-11-25 12:32:26.792219 loaded list 'template\ghb_5_26.txt' of shape (20, 6)
+2021-11-25 12:32:26.793219 finished: loading list template\ghb_5_26.txt took: 0:00:00.003001
+2021-11-25 12:32:26.793219 starting: loading list template\ghb_5_27.txt
+2021-11-25 12:32:26.794219 starting: reading list template\ghb_5_27.txt
+2021-11-25 12:32:26.795219 finished: reading list template\ghb_5_27.txt took: 0:00:00.001000
+2021-11-25 12:32:26.795219 loaded list 'template\ghb_5_27.txt' of shape (20, 6)
+2021-11-25 12:32:26.797220 finished: loading list template\ghb_5_27.txt took: 0:00:00.004001
+2021-11-25 12:32:26.797220 starting: loading list template\ghb_5_28.txt
+2021-11-25 12:32:26.797220 starting: reading list template\ghb_5_28.txt
+2021-11-25 12:32:26.798220 finished: reading list template\ghb_5_28.txt took: 0:00:00.001000
+2021-11-25 12:32:26.799220 loaded list 'template\ghb_5_28.txt' of shape (20, 6)
+2021-11-25 12:32:26.800220 finished: loading list template\ghb_5_28.txt took: 0:00:00.003000
+2021-11-25 12:32:26.800220 starting: loading list template\ghb_5_29.txt
+2021-11-25 12:32:26.800220 starting: reading list template\ghb_5_29.txt
+2021-11-25 12:32:26.802220 finished: reading list template\ghb_5_29.txt took: 0:00:00.002000
+2021-11-25 12:32:26.802220 loaded list 'template\ghb_5_29.txt' of shape (20, 6)
+2021-11-25 12:32:26.804221 finished: loading list template\ghb_5_29.txt took: 0:00:00.004001
+2021-11-25 12:32:26.804221 starting: loading list template\ghb_5_3.txt
+2021-11-25 12:32:26.804221 starting: reading list template\ghb_5_3.txt
+2021-11-25 12:32:26.805221 finished: reading list template\ghb_5_3.txt took: 0:00:00.001000
+2021-11-25 12:32:26.806221 loaded list 'template\ghb_5_3.txt' of shape (20, 6)
+2021-11-25 12:32:26.807222 finished: loading list template\ghb_5_3.txt took: 0:00:00.003001
+2021-11-25 12:32:26.807222 starting: loading list template\ghb_5_30.txt
+2021-11-25 12:32:26.808222 starting: reading list template\ghb_5_30.txt
+2021-11-25 12:32:26.809222 finished: reading list template\ghb_5_30.txt took: 0:00:00.001000
+2021-11-25 12:32:26.810223 loaded list 'template\ghb_5_30.txt' of shape (20, 6)
+2021-11-25 12:32:26.811223 finished: loading list template\ghb_5_30.txt took: 0:00:00.004001
+2021-11-25 12:32:26.811223 starting: loading list template\ghb_5_31.txt
+2021-11-25 12:32:26.812223 starting: reading list template\ghb_5_31.txt
+2021-11-25 12:32:26.813223 finished: reading list template\ghb_5_31.txt took: 0:00:00.001000
+2021-11-25 12:32:26.814223 loaded list 'template\ghb_5_31.txt' of shape (20, 6)
+2021-11-25 12:32:26.815223 finished: loading list template\ghb_5_31.txt took: 0:00:00.004000
+2021-11-25 12:32:26.815223 starting: loading list template\ghb_5_32.txt
+2021-11-25 12:32:26.815223 starting: reading list template\ghb_5_32.txt
+2021-11-25 12:32:26.817225 finished: reading list template\ghb_5_32.txt took: 0:00:00.002002
+2021-11-25 12:32:26.817225 loaded list 'template\ghb_5_32.txt' of shape (20, 6)
+2021-11-25 12:32:26.819225 finished: loading list template\ghb_5_32.txt took: 0:00:00.004002
+2021-11-25 12:32:26.819225 starting: loading list template\ghb_5_33.txt
+2021-11-25 12:32:26.819225 starting: reading list template\ghb_5_33.txt
+2021-11-25 12:32:26.823225 finished: reading list template\ghb_5_33.txt took: 0:00:00.004000
+2021-11-25 12:32:26.824225 loaded list 'template\ghb_5_33.txt' of shape (20, 6)
+2021-11-25 12:32:26.825226 finished: loading list template\ghb_5_33.txt took: 0:00:00.006001
+2021-11-25 12:32:26.825226 starting: loading list template\ghb_5_34.txt
+2021-11-25 12:32:26.826226 starting: reading list template\ghb_5_34.txt
+2021-11-25 12:32:26.830227 finished: reading list template\ghb_5_34.txt took: 0:00:00.004001
+2021-11-25 12:32:26.830227 loaded list 'template\ghb_5_34.txt' of shape (20, 6)
+2021-11-25 12:32:26.832228 finished: loading list template\ghb_5_34.txt took: 0:00:00.007002
+2021-11-25 12:32:26.832228 starting: loading list template\ghb_5_35.txt
+2021-11-25 12:32:26.832228 starting: reading list template\ghb_5_35.txt
+2021-11-25 12:32:26.834228 finished: reading list template\ghb_5_35.txt took: 0:00:00.002000
+2021-11-25 12:32:26.834228 loaded list 'template\ghb_5_35.txt' of shape (20, 6)
+2021-11-25 12:32:26.835228 finished: loading list template\ghb_5_35.txt took: 0:00:00.003000
+2021-11-25 12:32:26.835228 starting: loading list template\ghb_5_36.txt
+2021-11-25 12:32:26.835228 starting: reading list template\ghb_5_36.txt
+2021-11-25 12:32:26.840229 finished: reading list template\ghb_5_36.txt took: 0:00:00.005001
+2021-11-25 12:32:26.840229 loaded list 'template\ghb_5_36.txt' of shape (20, 6)
+2021-11-25 12:32:26.842229 finished: loading list template\ghb_5_36.txt took: 0:00:00.007001
+2021-11-25 12:32:26.842229 starting: loading list template\ghb_5_37.txt
+2021-11-25 12:32:26.842229 starting: reading list template\ghb_5_37.txt
+2021-11-25 12:32:26.844230 finished: reading list template\ghb_5_37.txt took: 0:00:00.002001
+2021-11-25 12:32:26.844230 loaded list 'template\ghb_5_37.txt' of shape (20, 6)
+2021-11-25 12:32:26.846230 finished: loading list template\ghb_5_37.txt took: 0:00:00.004001
+2021-11-25 12:32:26.846230 starting: loading list template\ghb_5_38.txt
+2021-11-25 12:32:26.846230 starting: reading list template\ghb_5_38.txt
+2021-11-25 12:32:26.847230 finished: reading list template\ghb_5_38.txt took: 0:00:00.001000
+2021-11-25 12:32:26.848231 loaded list 'template\ghb_5_38.txt' of shape (20, 6)
+2021-11-25 12:32:26.849231 finished: loading list template\ghb_5_38.txt took: 0:00:00.003001
+2021-11-25 12:32:26.849231 starting: loading list template\ghb_5_39.txt
+2021-11-25 12:32:26.849231 starting: reading list template\ghb_5_39.txt
+2021-11-25 12:32:26.851232 finished: reading list template\ghb_5_39.txt took: 0:00:00.002001
+2021-11-25 12:32:26.851232 loaded list 'template\ghb_5_39.txt' of shape (20, 6)
+2021-11-25 12:32:26.853232 finished: loading list template\ghb_5_39.txt took: 0:00:00.004001
+2021-11-25 12:32:26.853232 starting: loading list template\ghb_5_4.txt
+2021-11-25 12:32:26.853232 starting: reading list template\ghb_5_4.txt
+2021-11-25 12:32:26.855233 finished: reading list template\ghb_5_4.txt took: 0:00:00.002001
+2021-11-25 12:32:26.855233 loaded list 'template\ghb_5_4.txt' of shape (20, 6)
+2021-11-25 12:32:26.856233 finished: loading list template\ghb_5_4.txt took: 0:00:00.003001
+2021-11-25 12:32:26.856233 starting: loading list template\ghb_5_40.txt
+2021-11-25 12:32:26.856233 starting: reading list template\ghb_5_40.txt
+2021-11-25 12:32:26.858234 finished: reading list template\ghb_5_40.txt took: 0:00:00.002001
+2021-11-25 12:32:26.858234 loaded list 'template\ghb_5_40.txt' of shape (20, 6)
+2021-11-25 12:32:26.859234 finished: loading list template\ghb_5_40.txt took: 0:00:00.003001
+2021-11-25 12:32:26.860234 starting: loading list template\ghb_5_41.txt
+2021-11-25 12:32:26.860234 starting: reading list template\ghb_5_41.txt
+2021-11-25 12:32:26.862234 finished: reading list template\ghb_5_41.txt took: 0:00:00.002000
+2021-11-25 12:32:26.862234 loaded list 'template\ghb_5_41.txt' of shape (20, 6)
+2021-11-25 12:32:26.863234 finished: loading list template\ghb_5_41.txt took: 0:00:00.003000
+2021-11-25 12:32:26.863234 starting: loading list template\ghb_5_42.txt
+2021-11-25 12:32:26.864234 starting: reading list template\ghb_5_42.txt
+2021-11-25 12:32:26.865234 finished: reading list template\ghb_5_42.txt took: 0:00:00.001000
+2021-11-25 12:32:26.865234 loaded list 'template\ghb_5_42.txt' of shape (20, 6)
+2021-11-25 12:32:26.866235 finished: loading list template\ghb_5_42.txt took: 0:00:00.003001
+2021-11-25 12:32:26.867236 starting: loading list template\ghb_5_43.txt
+2021-11-25 12:32:26.867236 starting: reading list template\ghb_5_43.txt
+2021-11-25 12:32:26.871236 finished: reading list template\ghb_5_43.txt took: 0:00:00.004000
+2021-11-25 12:32:26.872236 loaded list 'template\ghb_5_43.txt' of shape (20, 6)
+2021-11-25 12:32:26.873237 finished: loading list template\ghb_5_43.txt took: 0:00:00.006001
+2021-11-25 12:32:26.873237 starting: loading list template\ghb_5_44.txt
+2021-11-25 12:32:26.873237 starting: reading list template\ghb_5_44.txt
+2021-11-25 12:32:26.875237 finished: reading list template\ghb_5_44.txt took: 0:00:00.002000
+2021-11-25 12:32:26.875237 loaded list 'template\ghb_5_44.txt' of shape (20, 6)
+2021-11-25 12:32:26.877238 finished: loading list template\ghb_5_44.txt took: 0:00:00.004001
+2021-11-25 12:32:26.877238 starting: loading list template\ghb_5_45.txt
+2021-11-25 12:32:26.877238 starting: reading list template\ghb_5_45.txt
+2021-11-25 12:32:26.878238 finished: reading list template\ghb_5_45.txt took: 0:00:00.001000
+2021-11-25 12:32:26.879237 loaded list 'template\ghb_5_45.txt' of shape (20, 6)
+2021-11-25 12:32:26.880238 finished: loading list template\ghb_5_45.txt took: 0:00:00.003000
+2021-11-25 12:32:26.880238 starting: loading list template\ghb_5_46.txt
+2021-11-25 12:32:26.880238 starting: reading list template\ghb_5_46.txt
+2021-11-25 12:32:26.882239 finished: reading list template\ghb_5_46.txt took: 0:00:00.002001
+2021-11-25 12:32:26.882239 loaded list 'template\ghb_5_46.txt' of shape (20, 6)
+2021-11-25 12:32:26.883239 finished: loading list template\ghb_5_46.txt took: 0:00:00.003001
+2021-11-25 12:32:26.884239 starting: loading list template\ghb_5_47.txt
+2021-11-25 12:32:26.884239 starting: reading list template\ghb_5_47.txt
+2021-11-25 12:32:26.885240 finished: reading list template\ghb_5_47.txt took: 0:00:00.001001
+2021-11-25 12:32:26.886240 loaded list 'template\ghb_5_47.txt' of shape (20, 6)
+2021-11-25 12:32:26.887240 finished: loading list template\ghb_5_47.txt took: 0:00:00.003001
+2021-11-25 12:32:26.887240 starting: loading list template\ghb_5_48.txt
+2021-11-25 12:32:26.887240 starting: reading list template\ghb_5_48.txt
+2021-11-25 12:32:26.889240 finished: reading list template\ghb_5_48.txt took: 0:00:00.002000
+2021-11-25 12:32:26.889240 loaded list 'template\ghb_5_48.txt' of shape (20, 6)
+2021-11-25 12:32:26.890241 finished: loading list template\ghb_5_48.txt took: 0:00:00.003001
+2021-11-25 12:32:26.891240 starting: loading list template\ghb_5_49.txt
+2021-11-25 12:32:26.891240 starting: reading list template\ghb_5_49.txt
+2021-11-25 12:32:26.892241 finished: reading list template\ghb_5_49.txt took: 0:00:00.001001
+2021-11-25 12:32:26.892241 loaded list 'template\ghb_5_49.txt' of shape (20, 6)
+2021-11-25 12:32:26.894241 finished: loading list template\ghb_5_49.txt took: 0:00:00.003001
+2021-11-25 12:32:26.894241 starting: loading list template\ghb_5_5.txt
+2021-11-25 12:32:26.894241 starting: reading list template\ghb_5_5.txt
+2021-11-25 12:32:26.896242 finished: reading list template\ghb_5_5.txt took: 0:00:00.002001
+2021-11-25 12:32:26.896242 loaded list 'template\ghb_5_5.txt' of shape (20, 6)
+2021-11-25 12:32:26.897243 finished: loading list template\ghb_5_5.txt took: 0:00:00.003002
+2021-11-25 12:32:26.897243 starting: loading list template\ghb_5_50.txt
+2021-11-25 12:32:26.898243 starting: reading list template\ghb_5_50.txt
+2021-11-25 12:32:26.899243 finished: reading list template\ghb_5_50.txt took: 0:00:00.001000
+2021-11-25 12:32:26.899243 loaded list 'template\ghb_5_50.txt' of shape (20, 6)
+2021-11-25 12:32:26.901243 finished: loading list template\ghb_5_50.txt took: 0:00:00.004000
+2021-11-25 12:32:26.901243 starting: loading list template\ghb_5_6.txt
+2021-11-25 12:32:26.901243 starting: reading list template\ghb_5_6.txt
+2021-11-25 12:32:26.903243 finished: reading list template\ghb_5_6.txt took: 0:00:00.002000
+2021-11-25 12:32:26.903243 loaded list 'template\ghb_5_6.txt' of shape (20, 6)
+2021-11-25 12:32:26.904244 finished: loading list template\ghb_5_6.txt took: 0:00:00.003001
+2021-11-25 12:32:26.904244 starting: loading list template\ghb_5_7.txt
+2021-11-25 12:32:26.905244 starting: reading list template\ghb_5_7.txt
+2021-11-25 12:32:26.906244 finished: reading list template\ghb_5_7.txt took: 0:00:00.001000
+2021-11-25 12:32:26.906244 loaded list 'template\ghb_5_7.txt' of shape (20, 6)
+2021-11-25 12:32:26.908245 finished: loading list template\ghb_5_7.txt took: 0:00:00.004001
+2021-11-25 12:32:26.908245 starting: loading list template\ghb_5_8.txt
+2021-11-25 12:32:26.908245 starting: reading list template\ghb_5_8.txt
+2021-11-25 12:32:26.912245 finished: reading list template\ghb_5_8.txt took: 0:00:00.004000
+2021-11-25 12:32:26.913246 loaded list 'template\ghb_5_8.txt' of shape (20, 6)
+2021-11-25 12:32:26.914246 finished: loading list template\ghb_5_8.txt took: 0:00:00.006001
+2021-11-25 12:32:26.914246 starting: loading list template\ghb_5_9.txt
+2021-11-25 12:32:26.914246 starting: reading list template\ghb_5_9.txt
+2021-11-25 12:32:26.916246 finished: reading list template\ghb_5_9.txt took: 0:00:00.002000
+2021-11-25 12:32:26.916246 loaded list 'template\ghb_5_9.txt' of shape (20, 6)
+2021-11-25 12:32:26.917247 finished: loading list template\ghb_5_9.txt took: 0:00:00.003001
+2021-11-25 12:32:26.919246 starting: writing list-based template file 'ghb_glayer_5_inst0_constant.csv.tpl'
+2021-11-25 12:32:26.963257 finished: writing list-based template file 'ghb_glayer_5_inst0_constant.csv.tpl' took: 0:00:00.044011
+2021-11-25 12:32:26.970258 finished: adding constant type multiplier style parameters for file(s) ['ghb_5_0.txt', 'ghb_5_1.txt', 'ghb_5_10.txt', 'ghb_5_11.txt', 'ghb_5_12.txt', 'ghb_5_13.txt', 'ghb_5_14.txt', 'ghb_5_15.txt', 'ghb_5_16.txt', 'ghb_5_17.txt', 'ghb_5_18.txt', 'ghb_5_19.txt', 'ghb_5_2.txt', 'ghb_5_20.txt', 'ghb_5_21.txt', 'ghb_5_22.txt', 'ghb_5_23.txt', 'ghb_5_24.txt', 'ghb_5_25.txt', 'ghb_5_26.txt', 'ghb_5_27.txt', 'ghb_5_28.txt', 'ghb_5_29.txt', 'ghb_5_3.txt', 'ghb_5_30.txt', 'ghb_5_31.txt', 'ghb_5_32.txt', 'ghb_5_33.txt', 'ghb_5_34.txt', 'ghb_5_35.txt', 'ghb_5_36.txt', 'ghb_5_37.txt', 'ghb_5_38.txt', 'ghb_5_39.txt', 'ghb_5_4.txt', 'ghb_5_40.txt', 'ghb_5_41.txt', 'ghb_5_42.txt', 'ghb_5_43.txt', 'ghb_5_44.txt', 'ghb_5_45.txt', 'ghb_5_46.txt', 'ghb_5_47.txt', 'ghb_5_48.txt', 'ghb_5_49.txt', 'ghb_5_5.txt', 'ghb_5_50.txt', 'ghb_5_6.txt', 'ghb_5_7.txt', 'ghb_5_8.txt', 'ghb_5_9.txt'] took: 0:00:00.257058
+2021-11-25 12:32:26.971258 starting: adding constant type multiplier style parameters for file(s) ['rch_0.txt']
+2021-11-25 12:32:26.971258 starting: loading list template\rch_0.txt
+2021-11-25 12:32:26.971258 starting: reading list template\rch_0.txt
+2021-11-25 12:32:26.978259 finished: reading list template\rch_0.txt took: 0:00:00.007001
+2021-11-25 12:32:26.978259 loaded list 'template\rch_0.txt' of shape (360, 5)
+2021-11-25 12:32:26.980261 finished: loading list template\rch_0.txt took: 0:00:00.009003
+2021-11-25 12:32:26.981261 starting: writing list-based template file 'rch_rain_inst0_constant.csv.tpl'
+2021-11-25 12:32:27.003266 finished: writing list-based template file 'rch_rain_inst0_constant.csv.tpl' took: 0:00:00.022005
+2021-11-25 12:32:27.013268 finished: adding constant type multiplier style parameters for file(s) ['rch_0.txt'] took: 0:00:00.042010
+2021-11-25 12:32:27.013268 starting: adding constant type multiplier style parameters for file(s) ['rch_1.txt']
+2021-11-25 12:32:27.014268 starting: loading list template\rch_1.txt
+2021-11-25 12:32:27.014268 starting: reading list template\rch_1.txt
+2021-11-25 12:32:27.020270 finished: reading list template\rch_1.txt took: 0:00:00.006002
+2021-11-25 12:32:27.020270 loaded list 'template\rch_1.txt' of shape (360, 5)
+2021-11-25 12:32:27.022271 finished: loading list template\rch_1.txt took: 0:00:00.008003
+2021-11-25 12:32:27.023271 starting: writing list-based template file 'rch_rain_inst1_constant.csv.tpl'
+2021-11-25 12:32:27.045276 finished: writing list-based template file 'rch_rain_inst1_constant.csv.tpl' took: 0:00:00.022005
+2021-11-25 12:32:27.052277 finished: adding constant type multiplier style parameters for file(s) ['rch_1.txt'] took: 0:00:00.039009
+2021-11-25 12:32:28.740655 forward_run line:pyemu.os_utils.run(r'C:\WRDAPP\mf6.2.0\bin\mf6')
+
+2021-11-25 12:32:28.856682 starting: building prior covariance matrix
+2021-11-25 12:32:29.113739 saving prior covariance matrix to file template\model_pest.prior.cov
+2021-11-25 12:32:30.247994 finished: building prior covariance matrix took: 0:00:01.391312
