@@ -113,7 +113,7 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
     
     
         x_1=obs_gal_tot.min(axis=1)*-1
-        plt.hist(x_1, np.arange(int(min(x_1)-1),int(max(x_1)+1),1),density=norm, facecolor='0.5', alpha=1, lw=3, ec="black")
+        plt.hist(x_1, np.arange(int(min(x_1)-1),int(max(x_1)+1),1),density=norm, facecolor='0.5', alpha=1, lw=1, ec="black")
         legend.append("prior")
         num_reals.append(len(x_1))
 
@@ -184,7 +184,7 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
     
     
 if __name__ == '__main__':
-    folder= "v0_prior"#os.path.join("../06_jpg/", ) 
+    folder= "v1_prior"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)

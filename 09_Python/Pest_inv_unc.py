@@ -242,8 +242,8 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                           par_name_base=f"hk_glayer_{i}",
                           pargp=f"hk_glayer_{i}",
                           zone_array=ib[i],
-                          upper_bound=10.,
-                          lower_bound=0.1,
+                          upper_bound=500.,
+                          lower_bound=0.005,
                           ult_ubound=1e-4,
                           ult_lbound=1e-10,
                           spatial_reference=sr,
@@ -299,8 +299,8 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                           pargp=f"ghb_glayer_{i}",
                           index_cols=[0,1,2],
                           use_cols=[4],
-                          upper_bound=10.,
-                          lower_bound=0.1,
+                          upper_bound=100.,
+                          lower_bound=0.01,
                           ult_ubound=100,
                           ult_lbound=0,
                           spatial_reference=sr
@@ -314,8 +314,8 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                           pargp=f"rch_rain",
                           index_cols=[0,1,2],
                           use_cols=[3],
-                          upper_bound=3,
-                          lower_bound=0.3,
+                          upper_bound=4,
+                          lower_bound=0.25,
                           ult_ubound=ubnd[i],
                           ult_lbound=0,
                           spatial_reference=sr,
@@ -396,6 +396,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     pst.control_data.noptmax=0
     pst.pestpp_options["additional_ins_delimiters"] = ","
     pst.pestpp_options["ies_bad_phi"]=1e25
+    pst.pestpp_options["ies_num_reals"]=100
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     # run with noptmax = 0 '''??
@@ -410,7 +411,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=1
+    pst.control_data.noptmax=-1
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     

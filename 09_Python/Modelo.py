@@ -47,8 +47,9 @@ sim =fp.mf6.MFSimulation(sim_name=model_name, version="mf6",
 
 #setting modflow time
 # [perlen, nstp, tsmult]
+# 2/21/2021 real rain ideam until there
 
-nsper=365*4 #number of  stress periods, 365 per year
+nsper=int(365*4.5) #number of  stress periods, 365 per year
 #there are 86400 seconds
 time_disc=[(86400, 1, 1.0) for _ in range(nsper-1)]#[(1,1,1.0)]
 time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginning of list
@@ -335,7 +336,7 @@ k_qbo2=1e-7*np.ones([nrows,ncols])
 k_2="k_qbo2.txt"
 k_qbo1=1e-8*np.ones([nrows,ncols])
 k_3="k_qbo1.txt"
-k_roc=1e-9*np.ones([nrows,ncols])
+k_roc=1e-7*np.ones([nrows,ncols])
 k_4="k_roc.txt"
 
 kv_qd_qbg=1e-1*np.ones([nrows,ncols])
@@ -615,8 +616,8 @@ dis.botm=botm
 
 
 #  procedure to include Recharge 
-df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=";")#load file
-df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=True)#format of of dates setted
+df_rain=pd.read_csv("../04_Xls/Lluvia_Ideam.csv", sep=",")#load file
+df_rain["Fecha"]=pd.to_datetime(df_rain.Fecha, dayfirst=False)#format of of dates setted
 df_rain["time"]=df_rain["Fecha"]-df_rain["Fecha"][0]#days since the first day
 df_rain["time_s"]=df_rain["time"].astype("timedelta64[s]")#count in seconds for modflow
 
@@ -918,7 +919,7 @@ gal_speed_exc=2.2 #gallery excavation speed m/d
 
 
 
-time_gal_0=365*3#time when gallery construction begins
+time_gal_0=365*3+30*3#time when gallery construction begins
 gal_spd_tr={}
 # write comments
 for i in range(resultg.shape[0]):#iterate gallery cells

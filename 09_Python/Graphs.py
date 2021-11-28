@@ -11,10 +11,11 @@ import matplotlib as mpl
 import numpy as np
 import os
 from flopy.export import vtk
+import pandas as pd
 
 import matplotlib.colors as colors
-# workspace="data/modelo_Norte"
-workspace="template"
+workspace="data/modelo_Norte"
+# workspace="template"
 model_name= "modelo_Norte"
 sim_name="mfsim.nam"
 budget_file = model_name + '.cbb'
@@ -29,7 +30,7 @@ gwf=sim.get_model(model_name)
 
 def plot_model(
         layer, row, column,
-        BC=True, Elv_mdl=False, cr_sect= False, cr_sect_hd=False):#, w_s=None):
+        BC=True, Elv_mdl=False, cr_sect= False, cr_sect_hd=False, path=None, time_sp=0):#, w_s=None):
     """
     
 
@@ -51,10 +52,14 @@ def plot_model(
         DESCRIPTION. The default is False.
     w_s : str, optional
         DESCRIPTION. The default is None.
+    path : str, optional
+        folder to be saved image. The default is None.
+    time_sp : int, optional
+        time stress period to show. The default is 0.
 
     Returns
     -------
-    None.
+    Cool graphs.
 
     """
     
@@ -91,9 +96,11 @@ def plot_model(
         quadmesh=mapview.plot_bc("drn", color="cyan")
         quadmesh=mapview.plot_bc("chd", color="blue")
         quadmesh=mapview.plot_bc("ghb", color="aquamarine")
-        quadmesh=mapview.plot_bc("drn_gal", color="brown", plotAll=True,kper=1334)#
-        quadmesh=mapview.plot_bc("drn_gal_w", color="olive", plotAll=True,kper=1229)
+        quadmesh=mapview.plot_bc("drn_gal", color="brown", plotAll=True,kper=1334+90)#
+        quadmesh=mapview.plot_bc("drn_gal_w", color="olive", plotAll=True,kper=1229+90)
         # ax.set_title("Plot boundary conditions")
+        if path!=None:
+            plt.savefig(path+"/BC")
         
     if Elv_mdl:
     
@@ -126,6 +133,8 @@ def plot_model(
         sm.set_array([])
         fig.colorbar(sm, shrink=0.75);
         
+        if path!=None:
+            plt.savefig(path+"/Elv")
 
     if cr_sect or cr_sect_hd:
         
@@ -161,6 +170,8 @@ def plot_model(
         lc = plt.plot(line.T[0], line.T[1], 'r--', lw=2)
         linecollection = mapview.plot_grid()
         lc2 = plt.plot(line_row.T[0], line_row.T[1], 'b--', lw=2)
+        if path!=None:
+            plt.savefig(path+f"/plan_{sec_lay}_{sect_row}_{sect_col}_cs")
         
     if cr_sect:
         
@@ -180,7 +191,8 @@ def plot_model(
         lc = plt.plot(line.T[0], line.T[1], 'r--', lw=2)
         linecollection = mapview.plot_grid()
         lc2 = plt.plot(line_row.T[0], line_row.T[1], 'b--', lw=2)
-    
+        if path!=None:
+            plt.savefig(path+f"/geo_plan_{sec_lay}_{sect_row}_{sect_col}_cs")
 
         
         #Column Cross section
@@ -210,6 +222,9 @@ def plot_model(
         t = ax.set_title(f'Column {sect_col} Cross-Section with Horizontal hydraulic conductivity')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
+        if path!=None:
+            plt.savefig(path+f"/geo_col_{sect_col}_cs")
+        
     
 
         #Row Cross section
@@ -239,16 +254,17 @@ def plot_model(
         t = ax.set_title(f'Column {sect_row} Cross-Section with Horizontal hydraulic conductivity')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
-    
+        if path!=None:
+            plt.savefig(path+f"/geo_row_{sect_row}_cs")
     if cr_sect_hd:
 
         #Plotting Specific discharge and head
         # get the specific discharge from the cell budget file
-        
+        time=time_sp
         # cbc=fp.utils.CellBudgetFile(budget_file)#cell budget
         # spdis = cbc.get_data(text="SPDIS")[0]
         bud = gwf.output.budget()
-        spdis = bud.get_data(text='DATA-SPDIS')[0]
+        spdis = bud.get_data(text='DATA-SPDIS')[time]
         qx, qy, qz = fp.utils.postprocessing.get_specific_discharge(model=gwf, vectors=spdis)
         
         # get the head from the head file
@@ -261,20 +277,21 @@ def plot_model(
         mapview = fp.plot.PlotMapView(model=gwf, layer=layer)
         linecollection = mapview.plot_grid(color="black")
         # quadmesh = mapview.plot_array(a=head, alpha=0.5, masked_values=[1e30,500,-1e30])
-        quadmesh =mapview.plot_array(head[0],masked_values=[1e30, -1e30])
-        quiver = mapview.plot_vector(qx, qy, normalize=True,)
+        quadmesh =mapview.plot_array(head[time],masked_values=[1e30, -1e30])
+        quiver = mapview.plot_vector(qx, qy, normalize=True,istep=2, jstep=2)
         inactive = mapview.plot_inactive()
-        cont=mapview.contour_array(head[0][layer] ,levels=np.linspace(600,1000,10), masked_values=[1e30, -1e30], colors="white")#cmap="seismic")
-        plt.title("Specific Discharge (" + r'$L/T$' + ') layer {} in time 0'.format(layer))
+        cont=mapview.contour_array(head[time][layer] ,levels=np.linspace(600,1000,10), masked_values=[1e30, -1e30], colors="white")#cmap="seismic")
+        plt.title(f"Head and Spcfc Discharge layer {layer} in time {time}")
         plt.colorbar(quadmesh, shrink=0.75 )
         # plt.colorbar(cont, shrink=0.75 )
         plt.clabel(cont,fmt="%1.0f")
         # plt.savefig(fname='pic_head')
-
+        if path!=None:
+            plt.savefig(path+f"/head_lay_{layer}_tim_{time}",dpi=300 )
         
         # plotting head and discharge in cross sections
         #Column Cross section
-        time=1400
+        
         levels=np.arange(500,2400,20)
         
         fig = plt.figure(figsize=(15, 10))
@@ -294,6 +311,7 @@ def plot_model(
         plt.clabel(contour_set, fmt='%.1f', colors='k', fontsize=11)
         # cb = plt.colorbar(mappable=contour_set,shrink=0.75,)
         t = ax.set_title(f'Column {sect_col} Cross-Section with BC and contours in time {time}')
+
         
         # plot xxxx
         ax = fig.add_subplot(2, 1, 2)
@@ -307,10 +325,11 @@ def plot_model(
                                  hstep=2, scale= 30,headwidth=2,
                                  headlength=2,headaxislength=2, normalize=True, alpha=0.5)
         # xsect.plot_surface(a=head[0][0], head=head[0], masked_values=[1e30, -1e30])#bug
-        t = ax.set_title(f'Column {sect_col} Cross-Section with  with Heads and flow in time {time}')
+        t = ax.set_title(f'Column {sect_col} Cross-Section with BC , Heads and flow in time {time}')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
-    
+        if path!=None:
+            plt.savefig(path+f"/head_col_{sect_col}_tim_{time}_cs")
 
         
         #Row Cross section
@@ -344,6 +363,10 @@ def plot_model(
         t = ax.set_title(f'Column {sect_row} Cross-Section with  with Heads and flow in time {time}')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
+        if path!=None:
+            plt.savefig(path+f"/head_col_{sect_row}_tim_{time}_cs")
+        
+        
 
 def paraview_export():
     pass
@@ -407,11 +430,44 @@ def paraview_export():
     #                text=['CONSTANT HEAD', 'STORAGE'], point_scalars=True, binary=True)#doen't work, ERROR
     
     # revisar # https://flopy.readthedocs.io/en/latest/source/flopy.export.vtk.html?highlight=vtk.export_heads#flopy.export.vtk.export_heads
+def gal_time_series(path=None):
+    df_gal=pd.read_csv(os.path.join(workspace,"mod_drn_gal_obs.csv"))
+    df_gal_w=pd.read_csv(os.path.join(workspace,"mod_drn_gal_w_obs.csv"))
+    df_gal.replace([1e30,3e30,-1e30],0, inplace=True)
+    df_gal_w.replace([1e30,3e30,-1e30],0, inplace=True)
+    df_gal_tot=df_gal.copy()
+    df_gal_tot["GAL-FLOW"]=(df_gal_tot["GAL-FLOW"]+df_gal_w["GAL_W-FLOW"])*-1000
+    df_gal_tot["time"]=df_gal_tot["time"]/86400
+    df_gal_tot.plot(x="time", y="GAL-FLOW", kind="line",
+                    title="Base realization gallery flow",
+                    xlabel="time[d]",ylabel="l/s",
+                    figsize=(15,4), grid=True)
+
+    if path!=None:
+            plt.savefig(path+f"/gal_base_time series")
+    
     
 if __name__ == '__main__':
-    print("numlays= ",gwf.modelgrid.nlay)
-    print("numrows= ",gwf.modelgrid.nrow)
-    print("numcols= ",gwf.modelgrid.ncol)
+    nlay=gwf.modelgrid.nlay
+    nrow=gwf.modelgrid.nrow
+    ncol=gwf.modelgrid.ncol
+    print("numlays= ",nlay)
+    print("numrows= ",nrow)
+    print("numcols= ",ncol)
+    layers=np.loadtxt(os.path.join(workspace,"layers"))
     
-    plot_model(0, 20, 9, BC=False,cr_sect=True ,cr_sect_hd=False)
- 
+    
+    folder= "v1_prior/base"#os.path.join("../06_jpg/", ) 
+    full_path=os.path.join("../06_Jpg/",folder)
+    if not os.path.exists(full_path):
+        os.makedirs(full_path)
+    
+    gal_time_series(path=full_path)
+    
+    plot_model(int(layers[0:0].sum()), int(nrow*0.7), int(ncol*0.7), BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=0)
+    plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*3)
+    plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*3)
+
+    

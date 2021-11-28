@@ -17,7 +17,7 @@
 *.dat
 
 
-09_Python/data/modelo_Norte/*.txt
+#09_Python/data/modelo_Norte/*.txt
 *.vtu
 06_Jpg/
 11_pv_test/
