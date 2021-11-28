@@ -396,7 +396,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     pst.control_data.noptmax=0
     pst.pestpp_options["additional_ins_delimiters"] = ","
     pst.pestpp_options["ies_bad_phi"]=1e25
-    pst.pestpp_options["ies_num_reals"]=100
+    pst.pestpp_options["ies_num_reals"]=150
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     # run with noptmax = 0 '''??

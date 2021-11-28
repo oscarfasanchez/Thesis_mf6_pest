@@ -111,8 +111,8 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 180
-celRef = 80
+celGlo = 80
+celRef = 3
 """
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
 
@@ -1051,8 +1051,8 @@ quadmesh=mapview.plot_bc("rch", color="purple")
 quadmesh=mapview.plot_bc("drn", color="cyan")
 quadmesh=mapview.plot_bc("chd", color="blue")
 quadmesh=mapview.plot_bc("ghb", color="aquamarine")
-quadmesh=mapview.plot_bc("drn_gal", color="brown", plotAll=True,kper=1334)#
-quadmesh=mapview.plot_bc("drn_gal_w", color="olive", plotAll=True,kper=1229)
+quadmesh=mapview.plot_bc("drn_gal", color="brown", plotAll=True,kper=1334+30*3)#
+quadmesh=mapview.plot_bc("drn_gal_w", color="olive", plotAll=True,kper=1229+30*3)
 
 linecolection = mapview.plot_grid()
 

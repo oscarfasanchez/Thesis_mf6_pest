@@ -50,6 +50,7 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
         
     for obs_group in pst.obs_groups:
         obs_g = obs.loc[obs.obgnme==obs_group,:].copy()#select field/init obs from control file of one obs_group
+        obs_g.time=obs_g.time.astype("float64")
         obs_g.sort_values(by="time",inplace=True)#organize values
         fig,ax = plt.subplots(1,1,figsize=(15,2))
 
@@ -57,8 +58,8 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
             obs_g_df = obs_df.loc[:,obs_g.obsnme]#select from modelled values those that match with obs_group and field_obs(Inlude 0 weight)
             obs_g_df.replace([1e30,3e30,-1e30],np.nan, inplace=True)#mask empty values in GAL or dry cells
             
-            [ax.plot(obs_g.time.astype("float64")/86400,obs_g_df.loc[i,obs_g.obsnme],
-                     color='0.6',alpha=0.5,lw=0.1) for i in obs_g_df.index]#prior graphs
+            [ax.plot((obs_g.time.astype("float64"))/86400,obs_g_df.loc[i,obs_g.obsnme],
+                     color='0.6',alpha=0.7,lw=0.1) for i in obs_g_df.index]#prior graphs
 
         if posterior:
         
@@ -163,11 +164,12 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
 # prior,1to1,phi_pie,phi_progress, and someday  obs_v_sim?
 def oneto1_graph(iter=None, ofilename=None, post=False):
     
-    obs_filename_post =case+f".{iter}.obs.csv"
+    
     print_1to1={'0.5': obs_df}
     if post:
-         obs_df_post = pd.read_csv(os.path.join(m_d,obs_filename_post),index_col=0)#
-         print_1to1["b"]=obs_df_post
+        obs_filename_post =case+f".{iter}.obs.csv"
+        obs_df_post = pd.read_csv(os.path.join(m_d,obs_filename_post),index_col=0)#
+        print_1to1["b"]=obs_df_post
     
     obsplusnoise_nam =case+".obs+noise.csv"
     
@@ -184,16 +186,16 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
     
     
 if __name__ == '__main__':
-    folder= "v1_prior"#os.path.join("../06_jpg/", ) 
+    folder= "v2_prior"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
         
-    oneto1_graph(iter=1, ofilename=full_path, post=False)
+    # oneto1_graph(iter=1, ofilename=full_path, post=False)
 
     time_series_graphs(prior=True,posterior=False, iter=1, path=full_path)
     
-    # frequency_graphs(prior=False, posterior=True, iter=1, path=full_path)  
-    frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
-    # frequency_graphs(prior=True, posterior=True, iter=1, path=full_path)
+  
+    # frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
+
 
