@@ -186,16 +186,16 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
     
     
 if __name__ == '__main__':
-    folder= "v2_prior"#os.path.join("../06_jpg/", ) 
+    folder= "v3_prior"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
         
-    # oneto1_graph(iter=1, ofilename=full_path, post=False)
+    oneto1_graph(iter=1, ofilename=full_path, post=False)
 
     time_series_graphs(prior=True,posterior=False, iter=1, path=full_path)
     
   
-    # frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
+    frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
 
 

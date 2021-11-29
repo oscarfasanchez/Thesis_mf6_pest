@@ -14,8 +14,8 @@ from flopy.export import vtk
 import pandas as pd
 
 import matplotlib.colors as colors
-workspace="data/modelo_Norte"
-# workspace="template"
+# workspace="data/modelo_Norte"
+workspace="template"
 model_name= "modelo_Norte"
 sim_name="mfsim.nam"
 budget_file = model_name + '.cbb'
@@ -460,7 +460,7 @@ if __name__ == '__main__':
     layers=np.loadtxt(os.path.join(workspace,"layers"))
     
     
-    folder= "v2_prior/base"#os.path.join("../06_jpg/", ) 
+    folder= "v2_prior/base2"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
