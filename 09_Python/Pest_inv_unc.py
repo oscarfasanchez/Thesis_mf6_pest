@@ -394,6 +394,8 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     # set up control file
     pst.control_data.noptmax=0
+    pst.svd_data.maxsing = 150
+    pst.pestpp_options["ies_autoadaloc"]=True
     pst.pestpp_options["additional_ins_delimiters"] = ","
     pst.pestpp_options["ies_bad_phi"]=1e25
     pst.pestpp_options["ies_num_reals"]=150
@@ -411,7 +413,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=-1
+    pst.control_data.noptmax=6
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
@@ -431,10 +433,12 @@ def run_pest(t_d):
     
 def pest_graphs(m_d):
     pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
-    pst_a.plot(kind='1to1')
-    
+    pst_a.plot(kind='1to1',)
+    plt.savefig("1to1",plt.savefig("1to1.pdf"))
+
     # pst_a.plot(kind="prior")
     pst_a.plot(kind="phi_pie")
+
     # pst_a.plot()
     pst_a.get_res_stats()
     pst_a.phi

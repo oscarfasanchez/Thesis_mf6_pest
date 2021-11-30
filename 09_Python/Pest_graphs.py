@@ -20,22 +20,6 @@ assert os.path.exists(m_d)," need to run the Pest_inv_unc file first!"
 pst = pyemu.Pst(os.path.join(m_d,f"{case}.pst"))
 
 
-"""
-desired poster graphics
-
-Prior and posterior frequency barchart of realizations of gallery flow->with decision threshold
-    with different parameterization
-    barchart of max flow prior and posterior
-        many parameterizations for prior
-Plot of observed to simulated(with uncertainty) of every observation A) groundwater levels, B) surface water fluxes?
-time Comparison of the prior-based Monte Carlo results with observations(head, and flows?)
-
-barchart prior and posterior gallery flow in X years
-
-, xlabel="time[d]", ylabel=obs_group.split("_")[0]
-
-
-"""
 
      
 obs_filename =case+".0.obs.csv"
@@ -165,11 +149,12 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
 def oneto1_graph(iter=None, ofilename=None, post=False):
     
     
-    print_1to1={'0.5': obs_df}
+    print_1to1={'0.5': obs_df.replace(-1e30, np.nan)}
     if post:
         obs_filename_post =case+f".{iter}.obs.csv"
         obs_df_post = pd.read_csv(os.path.join(m_d,obs_filename_post),index_col=0)#
-        print_1to1["b"]=obs_df_post
+        # obs_df_post = obs_df_post.replace(-1e30, np.nan)
+        print_1to1["b"]=obs_df_post.replace(-1e30, np.nan)
     
     obsplusnoise_nam =case+".obs+noise.csv"
     
@@ -181,21 +166,22 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
          print_1to1,
          pst=pst,  #  pyemu.Pst() object -- this defines the groupings of the obs (so you can regroup obs here if you want more/less grnularity on the plots) 
          filename=ofilename,
-         base_ensemble=obsplusnoise_df,
+         base_ensemble=obsplusnoise_df, alpha=0.5
      )
     
     
 if __name__ == '__main__':
-    folder= "v3_prior"#os.path.join("../06_jpg/", ) 
+    it=1
+    folder= f"v1_post/i{it}"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
-        
-    oneto1_graph(iter=1, ofilename=full_path, post=False)
+    
+    oneto1_graph(iter=it, ofilename=full_path, post=True)
 
-    time_series_graphs(prior=True,posterior=False, iter=1, path=full_path)
+    time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
     
   
-    frequency_graphs(prior=True, posterior=False, iter=1, path=full_path)    
+    frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
 
 

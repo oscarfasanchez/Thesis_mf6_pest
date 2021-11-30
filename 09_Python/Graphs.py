@@ -460,7 +460,7 @@ if __name__ == '__main__':
     layers=np.loadtxt(os.path.join(workspace,"layers"))
     
     
-    folder= "v2_prior/base2"#os.path.join("../06_jpg/", ) 
+    folder= "v1_post/base"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)

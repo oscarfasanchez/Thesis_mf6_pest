@@ -1,4 +1,81 @@
-2021-11-28 05:05:48.613705 starting: opening plot_pst_helper.log for logging
-2021-11-28 05:05:48.614706 plot_utils.pst_helper()
-2021-11-28 05:05:48.614706 starting: plot res_phi_pie
-2021-11-28 05:05:49.019797 finished: plot res_phi_pie took: 0:00:00.405091
+2021-11-29 19:13:56.885983 starting: opening plot_pst_helper.log for logging
+2021-11-29 19:13:56.885983 plot_utils.pst_helper()
+2021-11-29 19:13:56.885983 starting: plot res_1to1
+2021-11-29 19:13:57.336087 starting: plotting 1to1 for flow_gal_usecol:gal-flow
+2021-11-29 19:13:57.344089 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.345090 no non-zero obs for group 'flow_gal_usecol:gal-flow'
+2021-11-29 19:13:57.345090 finished: plotting 1to1 for flow_gal_usecol:gal-flow took: 0:00:00.009003
+2021-11-29 19:13:57.345090 starting: plotting 1to1 for flow_gal_w_usecol:gal_w-flow
+2021-11-29 19:13:57.347090 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.348091 no non-zero obs for group 'flow_gal_w_usecol:gal_w-flow'
+2021-11-29 19:13:57.348091 finished: plotting 1to1 for flow_gal_w_usecol:gal_w-flow took: 0:00:00.003001
+2021-11-29 19:13:57.348091 starting: plotting 1to1 for hds_usecol:p-e3-s6_1
+2021-11-29 19:13:57.349091 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.433110 finished: plotting 1to1 for hds_usecol:p-e3-s6_1 took: 0:00:00.085019
+2021-11-29 19:13:57.433110 starting: plotting 1to1 for hds_usecol:p-e3-s6_2
+2021-11-29 19:13:57.435110 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.442113 finished: plotting 1to1 for hds_usecol:p-e3-s6_2 took: 0:00:00.009003
+2021-11-29 19:13:57.442113 starting: plotting 1to1 for hds_usecol:p-e3-s6_3
+2021-11-29 19:13:57.443113 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.450114 finished: plotting 1to1 for hds_usecol:p-e3-s6_3 took: 0:00:00.008001
+2021-11-29 19:13:57.450114 starting: plotting 1to1 for hds_usecol:p-e3-s6_4
+2021-11-29 19:13:57.452114 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.459117 finished: plotting 1to1 for hds_usecol:p-e3-s6_4 took: 0:00:00.009003
+2021-11-29 19:13:57.459117 starting: plotting 1to1 for hds_usecol:p-e3-s6_5
+2021-11-29 19:13:57.460116 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.655161 finished: plotting 1to1 for hds_usecol:p-e3-s6_5 took: 0:00:00.196044
+2021-11-29 19:13:57.655161 starting: plotting 1to1 for hds_usecol:p-gal-s1
+2021-11-29 19:13:57.657162 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.664164 finished: plotting 1to1 for hds_usecol:p-gal-s1 took: 0:00:00.009003
+2021-11-29 19:13:57.664164 starting: plotting 1to1 for hds_usecol:p-gal-s2
+2021-11-29 19:13:57.666164 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.672166 finished: plotting 1to1 for hds_usecol:p-gal-s2 took: 0:00:00.008002
+2021-11-29 19:13:57.672166 starting: plotting 1to1 for hds_usecol:p-gal-s3
+2021-11-29 19:13:57.674166 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.681168 finished: plotting 1to1 for hds_usecol:p-gal-s3 took: 0:00:00.009002
+2021-11-29 19:13:57.681168 starting: plotting 1to1 for hds_usecol:p-gal-s4
+2021-11-29 19:13:57.683168 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.888216 finished: plotting 1to1 for hds_usecol:p-gal-s4 took: 0:00:00.207048
+2021-11-29 19:13:57.888216 starting: plotting 1to1 for hds_usecol:p-gal-s5
+2021-11-29 19:13:57.890216 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.896217 finished: plotting 1to1 for hds_usecol:p-gal-s5 took: 0:00:00.008001
+2021-11-29 19:13:57.896217 starting: plotting 1to1 for hds_usecol:p-gal-s6a
+2021-11-29 19:13:57.898218 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.905219 finished: plotting 1to1 for hds_usecol:p-gal-s6a took: 0:00:00.009002
+2021-11-29 19:13:57.905219 starting: plotting 1to1 for hds_usecol:p-lz-4
+2021-11-29 19:13:57.907220 using control file obsvals to calculate residuals
+2021-11-29 19:13:57.914221 finished: plotting 1to1 for hds_usecol:p-lz-4 took: 0:00:00.009002
+2021-11-29 19:13:57.914221 starting: plotting 1to1 for hds_usecol:p-m-6
+2021-11-29 19:13:57.916222 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.131272 finished: plotting 1to1 for hds_usecol:p-m-6 took: 0:00:00.217051
+2021-11-29 19:13:58.131272 starting: plotting 1to1 for hds_usecol:p-ms-1
+2021-11-29 19:13:58.133272 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.140274 finished: plotting 1to1 for hds_usecol:p-ms-1 took: 0:00:00.009002
+2021-11-29 19:13:58.140274 starting: plotting 1to1 for hds_usecol:p-ms-2
+2021-11-29 19:13:58.142275 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.150276 finished: plotting 1to1 for hds_usecol:p-ms-2 took: 0:00:00.010002
+2021-11-29 19:13:58.150276 starting: plotting 1to1 for hds_usecol:p-rn-s7_1
+2021-11-29 19:13:58.152277 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.160278 finished: plotting 1to1 for hds_usecol:p-rn-s7_1 took: 0:00:00.010002
+2021-11-29 19:13:58.160278 starting: plotting 1to1 for hds_usecol:p-rn-s7_2
+2021-11-29 19:13:58.163280 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.356324 finished: plotting 1to1 for hds_usecol:p-rn-s7_2 took: 0:00:00.196046
+2021-11-29 19:13:58.356324 starting: plotting 1to1 for hds_usecol:p-rn-s7_3
+2021-11-29 19:13:58.358325 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.365326 finished: plotting 1to1 for hds_usecol:p-rn-s7_3 took: 0:00:00.009002
+2021-11-29 19:13:58.365326 starting: plotting 1to1 for hds_usecol:p-rn-s7_4
+2021-11-29 19:13:58.367326 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.374328 finished: plotting 1to1 for hds_usecol:p-rn-s7_4 took: 0:00:00.009002
+2021-11-29 19:13:58.374328 starting: plotting 1to1 for hds_usecol:p-vr-1
+2021-11-29 19:13:58.376329 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.383330 finished: plotting 1to1 for hds_usecol:p-vr-1 took: 0:00:00.009002
+2021-11-29 19:13:58.383330 starting: plotting 1to1 for hds_usecol:p-vr-s_1
+2021-11-29 19:13:58.385331 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.583377 finished: plotting 1to1 for hds_usecol:p-vr-s_1 took: 0:00:00.200047
+2021-11-29 19:13:58.583377 starting: plotting 1to1 for hds_usecol:p-vr-s_2
+2021-11-29 19:13:58.585377 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.592379 finished: plotting 1to1 for hds_usecol:p-vr-s_2 took: 0:00:00.009002
+2021-11-29 19:13:58.592379 starting: plotting 1to1 for hds_usecol:p-vr-s_3
+2021-11-29 19:13:58.594379 using control file obsvals to calculate residuals
+2021-11-29 19:13:58.601381 finished: plotting 1to1 for hds_usecol:p-vr-s_3 took: 0:00:00.009002
+2021-11-29 19:13:58.693402 finished: plot res_1to1 took: 0:00:01.807419
