@@ -394,11 +394,12 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     # set up control file
     pst.control_data.noptmax=0
-    pst.svd_data.maxsing = 150
+    # pst.svd_data.maxsing = 150
     pst.pestpp_options["ies_autoadaloc"]=True
+    pst.pestpp_options["ies_num_threads"]=6
     pst.pestpp_options["additional_ins_delimiters"] = ","
-    pst.pestpp_options["ies_bad_phi"]=1e25
-    pst.pestpp_options["ies_num_reals"]=150
+    # pst.pestpp_options["ies_bad_phi"]=1e25
+    pst.pestpp_options["ies_num_reals"]=250
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     # run with noptmax = 0 '''??
@@ -420,7 +421,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     
 def run_pest(t_d):
-    num_workers=6
+    num_workers=11
     exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     pyemu.os_utils.start_workers(t_d,
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
@@ -434,7 +435,7 @@ def run_pest(t_d):
 def pest_graphs(m_d):
     pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
     pst_a.plot(kind='1to1',)
-    plt.savefig("1to1",plt.savefig("1to1.pdf"))
+    plt.savefig("1to1")
 
     # pst_a.plot(kind="prior")
     pst_a.plot(kind="phi_pie")
@@ -461,8 +462,8 @@ def pest_graphs(m_d):
     
 if __name__ == "__main__":
     df_field_meas=setup_obs()
-    setup_inv_model("data/modelo_Norte", updt_obs_field=True )
-    run_pest("template")
+    # setup_inv_model("data/modelo_Norte", updt_obs_field=True )
+    # run_pest("template")
     pest_graphs("master")
     
     
