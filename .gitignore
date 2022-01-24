@@ -1,3 +1,4 @@
+#take out some files and folders
 *.qgz
 *.xlsx
 *.docx
@@ -17,13 +18,19 @@
 *.dat
 
 
+
 #09_Python/data/modelo_Norte/*.txt
 *.vtu
 06_Jpg/
 11_pv_test/
 10_Exe/
 
+04_Xls/Pst_out_runs/
 
-!09_Python/master/
-09_Python/master/*
-!09_Python/master/*.csv
+
+#this include .csv of pest
+#!09_Python/master/
+#09_Python/master/*
+#!09_Python/master/*.csv
+
+09_Python/master/

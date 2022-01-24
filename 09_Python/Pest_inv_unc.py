@@ -327,13 +327,14 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     
     # pst =pf.build_pst()#i suspect, this is necessary only when you modify something, check later
-    cov=pf.build_prior()
-    x = cov.x.copy()
-    x[x==0.0] = np.NaN
-    fig = plt.figure(figsize=(12,12))
-    im = plt.imshow(x, interpolation="none")
-    plt.gca().set_facecolor("k")
-    fig.savefig('kcov.png')
+    pf.build_prior()
+    # cov=pf.build_prior()
+    # x = cov.x.copy()
+    # x[x==0.0] = np.NaN
+    # fig = plt.figure(figsize=(12,12))
+    # im = plt.imshow(x, interpolation="none")
+    # plt.gca().set_facecolor("k")
+    # fig.savefig('kcov.png')
     
     # pestpp-ies
     # draw from the prior and save the ensemble in binary format
@@ -421,13 +422,13 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     
     
 def run_pest(t_d):
-    num_workers=11
+    num_workers=8
     exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     pyemu.os_utils.start_workers(t_d,
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
                                   os.path.join("{}.pst".format(case)),
                                   num_workers=num_workers,
-                                  worker_root=".",
+                                  worker_root=r"E:\Thesis_Runs",
                                   silent_master=False,
                                   verbose=True,
                                   master_dir="master")#silent_master?
@@ -462,8 +463,8 @@ def pest_graphs(m_d):
     
 if __name__ == "__main__":
     df_field_meas=setup_obs()
-    # setup_inv_model("data/modelo_Norte", updt_obs_field=True )
-    # run_pest("template")
+    setup_inv_model("data/modelo_Norte", updt_obs_field=True )
+    run_pest("E:/Thesis_Runs/template")
     pest_graphs("master")
     
     
