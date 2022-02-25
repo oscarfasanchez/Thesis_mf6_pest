@@ -126,7 +126,7 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     
     
     
-def setup_inv_model(org_ws, updt_obs_field=True):
+def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True):
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
@@ -146,7 +146,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
                                         )
     # print(sr)
     #create instance of pstfrom for pest++
-    template_ws = "template"
+    template_ws =  os.path.join(template_ws,"template")
     # df=  modif_obs_csv("modelo_Norte.obs.head.csv")#create file with real obs before cloning folder
     pf = pyemu.utils.PstFrom(original_d=tmp_model_ws,
                              new_d=template_ws,
@@ -345,7 +345,7 @@ def setup_inv_model(org_ws, updt_obs_field=True):
     if updt_obs_field:
         
         #process to update observations with field values
-        df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv", df_field_meas ,lower=True)
+        df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv", df_field_meas_2 ,lower=True)
         df_field_mf6=df_field_mf6.reset_index().melt(id_vars="time", var_name="usecol2")
         
 
@@ -424,11 +424,11 @@ def setup_inv_model(org_ws, updt_obs_field=True):
 def run_pest(t_d):
     num_workers=8
     exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
-    pyemu.os_utils.start_workers(t_d,
+    pyemu.os_utils.start_workers(os.path.join(t_d,"template"),
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
                                   os.path.join("{}.pst".format(case)),
                                   num_workers=num_workers,
-                                  worker_root=r"E:\Thesis_Runs",
+                                  worker_root=t_d,
                                   silent_master=False,
                                   verbose=True,
                                   master_dir="master")#silent_master?
@@ -462,9 +462,10 @@ def pest_graphs(m_d):
     
     
 if __name__ == "__main__":
-    df_field_meas=setup_obs()
-    setup_inv_model("data/modelo_Norte", updt_obs_field=True )
-    run_pest("E:/Thesis_Runs/template")
+    run_path="E:/Thesis_Runs"
+    # df_field_meas=setup_obs()
+    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True )
+    # run_pest(run_path)
     pest_graphs("master")
     
     

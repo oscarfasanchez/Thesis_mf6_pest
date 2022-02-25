@@ -171,8 +171,8 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
     
     
 if __name__ == '__main__':
-    it=5
-    folder= f"v2_post/i{it}"#os.path.join("../06_jpg/", ) 
+    it=0
+    folder= f"v3_post/i{it}"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)

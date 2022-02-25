@@ -635,7 +635,7 @@ print(type(shp_geom))
 # %timeit ix.intersect(shp_geom) #it works!
 result=ix.intersect(shp_geom)
 print(result)
-
+# Recharge is weighted by intersected Area and defined as Recharge boundary (Neuman) condition (BC)
 rch_spd=[]
 #steady list for first stress period
 rch_spd_st=[]
