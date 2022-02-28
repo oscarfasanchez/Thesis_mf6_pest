@@ -126,7 +126,7 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     
     
     
-def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True):
+def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, run_type="ies"):
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
@@ -201,7 +201,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True):
 
     # add parameters
     #set variogram parameters
-    pp_cell_space= 2 #each x cells a point is placed
+    pp_cell_space= 14 #each x cells a point is placed
     pp_v = pyemu.geostats.ExpVario(contribution= 1.0,
                                 a=max(m.dis.delr.array)*pp_cell_space*3)
     pp_rain_v = pyemu.geostats.GauVario(contribution= 1.0,
@@ -395,23 +395,40 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True):
     
     # set up control file
     pst.control_data.noptmax=0
-    # pst.svd_data.maxsing = 150
-    pst.pestpp_options["ies_autoadaloc"]=True
-    pst.pestpp_options["ies_num_threads"]=6
-    pst.pestpp_options["additional_ins_delimiters"] = ","
-    # pst.pestpp_options["ies_bad_phi"]=1e25
-    pst.pestpp_options["ies_num_reals"]=250
-    pst.write(os.path.join(pf.new_d, f"{case}.pst"))
+    if run_type== "ies":
+        # pst.svd_data.maxsing = 150
+        pst.pestpp_options["ies_autoadaloc"]=True
+        pst.pestpp_options["ies_num_threads"]=6
+        pst.pestpp_options["additional_ins_delimiters"] = ","
+        # pst.pestpp_options["ies_bad_phi"]=1e25
+        pst.pestpp_options["ies_num_reals"]=250
+        
+        pst.write(os.path.join(pf.new_d, f"{case}.pst"))
+        
+        # run with noptmax = 0 '''??
+        exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
+        pyemu.os_utils.run(exe_p_name + f" {case}.pst", cwd=pf.new_d)
     
-    # run with noptmax = 0 '''??
-    exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
-    pyemu.os_utils.run(exe_p_name + f" {case}.pst", cwd=pf.new_d)
+        # make sure it ran... what?
+        res_file = os.path.join(pf.new_d, f"{case}.base.rei")
+        assert os.path.exists(res_file), res_file
+        pst.set_res(res_file)
+        print(pst.phi)
+        
+    elif run_type=="glm_fosm":
+        
+        
+        pst.control_data.pestmode = "regularization"
+        pst.pestpp_options["n_iter_base"] = 1
+        pst.pestpp_options["n_iter_super"] = 4 
+        pst.pestpp_options["glm_num_reals"] = 200 
+        pst.pestpp_options["parcov"] = "{}.prior.cov".format(case) 
+        pyemu.helpers.zero_order_tikhonov(pst)
+        # pst.pestpp_options["base_jacobian"] = "{}.jcb".format(case) # nom de la jacobienne pour directement commencer l'inversion
+        pst.write(os.path.join(pf.new_d, f"{case}.pst"))
+        exe_p_name=r"C:\WRDAPP\bin\pestpp-glm"
+        
     
-    # make sure it ran... what?
-    res_file = os.path.join(pf.new_d, f"{case}.base.rei")
-    assert os.path.exists(res_file), res_file
-    pst.set_res(res_file)
-    print(pst.phi)
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
@@ -421,9 +438,13 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True):
     
     
     
-def run_pest(t_d):
+def run_pest(t_d, run_type="ies"):
     num_workers=8
-    exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
+    if run_type== "ies":
+        exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
+    elif run_type=="glm_fosm":
+        r"C:\WRDAPP\bin\pestpp-glm"
+        
     pyemu.os_utils.start_workers(os.path.join(t_d,"template"),
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
                                   os.path.join("{}.pst".format(case)),
@@ -463,9 +484,10 @@ def pest_graphs(m_d):
     
 if __name__ == "__main__":
     run_path="E:/Thesis_Runs"
+    run_type="glm_fosm"#"ies" , "glm_fosm"
     # df_field_meas=setup_obs()
-    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True )
-    # run_pest(run_path)
+    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
+    # run_pest(run_path, run_type=run_type)
     pest_graphs("master")
     
     
