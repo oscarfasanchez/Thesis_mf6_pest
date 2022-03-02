@@ -201,7 +201,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
 
     # add parameters
     #set variogram parameters
-    pp_cell_space= 14 #each x cells a point is placed
+    pp_cell_space= 10 #each x cells a point is placed
     pp_v = pyemu.geostats.ExpVario(contribution= 1.0,
                                 a=max(m.dis.delr.array)*pp_cell_space*3)
     pp_rain_v = pyemu.geostats.GauVario(contribution= 1.0,
@@ -223,7 +223,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     # assign domain accordingly to the number of layers
     for i in range(layers.size):
         ib[i] = m.dis.idomain.array[int(layers[0:i].sum())]
-        ib[i][ib[i]==-1]=1
+        ib[i][ib[i]==-1]=0
         print("i= ",i," and idom(j)= ",int(layers[0:i].sum()) )
         
     # list files to modify in calibration/uncertainty
@@ -432,14 +432,14 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=6
+    pst.control_data.noptmax=5
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     
     
 def run_pest(t_d, run_type="ies"):
-    num_workers=10
+    num_workers=11
     if run_type== "ies":
         exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     elif run_type=="glm_fosm":
