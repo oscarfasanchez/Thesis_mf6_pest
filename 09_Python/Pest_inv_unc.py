@@ -439,11 +439,11 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     
 def run_pest(t_d, run_type="ies"):
-    num_workers=8
+    num_workers=10
     if run_type== "ies":
         exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     elif run_type=="glm_fosm":
-        r"C:\WRDAPP\bin\pestpp-glm"
+        exe_p_name=r"C:\WRDAPP\bin\pestpp-glm"
         
     pyemu.os_utils.start_workers(os.path.join(t_d,"template"),
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
@@ -452,7 +452,7 @@ def run_pest(t_d, run_type="ies"):
                                   worker_root=t_d,
                                   silent_master=False,
                                   verbose=True,
-                                  master_dir="master")#silent_master?
+                                  master_dir=os.path.join(t_d,"master"))#silent_master?
     
 def pest_graphs(m_d):
     pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
@@ -485,9 +485,9 @@ def pest_graphs(m_d):
 if __name__ == "__main__":
     run_path="E:/Thesis_Runs"
     run_type="glm_fosm"#"ies" , "glm_fosm"
-    # df_field_meas=setup_obs()
-    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
-    # run_pest(run_path, run_type=run_type)
-    pest_graphs("master")
+    df_field_meas=setup_obs()
+    setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
+    run_pest(run_path, run_type=run_type)
+    pest_graphs(os.path.join(run_path,"master"))
     
     
