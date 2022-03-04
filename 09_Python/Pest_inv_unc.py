@@ -145,6 +145,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                                         epsg="3116"
                                         )
     # print(sr)
+
     #create instance of pstfrom for pest++
     template_ws =  os.path.join(template_ws,"template")
     # df=  modif_obs_csv("modelo_Norte.obs.head.csv")#create file with real obs before cloning folder
@@ -201,7 +202,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
 
     # add parameters
     #set variogram parameters
-    pp_cell_space= 10 #each x cells a point is placed
+    pp_cell_space= 8 #each x cells a point is placed
     pp_v = pyemu.geostats.ExpVario(contribution= 1.0,
                                 a=max(m.dis.delr.array)*pp_cell_space*3)
     pp_rain_v = pyemu.geostats.GauVario(contribution= 1.0,
@@ -225,7 +226,20 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         ib[i] = m.dis.idomain.array[int(layers[0:i].sum())]
         ib[i][ib[i]==-1]=0
         print("i= ",i," and idom(j)= ",int(layers[0:i].sum()) )
+    
+   
+    # list files to define pilot points
+    if run_type== "glm_fosm":
+        pp_model_ws="../04_Xls/PP"
+        pp_arr_files = [f for f in os.listdir(pp_model_ws) if "pp_" in f and f.endswith(".csv")]
+        pp_cell_space = pp_arr_files
+        for i in range(len(pp_arr_files)):
+            shutil.copyfile(os.path.join(pp_model_ws,pp_cell_space[i]),
+                            os.path.join(template_ws, pp_cell_space[i]))
+    else:
+        pp_cell_space=[pp_cell_space]*layers.size
         
+    
     # list files to modify in calibration/uncertainty
     hk_arr_files = [f for f in os.listdir(tmp_model_ws) if "k_" in f and f.endswith(".txt")]
     vk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kv_" in f and f.endswith(".txt")]
@@ -238,7 +252,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     for i in range(len(hk_arr_files)):
         pf.add_parameters(filenames=hk_arr_files[i],
                           par_type="pilotpoint",
-                          pp_space=pp_cell_space,
+                          pp_space=pp_cell_space[i],
                           par_name_base=f"hk_glayer_{i}",
                           pargp=f"hk_glayer_{i}",
                           zone_array=ib[i],
@@ -251,7 +265,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     for i in range(len(vk_arr_files)):
         pf.add_parameters(filenames=vk_arr_files[i],
                           par_type="pilotpoint",
-                          pp_space=pp_cell_space,
+                          pp_space=pp_cell_space[i],
                           par_name_base=f"vk_glayer_{i}",
                           pargp=f"vk_glayer_{i}",
                           zone_array=ib[i],
@@ -264,7 +278,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     for i in range(len(ss_arr_files)):#warning in bounds
         pf.add_parameters(filenames=ss_arr_files[i],
                           par_type="pilotpoint",
-                          pp_space=pp_cell_space,
+                          pp_space=pp_cell_space[i],
                           par_name_base=f"ss_glayer_{i}",
                           pargp=f"ss_glayer_{i}",
                           zone_array=ib[i],
@@ -277,7 +291,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     for i in range(len(sy_arr_files)):#warning in bounds
         pf.add_parameters(filenames=sy_arr_files[i],
                           par_type="pilotpoint",
-                          pp_space=pp_cell_space,
+                          pp_space=pp_cell_space[i],
                           par_name_base=f"sy_glayer_{i}",
                           pargp=f"sy_glayer_{i}",
                           zone_array=ib[i],
