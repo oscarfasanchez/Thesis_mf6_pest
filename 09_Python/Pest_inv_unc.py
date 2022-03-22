@@ -16,19 +16,27 @@ from shutil import copyfile
 
 case="model_pest"
 
-def setup_obs():
+def setup_obs(obs_path="../04_Xls/Observ"):
     """
-    
+         it creates a data frame of observations with dates(rows) and
+         measument names(columns) using raw files coming from excel. 
+         those raw filescomes from dipper logs, vibrating wires and manual
+         measurement with water level meters
+         
+    Parameters
+    ----------
+    obs_path : string
+        path of raw xls field observations.         
 
     Returns
     -------
-    obs_heads3 : Dataframe
-         it creates a data frame of observations with dates(rows) and
-         measument names(columns) using files coming from excel.
+    obs_heads3 : Dataframe with time as index and columns as model observations
+    (all of them, even model observations without field observations)
+
 
     """
     #procedure to import dipper log head measuments
-    obs_path="../04_Xls/Observ"#"../04_Xls/Observ"
+    # obs_path="../04_Xls/Observ"#"../04_Xls/Observ"
     dip_log=pd.read_excel( os.path.join(obs_path,"dip_log.xlsx"),sheet_name=None)
     
     #filter for bad dates due to piezometer leakage
@@ -83,7 +91,7 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     Parameters
     ----------
     csv_file : string
-        csv name of model output observations.
+        csv name of model(modflow6) output observations.
     df_field_mea : Dataframe
         dataframe of field measurament with obs name in colums and dates in index.
     lower : Boolean, optional
@@ -127,6 +135,27 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     
     
 def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, run_type="ies"):
+    """
+    
+
+    Parameters
+    ----------
+    org_ws : TYPE
+        DESCRIPTION.
+    template_ws : TYPE
+        DESCRIPTION.
+    df_field_meas_2 : TYPE
+        DESCRIPTION.
+    updt_obs_field : TYPE, optional
+        DESCRIPTION. The default is True.
+    run_type : TYPE, optional
+        DESCRIPTION. The default is "ies".
+
+    Returns
+    -------
+    None.
+
+    """
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
@@ -228,7 +257,28 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         print("i= ",i," and idom(j)= ",int(layers[0:i].sum()) )
     
    
-    # list files to define pilot points
+
+        
+    
+    # list files to modify in calibration/uncertainty
+    hk_arr_files = [f for f in os.listdir(tmp_model_ws) if "k_" in f and f.endswith(".txt")]
+    hk_arr_files[0], hk_arr_files[2] = hk_arr_files[2], hk_arr_files[0]
+    
+    vk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kv_" in f and f.endswith(".txt")]
+    vk_arr_files[0], vk_arr_files[2] = vk_arr_files[2], vk_arr_files[0]
+    
+    ss_arr_files = [f for f in os.listdir(tmp_model_ws) if "ss_" in f and f.endswith(".txt")]
+    ss_arr_files[0], ss_arr_files[2] = ss_arr_files[2], ss_arr_files[0]
+    
+    sy_arr_files = [f for f in os.listdir(tmp_model_ws) if "sy_" in f and f.endswith(".txt")]
+    sy_arr_files[0], sy_arr_files[2] = sy_arr_files[2], sy_arr_files[0]
+    
+    # ghb_arr_files = [f for f in os.listdir(tmp_model_ws) if "ghb_" in f and f.endswith(".txt")]#remember why
+    rch_arr_files = [f for f in os.listdir(tmp_model_ws) if "rch_" in f and f.endswith(".txt")]
+    print(vk_arr_files)
+    
+    # list files to define pilot points 
+    #if we GLM we need less parameters, so we use custom PP and parameterization
     if run_type== "glm_fosm":
         pp_model_ws="../04_Xls/PP"
         pp_arr_files = [f for f in os.listdir(pp_model_ws) if "pp_" in f and f.endswith(".csv")]
@@ -236,18 +286,17 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         for i in range(len(pp_arr_files)):
             shutil.copyfile(os.path.join(pp_model_ws,pp_cell_space[i]),
                             os.path.join(template_ws, pp_cell_space[i]))
-    else:
-        pp_cell_space=[pp_cell_space]*layers.size
+        # define type of parameterization
+        ss_par_type=["constant"]*layers.size
+        num_sy_pp=2
+        sy_par_type=["pilotpoint"]*num_sy_pp+["constant"]*(layers.size-num_sy_pp)
         
-    
-    # list files to modify in calibration/uncertainty
-    hk_arr_files = [f for f in os.listdir(tmp_model_ws) if "k_" in f and f.endswith(".txt")]
-    vk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kv_" in f and f.endswith(".txt")]
-    ss_arr_files = [f for f in os.listdir(tmp_model_ws) if "ss_" in f and f.endswith(".txt")]
-    sy_arr_files = [f for f in os.listdir(tmp_model_ws) if "sy_" in f and f.endswith(".txt")]
-    # ghb_arr_files = [f for f in os.listdir(tmp_model_ws) if "ghb_" in f and f.endswith(".txt")]#remember why
-    rch_arr_files = [f for f in os.listdir(tmp_model_ws) if "rch_" in f and f.endswith(".txt")]
-    print(vk_arr_files)
+    else:
+        pp_cell_space=[pp_cell_space]*layers.size    
+        # define type of parameterization
+        ss_par_type=["pilotpoint"]*layers.size
+        sy_par_type=["pilotpoint"]*layers.size
+        
     # assign parameters for instruction file
     for i in range(len(hk_arr_files)):
         pf.add_parameters(filenames=hk_arr_files[i],
@@ -277,7 +326,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           geostruct=grid_gs)
     for i in range(len(ss_arr_files)):#warning in bounds
         pf.add_parameters(filenames=ss_arr_files[i],
-                          par_type="pilotpoint",
+                          par_type=ss_par_type[i],
                           pp_space=pp_cell_space[i],
                           par_name_base=f"ss_glayer_{i}",
                           pargp=f"ss_glayer_{i}",
@@ -290,7 +339,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           geostruct=grid_gs)
     for i in range(len(sy_arr_files)):#warning in bounds
         pf.add_parameters(filenames=sy_arr_files[i],
-                          par_type="pilotpoint",
+                          par_type=sy_par_type[i],
                           pp_space=pp_cell_space[i],
                           par_name_base=f"sy_glayer_{i}",
                           pargp=f"sy_glayer_{i}",
@@ -357,9 +406,11 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     # pe.to_binary(os.path.join(template_ws, "prior.jcb"))
     
     if updt_obs_field:
-        
         #process to update observations with field values
-        df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv", df_field_meas_2 ,lower=True)
+        
+        # we use a functionto set field obs
+        df_field_mf6=  modif_obs_csv("modelo_Norte.obs.head.csv",
+                                     df_field_meas_2 ,lower=True)
         df_field_mf6=df_field_mf6.reset_index().melt(id_vars="time", var_name="usecol2")
         
 
@@ -376,7 +427,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         df_pst_obs=pst.observation_data.copy()# i need to modify this
         df_pst_obs["usecol2"]=None
         for i in range(df_pst_obs.shape[0]):
-            df_pst_obs["usecol2"][i]= df_pst_obs.obgnme[i].split(":")[1]
+            df_pst_obs["usecol2"][i]= df_pst_obs.obgnme[i].split(":")[3]
             
         df_field_mf6["weight2"]=df_field_mf6.weight2.astype("float64")
         df_pst_obs2=df_pst_obs.merge(df_field_mf6, how= "outer", on=["usecol2", "time"])
@@ -434,7 +485,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         
         pst.control_data.pestmode = "regularization"
         pst.pestpp_options["n_iter_base"] = 1
-        pst.pestpp_options["n_iter_super"] = 4 
+        pst.pestpp_options["n_iter_super"] = 2 
         pst.pestpp_options["glm_num_reals"] = 200 
         pst.pestpp_options["parcov"] = "{}.prior.cov".format(case) 
         pyemu.helpers.zero_order_tikhonov(pst)
@@ -446,7 +497,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=5
+    pst.control_data.noptmax=7
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
@@ -499,7 +550,7 @@ def pest_graphs(m_d):
 if __name__ == "__main__":
     run_path="E:/Thesis_Runs"
     run_type="glm_fosm"#"ies" , "glm_fosm"
-    df_field_meas=setup_obs()
+    df_field_meas=setup_obs("../04_Xls/Observ")
     setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
     run_pest(run_path, run_type=run_type)
     pest_graphs(os.path.join(run_path,"master"))

@@ -550,7 +550,7 @@ fondos, geol, thickcells, k, kv, ss, sy= dis_layers(path_raster,raster_names, ca
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
-celltype=([0,0,0,1])
+celltype=([0,0,0,1])#not used, ill defined
 # define node property flow package
 npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv,
                            save_flows=True, save_specific_discharge = True)
