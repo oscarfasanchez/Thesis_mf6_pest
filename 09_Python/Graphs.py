@@ -14,8 +14,12 @@ from flopy.export import vtk
 import pandas as pd
 
 import matplotlib.colors as colors
+
+run_path="E:/backup"
+m_d=os.path.join(run_path,"master")
+workspace=m_d
+# workspace="template"
 # workspace="data/modelo_Norte"
-workspace="template"
 model_name= "modelo_Norte"
 sim_name="mfsim.nam"
 budget_file = model_name + '.cbb'
@@ -460,7 +464,7 @@ if __name__ == '__main__':
     layers=np.loadtxt(os.path.join(workspace,"layers"))
     
     
-    folder= "v2_post/base"#os.path.join("../06_jpg/", ) 
+    folder= "Glm_v3/base"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
@@ -468,9 +472,14 @@ if __name__ == '__main__':
     gal_time_series(path=full_path)
     
     plot_model(int(layers[0:0].sum()), int(nrow*0.7), int(ncol*0.7), BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=0)
+    print("ready 0")
     plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    print("ready 1185")
     plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
+    print("ready 1460")
     plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    print("ready 1185")
     plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
+    print("ready 1460")
 
     

@@ -157,7 +157,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
 
     """
     # print(os.listdir(org_ws))
-    exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6"
+    exe_name=r"C:\WRDAPP\mf6.3.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
     tmp_model_ws="temp_pst_model"
     #copy files to avoid corruption
@@ -484,12 +484,16 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         
         
         pst.control_data.pestmode = "regularization"
-        pst.pestpp_options["n_iter_base"] = 1
-        pst.pestpp_options["n_iter_super"] = 2 
+        # pst.pestpp_options["n_iter_base"] = 1
+        # pst.pestpp_options["n_iter_super"] = 2 
         pst.pestpp_options["glm_num_reals"] = 200 
+        pst.pestpp_options["glm_iter_mc"] = "true"
+        pst.pestpp_options["glm_accept_mc_phi"] = "true"
+        pst.pestpp_options["max_run_fail"] = 2
+        
+        # pst.pestpp_options["base_jacobian"] = os.path.join("jcb_glm","{}.jcb".format(case))#I'll put it manually when i need it
         pst.pestpp_options["parcov"] = "{}.prior.cov".format(case) 
         pyemu.helpers.zero_order_tikhonov(pst)
-        # pst.pestpp_options["base_jacobian"] = "{}.jcb".format(case) # nom de la jacobienne pour directement commencer l'inversion
         pst.write(os.path.join(pf.new_d, f"{case}.pst"))
         exe_p_name=r"C:\WRDAPP\bin\pestpp-glm"
         
@@ -497,7 +501,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=7
+    pst.control_data.noptmax=5
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
@@ -523,8 +527,8 @@ def pest_graphs(m_d):
     pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
     pst_a.plot(kind='1to1',)
     plt.savefig("1to1")
-
-    # pst_a.plot(kind="prior")
+    plt.savefig("obs_v_sim")
+    pst_a.plot(kind="prior")
     pst_a.plot(kind="phi_pie")
 
     # pst_a.plot()
@@ -550,8 +554,8 @@ def pest_graphs(m_d):
 if __name__ == "__main__":
     run_path="E:/Thesis_Runs"
     run_type="glm_fosm"#"ies" , "glm_fosm"
-    df_field_meas=setup_obs("../04_Xls/Observ")
-    setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
+    # df_field_meas=setup_obs("../04_Xls/Observ")
+    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
     run_pest(run_path, run_type=run_type)
     pest_graphs(os.path.join(run_path,"master"))
     

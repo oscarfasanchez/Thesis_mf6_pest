@@ -13,9 +13,9 @@ plt.rcParams['font.size'] = 12
 
 
 case="model_pest"
-
-m_d="master"
-t_d = "template"
+run_path="E:/Thesis_Runs"#I need to test this
+m_d=os.path.join(run_path,"master")
+t_d = os.path.join(run_path,"template")
 assert os.path.exists(m_d)," need to run the Pest_inv_unc file first!"
 pst = pyemu.Pst(os.path.join(m_d,f"{case}.pst"))
 
@@ -171,20 +171,24 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
 
             # j=j+1    
     
-    
+
     
 if __name__ == '__main__':
     it=0
-    folder= f"v3_post/i{it}"#os.path.join("../06_jpg/", ) 
+    folder= f"Glm_v3/i{it}"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
-    
+        
+    # IES plots
     oneto1_graph(iter=it, ofilename=full_path, post=True)
 
     time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
-    
-  
+      
     frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
+    
+ 
+    
+
 
 

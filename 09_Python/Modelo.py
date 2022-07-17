@@ -42,7 +42,7 @@ if not os.path.exists(workspace):
 #creating general simulation
     
 sim =fp.mf6.MFSimulation(sim_name=model_name, version="mf6",
-                         exe_name=r"C:\WRDAPP\mf6.2.0\bin\mf6",
+                         exe_name=r"C:\WRDAPP\mf6.3.0\bin\mf6",
                          sim_ws=workspace)
 
 #setting modflow time
@@ -60,12 +60,18 @@ tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
 model_nam_file=f"{model_name}.nam"
 gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
                         model_nam_file=model_nam_file,
-                        newtonoptions=None, save_flows=True)
+                        newtonoptions="UNDER_RELAXATION", save_flows=True,)
 
 
 # Setting the solver
 ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
-                                      complexity= "Complex")
+                                      complexity= "MODERATE",print_option="NONE",
+                                      outer_maximum=300, outer_dvclose=0.1,
+                                      under_relaxation="DBD", under_relaxation_gamma=0.1,
+                                      under_relaxation_theta=0.85, under_relaxation_kappa=0.03,
+                                      inner_maximum=500, inner_dvclose=0.01,
+                                      linear_acceleration="bicgstab", preconditioner_levels=6,
+                                      preconditioner_drop_tolerance=0.0001)
 
 
 # open shapefiles of limits and refinement
@@ -680,7 +686,7 @@ rch=fp.mf6.ModflowGwfrch(gwf, stress_period_data=rch_spd_txt,
                             auxiliary="rain_mult",
                             auxmultname="rain_mult",
                             timeseries= ts_dict,
-                            print_input=True,print_flows=True,save_flows=True)
+                            print_input=False,print_flows=False,save_flows=True)
 
 # we are including the idomain by using shapes
 dominio=sf.Reader(path_sh+"/Domin_Mod.shp")
@@ -734,7 +740,8 @@ for i in range(resultq.shape[0]):
     if idom[tuple((0,*resultq["cellids"][i]))]==1:
         drn_spd.append([0,*resultq["cellids"][i], dem_Matrix[resultq["cellids"][i]]+1, 1e-5*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
 
-drn=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=drn_spd, filename=f"{model_name}.drn", pname="drn", print_input=True,print_flows=True,save_flows=True)
+drn=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=drn_spd, filename=f"{model_name}.drn",
+                         pname="drn", print_input=False,print_flows=False,save_flows=True)
 
 
 # cretaing Rivers from shapefiles as Constant heads
@@ -758,7 +765,7 @@ for i in range(resultr.shape[0]):
     if idom[tuple((0,*resultr["cellids"][i]))]==1:
         chd_spd.append([0,*resultr["cellids"][i], dem_Matrix[resultr["cellids"][i]]+1 ])#falta agregar valores de quebradas, I need terrain
 
-chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=True,print_flows=True,save_flows=True)
+chd=fp.mf6.ModflowGwfchd(gwf,stress_period_data=chd_spd, filename=f"{model_name}.chd", pname="chd", print_input=False,print_flows=True,save_flows=True)
 # creating the main ghc inflow boundary condition
 
 ghb_spd=[]
@@ -884,7 +891,7 @@ for i in range(0,capas.sum()):
                          # auxiliary="rain_mult",
                          # auxmultname="rain_mult",
                          # timeseries =ts_dict,
-                         print_input=True,print_flows=True,save_flows=True)
+                         print_input=False,print_flows=False,save_flows=True)
     print(i)
 
 # gallery construction
@@ -936,7 +943,7 @@ gal_obs={"mod_drn_gal_obs.csv":[("gal-flow", "drn", "gal_flow")]}
 
 drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr,
                              filename=f"{model_name}_gal.drn",
-                             pname="drn_gal", print_input=True,
+                             pname="drn_gal", print_input=False,
                              print_flows=True,save_flows=True,
                              boundnames=True, observations=gal_obs)
 
@@ -977,7 +984,7 @@ gal_w_obs={"mod_drn_gal_w_obs.csv":[("gal_w-flow", "drn", "gal_w_flow")]}
 
 drn_gal_w=fp.mf6.ModflowGwfdrn(
     gwf,stress_period_data=gal_w_spd_tr, filename=f"{model_name}_gal_w.drn",
-    pname="drn_gal_w", print_input=True,print_flows=True,save_flows=True,
+    pname="drn_gal_w", print_input=False,print_flows=True,save_flows=True,
     boundnames=True, observations=gal_w_obs)
 
 # create the initial condition package
