@@ -15,11 +15,14 @@ import pandas as pd
 
 import matplotlib.colors as colors
 
-run_path="E:/backup"
-m_d=os.path.join(run_path,"master")
-workspace=m_d
+from flopy.utils import HeadFile
+
+
+# run_path="E:/backup"
+# m_d=os.path.join(run_path,"master")
+# workspace=m_d
 # workspace="template"
-# workspace="data/modelo_Norte"
+workspace="data/modelo_Norte"
 model_name= "modelo_Norte"
 sim_name="mfsim.nam"
 budget_file = model_name + '.cbb'
@@ -72,7 +75,7 @@ def plot_model(
     sec_lay=layer
     # layer=0 #layer to show
     alpha=0.4
-    lw=0.3
+    lw=0.3#lineweight
     arrow_stp=3
     
     # if type(w_s)==str:
@@ -163,7 +166,7 @@ def plot_model(
                         gwf.modelgrid.ycellcenters[sect_row,gwf.modelgrid.ncol-1])])
         fig = plt.figure(figsize=(15, 10))
         ax = fig.add_subplot(1, 1, 1, aspect='equal')
-        ax.set_title(f"Grid layer {sec_lay} BCs (DIS) with cross sectional line")
+        ax.set_title(f"Grid layer {sec_lay}, ({sect_row}, {sect_col}) BCs (DIS) with cross sectional line")
          # use PlotMapView to plot a DIS model
         mapview = fp.plot.PlotMapView(gwf, layer=sec_lay)
         linecolection = mapview.plot_grid(alpha=alpha, lw=lw)
@@ -177,6 +180,9 @@ def plot_model(
         lc = plt.plot(line.T[0], line.T[1], 'r--', lw=2)
         linecollection = mapview.plot_grid(alpha=alpha, lw=lw)
         lc2 = plt.plot(line_row.T[0], line_row.T[1], 'b--', lw=2)
+        ax.text(1105500, 1284000,
+                f'CoordCol= {gwf.modelgrid.xcellcenters[0,sect_col]}\nCoordRow= {gwf.modelgrid.ycellcenters[sect_row,0]} ',
+                style='italic', color="red")
         if path!=None:
             plt.savefig(path+f"/plan_{sec_lay}_{sect_row}_{sect_col}_cs", dpi=300)
         
@@ -258,7 +264,7 @@ def plot_model(
         csa = xsect.plot_array(a, norm=colors.LogNorm(vmin=a.min(), vmax=a.max()) )
         patches = xsect.plot_ibound()
         linecollection = xsect.plot_grid(alpha=alpha, lw=lw)
-        t = ax.set_title(f'Column {sect_row} Cross-Section with Horizontal hydraulic conductivity')
+        t = ax.set_title(f'row {sect_row} Cross-Section with Horizontal hydraulic conductivity')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
         if path!=None:
@@ -367,70 +373,87 @@ def plot_model(
         quiver=xsect.plot_vector(qx, qy, qz,head=head[time],
                                  hstep=arrow_stp, scale= 45,headwidth=2,
                                  headlength=2,headaxislength=2, normalize=True, alpha=0.5)
-        t = ax.set_title(f'Column {sect_row} Cross-Section with  with Heads and flow in time {time}')
+        t = ax.set_title(f'row {sect_row} Cross-Section with  with Heads and flow in time {time}')
         # ax.pcolor(norm=colors.LogNorm(vmin=a.min(), vmax=a.max()))
         cb = plt.colorbar(csa, shrink=0.75)
         if path!=None:
-            plt.savefig(path+f"/head_col_{sect_row}_tim_{time}_cs", dpi=400)
+            plt.savefig(path+f"/head_col_{sect_col}_tim_{time}_cs", dpi=400)
         
         
 
-def paraview_export():
+def paraview_export(pv_folder = os.path.join("../" , '11_pv_test'),dis=False,ic=False, npf=True, sto=False, rch=False,
+                    drn=False, gal=False, kper_gal=[0, 1185,1460], ghb=False, chd=False,
+                    head_exp=False, kstpkper=[(0, 0), (0, 1185), (0, 1460)]):
     pass
 
     """
     Export to paraview
     """
-    pv_folder = os.path.join("../" , '11_pv_test')
-    if not os.path.exists(pv_folder):
-        os.mkdir(pv_folder)
+
+    if dis:
+        # top, botm and idomain no
+        # gwf.export(pv_folder, fmt='vtk', name="model")
+        # gwf.dis.export(pv_folder, fmt='vtk', name="dis")
+        gwf.dis.top.export(pv_folder, fmt='vtk')
     
+        # 3D Array export
+        # export model bottoms
+        gwf.dis.botm.export(pv_folder, fmt='vtk')
     
-    gwf.dis.top.export(pv_folder, fmt='vtk')
+    if ic:
+        gwf.ic.export(pv_folder, fmt='vtk', binary=True)
     
-    # 3D Array export
-    # export model bottoms
-    gwf.dis.botm.export(pv_folder, fmt='vtk')
+    if npf:
+        # hk export, with points
+        gwf.npf.k.export(pv_folder, smooth=False, fmt='vtk', name='HK', point_scalars=False)
+        
+        # npf export, with points
+        gwf.npf.export(pv_folder, smooth=False, fmt='vtk', name='NPF', point_scalars=False)
+        
+        
+    if sto:
+        gwf.sto.export(pv_folder, smooth=False, fmt='vtk', name='STO', point_scalars=False)
+        
+        
+    if rch:
+        # transient 2d array
+        # export recharge
+        gwf.rch.export(pv_folder, fmt='vtk', pvd=True)#doesn't work
     
-    # transient 2d array
-    # export recharge
-    gwf.rch.export(pv_folder, fmt='vtk')#doesn't work
-    # gwf.rch.rech.export(pv_folder, fmt='vtk')#doesn't work
-    # 3D Array export
-    # hk export, with points
-    gwf.npf.k.export(pv_folder, smooth=True, fmt='vtk', name='HK', point_scalars=True)
+    if drn:
+       # DRN export
+        gwf.drn.export(pv_folder, fmt='vtk', name='drn', point_scalars=False, pvd=False)
     
-    # npf export, with points
-    gwf.npf.export(pv_folder, smooth=True, fmt='vtk', name='NPF', point_scalars=True)
+    if gal:
+        gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal',
+                           point_scalars=False, pvd=True, kper=kper_gal)
+        gwf.drn_gal_w.export(pv_folder, fmt='vtk', name='drn_gal_w',
+                             point_scalars=False, pvd=True, Kper=kper_gal)
+        # fp.export.utils.package_export(pv_folder, gwf.drn_gal,fmt='vtk')
     
-    # DRN export, with points
-    gwf.drn_gal.export(pv_folder, fmt='vtk', name='drn_gal_w', point_scalars=False)#doesn't work
-    # fp.export.utils.package_export(pv_folder, gwf.drn_gal,fmt='vtk')
+
+    if ghb:
+        # ghb export, with points
+        gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=False, pvd=True)
+        gwf.ghb_1.export(pv_folder, smooth=True, fmt='vtk', name='ghb_1', point_scalars=False, pvd=True)
+        gwf.ghb_2.export(pv_folder, smooth=True, fmt='vtk', name='ghb_2', point_scalars=False, pvd=True)
+        gwf.ghb_3.export(pv_folder, smooth=True, fmt='vtk', name='ghb_3', point_scalars=False, pvd=True)
+        gwf.ghb_4.export(pv_folder, smooth=True, fmt='vtk', name='ghb_4', point_scalars=False, pvd=True)
+        gwf.ghb_5.export(pv_folder, smooth=True, fmt='vtk', name='ghb_5', point_scalars=False, pvd=True)
     
-    # 3D Array export
-    # hk export, with points
-    gwf.sto.export(pv_folder, smooth=True, fmt='vtk', name='STO', point_scalars=True)
+    if chd:
+        # chd export, with points
+        gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doesn't work
     
-    # ghb export, with points
-    gwf.ghb_0.export(pv_folder, smooth=True, fmt='vtk', name='ghb_0', point_scalars=True)#doesn't work
-    
-    # chd export, with points
-    gwf.chd.export(pv_folder, smooth=True, fmt='vtk', name='CHD', point_scalars=True)#doesn't work
-    
-    # model export
-    gwf.export(pv_folder, fmt='vtk', binary=True) #works for dis, ic, npf, sto
-    
-    # head export
-    
-    heads_output_folder = os.path.join(pv_folder, 'heads_output_test')
-    vtk.export_heads(gwf, head_file, heads_output_folder, binary=True, nanval=-1e30)#doesn't work beru well,pvd error, many values nan
-    
-    
-    #with points
-    vtk.export_heads(gwf, head_file,
-                      heads_output_folder,
-                      kstpkper=[(0,0), (0, 49), (0, 99), (0, 999)],#review time steps
-                      point_scalars=True, nanval=1e30)#doesn't work many values nan
+
+    if head_exp:
+        # head export
+        hds = HeadFile(head_file)
+            
+        # create the vtk object and export heads
+        vtkobj = vtk.Vtk(gwf, xml=True, pvd=True, vertical_exageration=1, point_scalars=False)
+        vtkobj.add_heads(hds, kstpkper=[(0, 0), (0, 1185), (0, 1460)])
+        vtkobj.write(os.path.join(pv_folder, "heads_output_test", "Gal_heads.vtu"))
     
     # Export output cell by cell file to .vtu
     # vtk.export_cbc(gwf, budget_file, pv_folder, kstpkper=[(0, 0), (0, 9), (0, 10), (0, 11)],#review time steps
@@ -452,6 +475,39 @@ def gal_time_series(path=None):
 
     if path!=None:
             plt.savefig(path+f"/gal_base_time series")
+            
+def inspect(cell_id, sp=0):
+    cell_id=(0,71,50)
+    cells_ids=[cell_id]
+    
+    nlay=gwf.modelgrid.nlay
+    nrow=gwf.modelgrid.nrow
+    ncol=gwf.modelgrid.ncol
+    
+    
+
+    #plus 1 layer if it is not the bottom layer
+    if cell_id[0]<nlay-1:
+       cells_ids.append((cell_id[0]+1,cell_id[1],cell_id[2]))
+    if cell_id[0]!=0:
+       cells_ids.append((cell_id[0]-1,cell_id[1],cell_id[2]))
+       
+    if cell_id[1]!=0:
+       cells_ids.append((cell_id[0],cell_id[1]-1,cell_id[2]))       
+    if cell_id[1]<nrow-1:
+       cells_ids.append((cell_id[0],cell_id[1]+1,cell_id[2]))  
+            
+    if cell_id[2]<ncol-1:
+       cells_ids.append((cell_id[0],cell_id[1],cell_id[2]+1))  
+    if cell_id[2]!=0:
+       cells_ids.append((cell_id[0],cell_id[1],cell_id[2]-1))         
+ 
+    gwf.inspect_cells(cell_list=cells_ids, stress_period=sp, output_file_path= os.path.join(full_path,f"inspect_{cell_id}.csv"))  
+             
+        
+    
+    
+    
     
     
 if __name__ == '__main__':
@@ -471,15 +527,32 @@ if __name__ == '__main__':
     
     gal_time_series(path=full_path)
     
-    plot_model(int(layers[0:0].sum()), int(nrow*0.7), int(ncol*0.7), BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=0)
-    print("ready 0")
-    plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
-    print("ready 1185")
-    plot_model(int(layers[0:1].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
-    print("ready 1460")
-    plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
-    print("ready 1185")
-    plot_model(int(layers[0:2].sum()), int(nrow*0.7), int(ncol*0.7), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
-    print("ready 1460")
-
+    c_mult=0.7
+    
+    lay=0
+    row=71
+    col=50
+    sp=0
+    
+    
+    plot_model(lay, row, col, BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=sp)
+    print("ready text")
+    
+    # plot_model(int(layers[0:0].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=0)
+    # print("ready 0")
+    # plot_model(int(layers[0:1].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    # print("ready 1185")
+    # plot_model(int(layers[0:1].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
+    # print("ready 1460")
+    # plot_model(int(layers[0:2].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=1185)
+    # print("ready 1185")
+    # plot_model(int(layers[0:2].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
+    # print("ready 1460")
+    
+    # pv_folder = os.path.join("../" , '11_pv_test', "test")
+    # if not os.path.exists(pv_folder):
+    #     os.mkdir(pv_folder)
+    # paraview_export(pv_folder=pv_folder)
+    
+    inspect((lay,row,col),sp)
     

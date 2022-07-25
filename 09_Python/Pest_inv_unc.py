@@ -466,19 +466,19 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         pst.pestpp_options["ies_num_threads"]=6
         pst.pestpp_options["additional_ins_delimiters"] = ","
         # pst.pestpp_options["ies_bad_phi"]=1e25
-        pst.pestpp_options["ies_num_reals"]=250
+        pst.pestpp_options["ies_num_reals"]=100
         
         pst.write(os.path.join(pf.new_d, f"{case}.pst"))
         
         # run with noptmax = 0 '''??
         exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
-        pyemu.os_utils.run(exe_p_name + f" {case}.pst", cwd=pf.new_d)
+        # pyemu.os_utils.run(exe_p_name + f" {case}.pst", cwd=pf.new_d)
     
         # make sure it ran... what?
-        res_file = os.path.join(pf.new_d, f"{case}.base.rei")
-        assert os.path.exists(res_file), res_file
-        pst.set_res(res_file)
-        print(pst.phi)
+        # res_file = os.path.join(pf.new_d, f"{case}.base.rei")
+        # assert os.path.exists(res_file), res_file
+        # pst.set_res(res_file)
+        # print(pst.phi)
         
     elif run_type=="glm_fosm":
         
@@ -489,7 +489,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         pst.pestpp_options["glm_num_reals"] = 200 
         pst.pestpp_options["glm_iter_mc"] = "true"
         pst.pestpp_options["glm_accept_mc_phi"] = "true"
-        pst.pestpp_options["max_run_fail"] = 2
+        pst.pestpp_options["max_run_fail"] = 1
         
         # pst.pestpp_options["base_jacobian"] = os.path.join("jcb_glm","{}.jcb".format(case))#I'll put it manually when i need it
         pst.pestpp_options["parcov"] = "{}.prior.cov".format(case) 
@@ -498,17 +498,19 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         exe_p_name=r"C:\WRDAPP\bin\pestpp-glm"
         
     
-    
+    #debugging solver issues
+   
+    pst.pestpp_options["panther_agent_freeze_on_fail"] = "true"
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=5
+    pst.control_data.noptmax=-1
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     
     
 def run_pest(t_d, run_type="ies"):
-    num_workers=11
+    num_workers=10
     if run_type== "ies":
         exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     elif run_type=="glm_fosm":
@@ -553,10 +555,10 @@ def pest_graphs(m_d):
     
 if __name__ == "__main__":
     run_path="E:/Thesis_Runs"
-    run_type="glm_fosm"#"ies" , "glm_fosm"
+    run_type="ies"#"ies" , "glm_fosm"
     # df_field_meas=setup_obs("../04_Xls/Observ")
     # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
     run_pest(run_path, run_type=run_type)
-    pest_graphs(os.path.join(run_path,"master"))
+    # pest_graphs(os.path.join(run_path,"master"))
     
     

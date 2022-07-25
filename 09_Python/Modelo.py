@@ -11,7 +11,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import flopy as fp
 from flopy.utils.gridgen import Gridgen
-from flopy.utils.reference import SpatialReference
 import  shapefile as sf #tomado de github flopy --pip install pyshp
 from osgeo import gdal # tomado de gidahatari
 import pandas as pd
@@ -56,6 +55,8 @@ time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginnin
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
                          nper=nsper, perioddata=time_disc,)
+# period_ats =[(i, 86400, 1.0e-5, 86400, 2.0, 5.0) for i in range(1, nsper)]
+# ats = fp.mf6.ModflowUtlats(tdis,maxats=1, perioddata= period_ats,   )
 # Create gwf model
 model_nam_file=f"{model_name}.nam"
 gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
@@ -68,10 +69,12 @@ ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
                                       complexity= "MODERATE",print_option="NONE",
                                       outer_maximum=300, outer_dvclose=0.1,
                                       under_relaxation="DBD", under_relaxation_gamma=0.1,
-                                      under_relaxation_theta=0.85, under_relaxation_kappa=0.03,
-                                      inner_maximum=500, inner_dvclose=0.01,
+                                      under_relaxation_theta=0.85, under_relaxation_kappa=0.1,
+                                      backtracking_number=5, backtracking_tolerance=20,
+                                      backtracking_reduction_factor=0.1, backtracking_residual_limit=0.002, 
+                                      inner_maximum=500, inner_dvclose=0.005,
                                       linear_acceleration="bicgstab", preconditioner_levels=6,
-                                      preconditioner_drop_tolerance=0.0001)
+                                      preconditioner_drop_tolerance=0.0001,ats_outer_maximum_fraction=0.05)
 
 
 # open shapefiles of limits and refinement
