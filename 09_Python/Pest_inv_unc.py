@@ -13,7 +13,9 @@ import pandas as pd
 import pyemu
 import shutil
 from shutil import copyfile
-
+sys.path.append(os.path.abspath(r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\09_Python"))
+import Modif_model
+print(sys.path)
 case="model_pest"
 
 def setup_obs(obs_path="../04_Xls/Observ"):
@@ -134,7 +136,7 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     
     
     
-def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, run_type="ies"):
+def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, run_type="ies", restart_strt=False):
     """
     
 
@@ -150,12 +152,15 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         DESCRIPTION. The default is True.
     run_type : TYPE, optional
         DESCRIPTION. The default is "ies".
+    restart_strt : TYPE:boolean, optional
+        flag variable to update strt in every new model. The default is "False".
 
     Returns
     -------
     None.
 
     """
+    print("path_setup_func ",sys.path)
     # print(os.listdir(org_ws))
     exe_name=r"C:\WRDAPP\mf6.3.0\bin\mf6"
     # pyemu.os_utils.run(exe_name, cwd=org_ws)
@@ -386,6 +391,20 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     #add run model command(run once only?), review later
     pf.mod_sys_cmds.append(exe_name)
+    
+    if restart_strt:
+        pf.add_py_function("Modif_model.py",
+                           'update_start_head(run_path="E:/Thesis_Runs",folder_update=".",first_update=False)', is_pre_cmd=None)
+        pf.add_py_function("Modif_model.py",
+                           'export_head(run_path=".")', is_pre_cmd=None)
+        pf.add_py_function("Modif_model.py",
+                           'write_ext_str_heads(head_0)', is_pre_cmd=None)   
+        pf.add_py_function("Modif_model.py",
+                           'copy_from_out()', is_pre_cmd=True)
+        pf.add_py_function("Modif_model.py",
+                           'copy_to_out()', is_pre_cmd=False)
+    
+    
     pst = pf.build_pst(f"{case}.pst")
     
     
@@ -459,6 +478,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     # pst = pf.build_pst(f"{case}.pst")
     
     # set up control file
+    
     pst.control_data.noptmax=0
     if run_type== "ies":
         # pst.svd_data.maxsing = 150
@@ -466,8 +486,8 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         pst.pestpp_options["ies_num_threads"]=6
         pst.pestpp_options["additional_ins_delimiters"] = ","
         # pst.pestpp_options["ies_bad_phi"]=1e25
-        pst.pestpp_options["ies_num_reals"]=100
-        
+        pst.pestpp_options["ies_num_reals"]=250
+        pst.pestpp_options["parcov"] = "{}.prior.cov".format(case) 
         pst.write(os.path.join(pf.new_d, f"{case}.pst"))
         
         # run with noptmax = 0 '''??
@@ -486,7 +506,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         pst.control_data.pestmode = "regularization"
         # pst.pestpp_options["n_iter_base"] = 1
         # pst.pestpp_options["n_iter_super"] = 2 
-        pst.pestpp_options["glm_num_reals"] = 200 
+        pst.pestpp_options["glm_num_reals"] = 120 
         pst.pestpp_options["glm_iter_mc"] = "true"
         pst.pestpp_options["glm_accept_mc_phi"] = "true"
         pst.pestpp_options["max_run_fail"] = 1
@@ -500,17 +520,17 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     #debugging solver issues
    
-    pst.pestpp_options["panther_agent_freeze_on_fail"] = "true"
+    pst.pestpp_options["panther_agent_freeze_on_fail"] = "False"
     # now I use noptmax -1 to run prior monte carlo
     #noptmax 0 JUST run once
-    pst.control_data.noptmax=-1
+    pst.control_data.noptmax=4
     #update files
     pst.write(os.path.join(pf.new_d, f"{case}.pst"))
     
     
     
 def run_pest(t_d, run_type="ies"):
-    num_workers=10
+    num_workers=11
     if run_type== "ies":
         exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
     elif run_type=="glm_fosm":
@@ -543,7 +563,10 @@ def pest_graphs(m_d):
     par_summary=pst_a.write_par_summary_table()
     
     
-    
+def update_strt_first_time():
+    head_0, numsp =Modif_model.export_head(run_path="data/modelo_Norte")
+    Modif_model.write_ext_str_heads(head_0, run_path="E:/Thesis_Runs")
+    Modif_model.update_start_head(run_path="E:/Thesis_Runs",folder_update="template",first_update=True)
        
         
     
@@ -554,10 +577,13 @@ def pest_graphs(m_d):
     
     
 if __name__ == "__main__":
+    
+    
     run_path="E:/Thesis_Runs"
-    run_type="ies"#"ies" , "glm_fosm"
+    run_type="glm_fosm"#"ies" , "glm_fosm"
     # df_field_meas=setup_obs("../04_Xls/Observ")
-    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type)
+    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type, restart_strt=True)
+    update_strt_first_time()
     run_pest(run_path, run_type=run_type)
     # pest_graphs(os.path.join(run_path,"master"))
     

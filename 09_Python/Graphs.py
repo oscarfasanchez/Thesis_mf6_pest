@@ -19,10 +19,11 @@ from flopy.utils import HeadFile
 
 
 # run_path="E:/backup"
-# m_d=os.path.join(run_path,"master")
-# workspace=m_d
+run_path="E:/Thesis_Runs"
+m_d=os.path.join(run_path,"worker_0")
+workspace=m_d
 # workspace="template"
-workspace="data/modelo_Norte"
+# workspace="data/modelo_Norte"
 model_name= "modelo_Norte"
 sim_name="mfsim.nam"
 budget_file = model_name + '.cbb'
@@ -383,7 +384,7 @@ def plot_model(
 
 def paraview_export(pv_folder = os.path.join("../" , '11_pv_test'),dis=False,ic=False, npf=True, sto=False, rch=False,
                     drn=False, gal=False, kper_gal=[0, 1185,1460], ghb=False, chd=False,
-                    head_exp=False, kstpkper=[(0, 0), (0, 1185), (0, 1460)]):
+                    head_exp=False, kstpkper=[(0, 0), (0, 1185), (0, 1460)], masked_values=[-1e130, 1e30]):
     pass
 
     """
@@ -401,7 +402,7 @@ def paraview_export(pv_folder = os.path.join("../" , '11_pv_test'),dis=False,ic=
         gwf.dis.botm.export(pv_folder, fmt='vtk')
     
     if ic:
-        gwf.ic.export(pv_folder, fmt='vtk', binary=True)
+        gwf.ic.export(pv_folder, fmt='vtk', binary=True, masked_values=masked_values)
     
     if npf:
         # hk export, with points
@@ -452,8 +453,12 @@ def paraview_export(pv_folder = os.path.join("../" , '11_pv_test'),dis=False,ic=
             
         # create the vtk object and export heads
         vtkobj = vtk.Vtk(gwf, xml=True, pvd=True, vertical_exageration=1, point_scalars=False)
-        vtkobj.add_heads(hds, kstpkper=[(0, 0), (0, 1185), (0, 1460)])
-        vtkobj.write(os.path.join(pv_folder, "heads_output_test", "Gal_heads.vtu"))
+        vtkobj.add_heads(hds, kstpkper=kstpkper, masked_values=masked_values)
+        vtkobj.write(os.path.join(pv_folder, "heads_output_test", "heads.vtu"))
+        
+        vtkobj = vtk.Vtk(gwf, xml=True, pvd=True, vertical_exageration=1, point_scalars=True)
+        vtkobj.add_heads(hds, kstpkper=kstpkper, masked_values=masked_values)
+        vtkobj.write(os.path.join(pv_folder, "heads_output_test", "heads_scal.vtu"))
     
     # Export output cell by cell file to .vtu
     # vtk.export_cbc(gwf, budget_file, pv_folder, kstpkper=[(0, 0), (0, 9), (0, 10), (0, 11)],#review time steps
@@ -476,8 +481,8 @@ def gal_time_series(path=None):
     if path!=None:
             plt.savefig(path+f"/gal_base_time series")
             
-def inspect(cell_id, sp=0):
-    cell_id=(0,71,50)
+def inspect(path, cell_id, sp=0 ):
+    
     cells_ids=[cell_id]
     
     nlay=gwf.modelgrid.nlay
@@ -530,13 +535,13 @@ if __name__ == '__main__':
     c_mult=0.7
     
     lay=0
-    row=71
-    col=50
+    row=98
+    col=63
     sp=0
     
     
     plot_model(lay, row, col, BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=sp)
-    print("ready text")
+    print("ready test")
     
     # plot_model(int(layers[0:0].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=True, Elv_mdl=False, cr_sect= True, cr_sect_hd=True, path=full_path, time_sp=0)
     # print("ready 0")
@@ -549,10 +554,10 @@ if __name__ == '__main__':
     # plot_model(int(layers[0:2].sum()), int(nrow*c_mult), int(ncol*c_mult), BC=False, Elv_mdl=False, cr_sect= False, cr_sect_hd=True, path=full_path, time_sp=365*4)
     # print("ready 1460")
     
-    # pv_folder = os.path.join("../" , '11_pv_test', "test")
-    # if not os.path.exists(pv_folder):
-    #     os.mkdir(pv_folder)
-    # paraview_export(pv_folder=pv_folder)
-    
-    inspect((lay,row,col),sp)
+    pv_folder = os.path.join("../" , '11_pv_test', '04_30m')
+    if not os.path.exists(pv_folder):
+        os.mkdir(pv_folder)
+    paraview_export(pv_folder=pv_folder, dis=True, ic=True, rch=True, drn=True, chd=True)
+    paraview_export(pv_folder=pv_folder, dis=False, ic=False, rch=False, drn=False, chd=False,head_exp=True,kstpkper=[(0,0)])
+    inspect(full_path, (lay,row,col),sp)
     

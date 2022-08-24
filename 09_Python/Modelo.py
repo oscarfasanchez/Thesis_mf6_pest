@@ -55,8 +55,8 @@ time_disc.insert(0,(1,1,1.0))#inserting the steady stress period at the beginnin
 tdis= fp.mf6.ModflowTdis(sim, pname="tdis",
                          time_units="SECONDS", 
                          nper=nsper, perioddata=time_disc,)
-# period_ats =[(i, 86400, 1.0e-5, 86400, 2.0, 5.0) for i in range(1, nsper)]
-# ats = fp.mf6.ModflowUtlats(tdis,maxats=1, perioddata= period_ats,   )
+period_ats =[(i, 86400, 1.0e-5, 86400, 2.0, 5.0) for i in range(1, nsper)]
+ats = fp.mf6.ModflowUtlats(tdis,maxats=len(period_ats), perioddata= period_ats,   )
 # Create gwf model
 model_nam_file=f"{model_name}.nam"
 gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
@@ -66,15 +66,17 @@ gwf = fp.mf6.ModflowGwf(sim, modelname=model_name,
 
 # Setting the solver
 ims=  fp.mf6.modflow.mfims.ModflowIms(sim, pname="ims",
-                                      complexity= "MODERATE",print_option="NONE",
-                                      outer_maximum=300, outer_dvclose=0.1,
+                                      complexity= "MODERATE",print_option="SUMMARY",
+                                      outer_maximum=350, outer_dvclose=0.1,
                                       under_relaxation="DBD", under_relaxation_gamma=0.1,
-                                      under_relaxation_theta=0.85, under_relaxation_kappa=0.1,
-                                      backtracking_number=5, backtracking_tolerance=20,
+                                      under_relaxation_theta=0.7, under_relaxation_kappa=0.1,
+                                      backtracking_number=20, backtracking_tolerance=20,
                                       backtracking_reduction_factor=0.1, backtracking_residual_limit=0.002, 
-                                      inner_maximum=500, inner_dvclose=0.005,
-                                      linear_acceleration="bicgstab", preconditioner_levels=6,
-                                      preconditioner_drop_tolerance=0.0001,ats_outer_maximum_fraction=0.05)
+                                      inner_maximum=500, inner_dvclose=0.01,
+                                      linear_acceleration="bicgstab", preconditioner_levels=20,
+                                      preconditioner_drop_tolerance=0.0001,ats_outer_maximum_fraction=0.05,
+                                      scaling_method="DIAGONAL", reordering_method="MD",
+                                      number_orthogonalizations=2)
 
 
 # open shapefiles of limits and refinement
@@ -120,7 +122,7 @@ print('Local Refinement Dimension. Easting Dimension: %8.1f, Northing Dimension:
 
 # y si quiero dejar diagonal la malla?t
 #Defining Global and Local Refinements, for purpose of simplicity cell x and y dimension will be the same
-celGlo = 80
+celGlo = 40
 celRef = 3
 """
 def arrayGeneratorCol(gloRef, locRef, gloSize, locSize):
@@ -316,7 +318,8 @@ dis = fp.mf6.ModflowGwfdis(gwf, pname= "dis", nlay=nlay,
 # assigning surface raster
 path_raster="../03_Raster/Input_ModelR/Superficies_R_Tiff"
 
-surface=Raster.load(os.path.join(path_raster,"R_Topo_Union_Clip.tif"))
+# R_Topo_resamp.tif R_Topo_Union_Clip.tif
+surface=Raster.load(os.path.join(path_raster,"R_Topo_resamp.tif"))
 surface.bands
 
 # fig2=plt.figure(figsize=(12,12))
@@ -443,7 +446,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
     path_folder is a string with the relative or absolute path of the folder containing raster files
     name_raster is a list of  variables containing the names of raster files, the firxt one has to be model Top
     div_layers is a list of int variables containing the number of division of each layer between raster layers
-    it should have the same size as name_raster minus 1(or the same if bottom constant layer is defined[bottom <= -1000])
+    it should have the same size as name_raster minus 1(or the same if bottom constant layer is defined[bottom <= -1000]) ->I need to check this.
     bottom is the bottom height  of the model, if negative, the last raster will be used as bottom
     min_thick is a list of int Minimun raster thickness variable allowed for raster layers.
     
@@ -494,7 +497,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
     
     print("bottom_Shape=",botm.shape)
     thickcells=np.ones(botm.shape)
-    for i in range(1, len(capas)+1):
+    for i in range(1, len(capas)+1):#This for will define "geological layers"--I think I should change capas by div layers
         print("i=",i)
         # assign geologicalbottom layers to matrix
         if i  == len(capas) and bottom_model != -1000:
@@ -502,7 +505,7 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
             print("opt1")
         elif i  == len(capas) and bottom_model == -1000:
             print("you probably didn't define a suitable bottom model!!")
-            demMatrix[i] = bottom_model
+            demMatrix[i] = bottom_model#take a look of this, maybe I could change it for something better
             print("opt2")
         else:
             print("opt3")
@@ -551,15 +554,16 @@ def dis_layers(path_folder, name_raster, div_layers, kgeo, kvgeo, ssgeo, sygeo, 
     
     return botm, demMatrix, thickcells, k, kv, ss, sy
 
-# run dis_layer function
-raster_names=["R_Topo_Union_Clip.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
+# run dis_layer function 
+# R_Topo_resamp.tif R_Topo_Union_Clip.tif
+raster_names=["R_Topo_resamp.tif", "R_Qbg_Qd.tif", "R_Qbo2.tif", "R_Qbo1.tif"]
 capas=np.array([1,2,2,1])
-min_thick=([1,0,0,0])
+min_thick=([5,5,5,5])
 fondos, geol, thickcells, k, kv, ss, sy= dis_layers(path_raster,raster_names, capas, kgeol, kvgeol, ssgeol, sygeol, bottom_model=500, min_thick=min_thick)
 nlay = fondos.shape[0]
 dis.nlay = fondos.shape[0]
 dis.botm=fondos
-celltype=([0,0,0,1])#not used, ill defined
+# celltype=([0,0,0,1])#not used, ill defined
 # define node property flow package
 npf = fp.mf6.ModflowGwfnpf(gwf, icelltype=1, k=k, k33overk=True, k33=kv,
                            save_flows=True, save_specific_discharge = True)
@@ -741,7 +745,7 @@ resultq=ix.intersect(shp_geomq)
 drn_spd=[]
 for i in range(resultq.shape[0]):
     if idom[tuple((0,*resultq["cellids"][i]))]==1:
-        drn_spd.append([0,*resultq["cellids"][i], dem_Matrix[resultq["cellids"][i]]+1, 1e-5*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
+        drn_spd.append([0,*resultq["cellids"][i], dem_Matrix[resultq["cellids"][i]]+1, 1e-6*delCArray[resultq["cellids"][i][0]]*delRArray[resultq["cellids"][i][1]]])#falta agregar valores de quebradas, I need terrain
 
 drn=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=drn_spd, filename=f"{model_name}.drn",
                          pname="drn", print_input=False,print_flows=False,save_flows=True)
