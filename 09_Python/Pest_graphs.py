@@ -16,15 +16,17 @@ case="model_pest"
 run_path="E:/Thesis_Runs"#I need to test this
 m_d=os.path.join(run_path,"master")
 t_d = os.path.join(run_path,"template")
-assert os.path.exists(m_d)," need to run the Pest_inv_unc file first!"
+assert os.path.exists(m_d),"you need to run the Pest_inv_unc file first!"
 pst = pyemu.Pst(os.path.join(m_d,f"{case}.pst"))
 
+run_type="glm_fosm"#"ies" , "glm_fosm"
 
-
-     
-obs_filename =case+".0.obs.csv"
-obs_df = pd.read_csv(os.path.join(m_d,obs_filename),index_col=0)#read modelled obs
-obs = pst.observation_data
+if run_type=="ies":
+    obs_filename =case+".0.obs.csv"
+    obs_df = pd.read_csv(os.path.join(m_d,obs_filename),index_col=0)#read modelled obs
+    obs = pst.observation_data
+elif run_type=="glm_fosm":
+    pass
 
 def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
     if posterior:
@@ -171,21 +173,43 @@ def oneto1_graph(iter=None, ofilename=None, post=False):
 
             # j=j+1    
     
-
+def shurs_graph_flow(iter=0, output_path=None, post=False, input_path=m_d):
+    pd_usum=pd.read_csv(os.path.join(input_path,f"model_pest.{iter}.pred.usum.csv"))
+    pd_usum_flow=pd_usum.loc[pd_usum.name.str.contains("flow_gal")]
+    pd_usum_flow=pd_usum_flow.drop(pd_usum_flow.loc[pd_usum_flow.name.str.contains("_w")].index)
+    pd_usum_flow["time_s"]=pd_usum_flow.name.str.split(":", expand=True)[4].astype("float")
+    pd_usum_flow["time_d"]=(pd_usum_flow["time_s"]-1)/86400
+    pd_usum_flow.drop("name", axis=1, inplace=True)
+    pd_usum_flow.replace([1e30,3e30,-1e30], np.nan, inplace=True)
+    pd_usum_flow.mask(np.abs(pd_usum_flow)>0.5e30, inplace=True)
+    ax=pd_usum_flow.plot(x="time_d", y=["prior_mean","prior_lower_bound", "prior_upper_bound",
+                                     "post_mean","post_lower_bound", "post_upper_bound"  ],
+                      kind="line", grid= True, style=["k-","k:","k:","b-","b:","b:"], alpha=0.5 )
+    plt.legend(loc='upper right', fontsize=8)
+    ax.set_title("Linear Uncertainty +- 2 estandard deviations")
+    ax.set_xlabel("time[d]")
+    ax.set_ylabel("flow")
+    if not output_path==None:
+        plt.savefig(output_path+"/Linear_flow_Pr_post", dpi=300)    
+    
+    
+    plt.show()
     
 if __name__ == '__main__':
     it=0
-    folder= f"Glm_v3/i{it}"#os.path.join("../06_jpg/", ) 
+    folder= f"Glm_v4/i{it}"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
-        
+    
+    #Shur's complemente plot    
+    shurs_graph_flow(iter=it, output_path=full_path, post=False)    
     # IES plots
-    oneto1_graph(iter=it, ofilename=full_path, post=True)
+    # oneto1_graph(iter=it, ofilename=full_path, post=True)
 
-    time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
+    # time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
       
-    frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
+    # frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
     
  
     
