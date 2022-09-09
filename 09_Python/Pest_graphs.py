@@ -22,17 +22,23 @@ pst = pyemu.Pst(os.path.join(m_d,f"{case}.pst"))
 run_type="glm_fosm"#"ies" , "glm_fosm"
 
 if run_type=="ies":
-    obs_filename =case+".0.obs.csv"
-    obs_df = pd.read_csv(os.path.join(m_d,obs_filename),index_col=0)#read modelled obs
-    obs = pst.observation_data
+    name_csvfile="obs.csv"
+    obs_filename =case+".0."+name_csvfile
+
 elif run_type=="glm_fosm":
-    pass
+    name_csvfile="post.obsen.csv"
+    obs_filename =case+".1."+name_csvfile
+    
+
+obs_df = pd.read_csv(os.path.join(m_d,obs_filename),index_col=0)#read modelled obs
+obs = pst.observation_data
+obs_df.drop(obs_df.loc[obs_df.sum(axis=1)==0].index, inplace=True)#to drop failed runs in NSMC
 
 def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
     if posterior:
-        obs_post_filename =case+f".{iter}.obs.csv"
+        obs_post_filename =case+f".{iter}."+name_csvfile
         obs_post_df = pd.read_csv(os.path.join(m_d,obs_post_filename),index_col=0)#read modelled obs   
-    
+        obs_post_df.drop(obs_post_df.loc[obs_post_df.sum(axis=1)==0].index, inplace=True)#to drop failed runs in NSMC
         
     for obs_group in pst.obs_groups:
         obs_g = obs.loc[obs.obgnme==obs_group,:].copy()#select field/init obs from control file of one obs_group
@@ -67,7 +73,7 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
         # plt.show()
 
         if not path==None:
-            plt.savefig(path+f"/t_s_{obs_group.split(':')[1]}", dpi=300)
+            plt.savefig(path+f"/t_s_{obs_group.split(':')[3]}", dpi=300)
             plt.show()
     
 # ['gal_flow_usecol:gal-flow',
@@ -106,7 +112,7 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
 
     if posterior:
         post="_post"
-        obs_post_filename =case+f".{iter}.obs.csv"
+        obs_post_filename =case+f".{iter}."+name_csvfile
         obs_post_df = pd.read_csv(os.path.join(m_d,obs_post_filename),index_col=0)#read modelled obs    
         
         obs_post_gal_df = obs_post_df.loc[:,obs_gal_nam.obsnme]#select from modelled values those that match with obs_group and field_obs(Inlude 0 weight)
@@ -184,30 +190,30 @@ def shurs_graph_flow(iter=0, output_path=None, post=False, input_path=m_d):
     pd_usum_flow.mask(np.abs(pd_usum_flow)>0.5e30, inplace=True)
     ax=pd_usum_flow.plot(x="time_d", y=["prior_mean","prior_lower_bound", "prior_upper_bound",
                                      "post_mean","post_lower_bound", "post_upper_bound"  ],
-                      kind="line", grid= True, style=["k-","k:","k:","b-","b:","b:"], alpha=0.5 )
+                      kind="line", grid= True, style=["k-","k:","k:","b-","b:","b:"], alpha=0.5, fontsize=8)
     plt.legend(loc='upper right', fontsize=8)
-    ax.set_title("Linear Uncertainty +- 2 estandard deviations")
+    ax.set_title("Linear Uncertainty ")
     ax.set_xlabel("time[d]")
     ax.set_ylabel("flow")
     if not output_path==None:
-        plt.savefig(output_path+"/Linear_flow_Pr_post", dpi=300)    
-    
-    
+        plt.savefig(output_path+"/Linear_flow_Pr_post", dpi=300, pad_inches=0.5)    
+      
     plt.show()
     
 if __name__ == '__main__':
-    it=0
+    it=2
     folder= f"Glm_v4/i{it}"#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
     
     #Shur's complemente plot    
-    shurs_graph_flow(iter=it, output_path=full_path, post=False)    
+    # shurs_graph_flow(iter=it, output_path=full_path, post=False)
+    
     # IES plots
     # oneto1_graph(iter=it, ofilename=full_path, post=True)
 
-    # time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
+    time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
       
     # frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
     
