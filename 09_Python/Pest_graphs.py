@@ -80,8 +80,8 @@ def time_series_graphs(prior=True, posterior=False, iter=1, path=None):
 #  'gal_flow_usecol:gal_w-flow']
 #setting graphs of frecuency flow
 def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
-    obs_gal_nam=obs.loc[obs.obgnme=='flow_gal_usecol:gal-flow'].copy()
-    obs_gal_w_nam=obs.loc[obs.obgnme=='flow_gal_w_usecol:gal_w-flow'].copy()
+    obs_gal_nam=obs.loc[obs.obgnme=='oname:flow_gal_otype:lst_usecol:gal-flow'].copy()
+    obs_gal_w_nam=obs.loc[obs.obgnme=='oname:flow_gal_w_otype:lst_usecol:gal_w-flow'].copy()
     obs_gal_nam.sort_values(by="time",inplace=True)#organize values
     obs_gal_w_nam.sort_values(by="time",inplace=True)#organize values
     pr=""
@@ -114,6 +114,7 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
         post="_post"
         obs_post_filename =case+f".{iter}."+name_csvfile
         obs_post_df = pd.read_csv(os.path.join(m_d,obs_post_filename),index_col=0)#read modelled obs    
+        obs_post_df.drop(obs_post_df.loc[obs_post_df.sum(axis=1)==0].index, inplace=True)#to drop failed runs in NSMC
         
         obs_post_gal_df = obs_post_df.loc[:,obs_gal_nam.obsnme]#select from modelled values those that match with obs_group and field_obs(Inlude 0 weight)
         obs_post_gal_w_df = obs_post_df.loc[:,obs_gal_w_nam.obsnme]
@@ -154,7 +155,7 @@ def frequency_graphs(prior=True, posterior=False, iter=1, norm=False,path=None):
 
 #setting graph for 1to1 of all ensembles
 # prior,1to1,phi_pie,phi_progress, and someday  obs_v_sim?
-def oneto1_graph(iter=None, ofilename=None, post=False):
+def oneto1_graph_ies(iter=None, ofilename=None, post=False, run_type="ies"):
     
     
     print_1to1={'0.5': obs_df.replace(-1e30, np.nan)}
@@ -190,7 +191,7 @@ def shurs_graph_flow(iter=0, output_path=None, post=False, input_path=m_d):
     pd_usum_flow.mask(np.abs(pd_usum_flow)>0.5e30, inplace=True)
     ax=pd_usum_flow.plot(x="time_d", y=["prior_mean","prior_lower_bound", "prior_upper_bound",
                                      "post_mean","post_lower_bound", "post_upper_bound"  ],
-                      kind="line", grid= True, style=["k-","k:","k:","b-","b:","b:"], alpha=0.5, fontsize=8)
+                      kind="line", grid= True, style=["k-","k:","k:","b-","b:","b:"], alpha=0.5, fontsize=10)
     plt.legend(loc='upper right', fontsize=8)
     ax.set_title("Linear Uncertainty ")
     ax.set_xlabel("time[d]")
@@ -200,9 +201,65 @@ def shurs_graph_flow(iter=0, output_path=None, post=False, input_path=m_d):
       
     plt.show()
     
+def pest_glm_graphs(input=m_d, output_path=None):
+    out=os.path.join("../06_Jpg/", output_path)
+    pst_a = pyemu.Pst(os.path.join(m_d,"{}.pst".format(case)))
+    glm_plots=pst_a.plot("1to1")
+    for i, fig in enumerate(glm_plots):
+        fig.savefig(os.path.join(out,f"1to1_{i}"))
+        
+    glm_plots=pst_a.plot("prior")
+    for i, fig in enumerate(glm_plots):
+        fig.savefig(os.path.join(out,f"prior_{i}"))
+        
+    
+    plt.figure()        
+    pst_a.plot("phi_progress")
+    plt.savefig(os.path.join(out,"phi_progress"))
+
+    plt.figure()
+    pst_a.plot("phi_pie")
+    plt.savefig(os.path.join(out,"phi_pie"))
+    
+    resid=pst_a.res.copy()
+    resid["group2"]=resid.group.str.split(":", expand=True)[3]
+    
+    resid.drop(resid.loc[resid.weight==0].index, inplace=True)   
+    resid.replace([1e30,3e30,-1e30,-3e30, 0], np.nan, inplace=True)
+
+    groups= resid.group.str.split(":", expand=True)[3].unique()
+    
+    mean=resid["measured"].mean()
+    # mini=resid["measured"].min()
+    # maxi=resid["measured"].max()
+    
+    ax=resid.plot("measured", ["modelled","residual"],
+                  style=".", subplots=True, grid=True,
+                  alpha=0.5, fontsize=15, figsize=(10,15), sharex=False,)
+
+
+    ax[0].axline((mean,mean), slope=1)
+    ax[1].axline((mean,0), slope=0)
+
+    # ax.set_title("Observed vs simulated ")
+    # ax.set_xlabel("time[d]")
+    ax[0].set_ylabel("observed")
+    ax[1].set_ylabel("residual")
+    if not output_path==None:
+        plt.savefig(out+"/1_to_1_gen", dpi=300, pad_inches=0.5)
+    # # pst_a.plot()
+    # pst_a.get_res_stats()
+    # pst_a.phi
+    # pst_a.phi_components
+    # pst_a.phi_components_normalized
+    # df_residuals=pst_a.res
+    # obs_summary=pst_a.write_obs_summary_table()
+    # par_summary=pst_a.write_par_summary_table()    
+    
 if __name__ == '__main__':
-    it=2
-    folder= f"Glm_v4/i{it}"#os.path.join("../06_jpg/", ) 
+    it=1
+    gen_fold="Glm_v4"
+    folder= os.path.join(gen_fold, f"i{it}")#os.path.join("../06_jpg/", ) 
     full_path=os.path.join("../06_Jpg/",folder)
     if not os.path.exists(full_path):
         os.makedirs(full_path)
@@ -211,13 +268,13 @@ if __name__ == '__main__':
     # shurs_graph_flow(iter=it, output_path=full_path, post=False)
     
     # IES plots
-    # oneto1_graph(iter=it, ofilename=full_path, post=True)
-
-    time_series_graphs(prior=True,posterior=True, iter=it, path=full_path)
-      
+    # oneto1_graph_ies(iter=it, ofilename=full_path, post=True)
+    
+    # IES and NSMC plots
+    time_series_graphs(prior=True,posterior=False, iter=it, path=full_path)
     # frequency_graphs(prior=True, posterior=True, iter=it, path=full_path)    
     
- 
+    # pest_glm_graphs(m_d, gen_fold)
     
 
 

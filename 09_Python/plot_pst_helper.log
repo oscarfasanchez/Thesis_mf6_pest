@@ -1,4 +1,4 @@
-2022-07-02 14:24:20.906493 starting: opening plot_pst_helper.log for logging
-2022-07-02 14:24:20.913489 plot_utils.pst_helper()
-2022-07-02 14:24:20.913489 starting: plot res_1to1
-2022-07-02 14:24:20.913489 ERROR: res_phi_pie: pst.res is None, couldn't find residuals file
+2022-09-12 20:51:46.167766 starting: opening plot_pst_helper.log for logging
+2022-09-12 20:51:46.167766 plot_utils.pst_helper()
+2022-09-12 20:51:46.167766 starting: plot res_phi_pie
+2022-09-12 20:51:46.634769 finished: plot res_phi_pie took: 0:00:00.467003
