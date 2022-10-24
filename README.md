@@ -1,7 +1,8 @@
 # Thesis_mf6_pest
 Uncertainty Analysis of an inverse hidrogeologogical model in the north of Bucaramanga, Colombia
 
-Links to some imputs
+Links to some inputs
+
 Shapefiles:
 https://correouisedu-my.sharepoint.com/:f:/g/personal/oscar_sanchez2_correo_uis_edu_co/Eh2yAE3XN-RLrcW4xPrbx3IBZ2KYTu-00zzZsYilMgu8KQ?e=pfW6IE
 
