@@ -752,7 +752,7 @@ def setup_gallery_drn(workspace, path_sh, gal_file, ix, gwf):
         
         
     resultg=ix.intersect(shp_geomg)
-    gal_spd=[]
+    
 
     #conductance per meter of gallery
     gal_perim=9.2106+1.3906*2+0.46#ignoring depth channel
@@ -772,6 +772,7 @@ def setup_gallery_drn(workspace, path_sh, gal_file, ix, gwf):
 
 
     time_gal_0=365*3+30*3#time when gallery construction begins
+    gal_spd=[]
     gal_spd_tr={}
     # write comments
     for i in range(resultg.shape[0]):#iterate gallery cells
@@ -780,10 +781,25 @@ def setup_gallery_drn(workspace, path_sh, gal_file, ix, gwf):
                 if idom[tuple((0,*resultg["cellids"][i]))]==1:#Cambiar J?
                     gal_spd.append([j,*resultg["cellids"][i],
                                     height_0+resultg["lengths"][0:i].sum()*gal_slp, gal_cond*resultg["lengths"][i],"gal_flow"])
-                print(int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1)
-                gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=list(gal_spd)#review indent
-                break
-            
+                    print('gal time = ',int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0)
+                    gal_spd_tr[int(resultg["lengths"][0:i+1].sum()//gal_speed_exc)+1+time_gal_0]=list(gal_spd)#review indent
+                    break
+    gal_spd_tr_2 = {}
+    for i in range(1, len(gal_spd_tr)):#to set up a gradual increasing of conductance for a smooth activation of the BC
+        strt = list(gal_spd_tr.keys())[i-1]
+        end = list(gal_spd_tr.keys())[i]
+        for j in range(strt + 1, end): #TODO check I wrote this sleepy
+            time = end - strt
+            count = j - strt
+            # h_delta = (gal_spd_tr[end][-1][3] - gal_spd_tr[strt][-1][3])/time
+            h = gal_spd_tr[end][-1][3]#gal_spd_tr[strt][-1][3] + h_delta*count
+            cond_delta = gal_spd_tr[end][-1][4]/time
+            cond =cond_delta*count
+            gal_spd_tr_2[j] = gal_spd_tr[strt].copy()
+            gal_spd_tr_2[j].append([*gal_spd_tr[end][-1][:3], h, cond, 'gal_flow'])#TODO add previous cells
+        
+    gal_spd_tr_2.update(gal_spd_tr)
+    gal_spd_tr = {x:gal_spd_tr_2[x] for x in range(min(gal_spd_tr_2.keys()),max(gal_spd_tr_2.keys()))}     
     gal_obs={"mod_drn_gal_obs.csv":[("gal-flow", "drn", "gal_flow")]}        
 
     drn_gal=fp.mf6.ModflowGwfdrn(gwf,stress_period_data=gal_spd_tr,
@@ -1066,10 +1082,12 @@ def main():
         os.makedirs(workspace)
      
     exe_name=os.path.join('..',"10_Exe","mf6.exe")
-    nsper=int(365*4.5)#number of  stress periods, 365 per year
-    cell_size_big=40
-    cell_size_ref=30
-    sim = setup_mf6(workspace, model_name, nsper,cell_size_big=40,cell_size_ref=20, exe_name=exe_name)
+    nsper=365*4#int(365*4.5)#number of  stress periods, 365 per year
+    cell_size_big=80
+    cell_size_ref=10
+    sim = setup_mf6(workspace, model_name, nsper,
+                    cell_size_big=cell_size_big,cell_size_ref=cell_size_ref,
+                    exe_name=exe_name)
     success,buff=sim.run_simulation()
     if not success:
         raise Exception("MODFLOW 6 did not terminate normally.")
