@@ -10,10 +10,12 @@ import flopy as fp
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import pyemu
+
 import shutil
 from shutil import copyfile
-sys.path.append(os.path.abspath(r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\09_Python"))
+sys.path.append(os.path.join('..',"12_Deps"))
+import pyemu
+# sys.path.append(os.path.abspath(r"D:\OneDrive - UNIVERSIDAD INDUSTRIAL DE SANTANDER\Maestria\06_Tesis\01_Tesis_Dev\09_Python"))
 import Modif_model
 print(sys.path)
 case="model_pest"
@@ -45,11 +47,10 @@ def setup_obs(obs_path="../04_Xls/Observ"):
     dip_log["P-Gal-S3"].loc[dip_log["P-Gal-S3"]["P-Gal-S3"]<9.4,"P-Gal-S3"]=None
     
     for i in dip_log.keys():
-        dip_log[i]=dip_log[i].groupby('date').mean()
+        dip_log[i]=dip_log[i].groupby('date')[i].mean()
         
-    dip_log_d=pd.concat(
-        dip_log,
-        ignore_index=False).reset_index(level=0).drop(columns="level_0").groupby('date').mean()
+    dip_log_d=pd.concat(dip_log, axis = 1)#because of pd update
+        # ignore_index=False, axis = 1).reset_index(level=0).drop(columns="level_0").groupby('date').mean()
     
     #procedure to import vibrating wire head measuments
     vib_wir=pd.read_excel( os.path.join(obs_path,"vib_wire.xlsx"),sheet_name=None)
@@ -109,13 +110,14 @@ def modif_obs_csv(csv_file, df_field_mea , lower=False):
     df_obs=pd.read_csv(os.path.join(tmp_model_ws,csv_file),index_col=0)
     df_obs.loc[:,:]=None
     df_field_mea["time"]=df_field_mea.index-pd.Timestamp('2017-01-01 00:00:00')
-    df_field_mea["time"]=df_field_mea["time"].astype("timedelta64[s]")+1 #becausesteady time shift every stress period
+    # df_field_mea["time"]=df_field_mea["time"].astype("timedelta64[s]")+1 #becausesteady time shift every stress period
+    df_field_mea["time"]=df_field_mea["time"].dt.total_seconds()+1#update new pandas version
     df_field_mea.columns=df_field_mea.columns.str.upper()
     df_obs_final=pd.concat([df_obs,df_field_mea.set_index("TIME")], join="outer", axis=0 )
     df_obs_final=df_obs_final.reset_index().groupby("index").max()
     
     import geopandas as gpd
-    inventory=gpd.read_file("../../05_Vectorial/INV_PAS_V5_DEM.shp")
+    inventory=gpd.read_file("../02_Shp_Vect/INV_PAS_V5_DEM.shp")
     inv=inventory[inventory["DEPTH_MEA"]>0]
     inv.reset_index(drop=True, inplace=True)#because we erased some points
     
@@ -266,7 +268,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
         
     
     # list files to modify in calibration/uncertainty
-    hk_arr_files = [f for f in os.listdir(tmp_model_ws) if "k_" in f and f.endswith(".txt")]
+    hk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kh_" in f and f.endswith(".txt")]
     hk_arr_files[0], hk_arr_files[2] = hk_arr_files[2], hk_arr_files[0]
     
     vk_arr_files = [f for f in os.listdir(tmp_model_ws) if "kv_" in f and f.endswith(".txt")]
@@ -314,7 +316,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.005,
                           ult_ubound=1e-4,
                           ult_lbound=1e-10,
-                          spatial_reference=sr,
+                          # spatial_reference=sr,
                           geostruct=grid_gs)
     for i in range(len(vk_arr_files)):
         pf.add_parameters(filenames=vk_arr_files[i],
@@ -327,7 +329,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.1,
                           ult_ubound=100,
                           ult_lbound=0.01,
-                          spatial_reference=sr,
+                          # spatial_reference=sr,
                           geostruct=grid_gs)
     for i in range(len(ss_arr_files)):#warning in bounds
         pf.add_parameters(filenames=ss_arr_files[i],
@@ -340,7 +342,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.1,
                           ult_ubound=1e-2,
                           ult_lbound=1e-6,
-                          spatial_reference=sr,
+                          # spatial_reference=sr,
                           geostruct=grid_gs)
     for i in range(len(sy_arr_files)):#warning in bounds
         pf.add_parameters(filenames=sy_arr_files[i],
@@ -353,7 +355,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.3,
                           ult_ubound=0.5,
                           ult_lbound=0.01,
-                          spatial_reference=sr,
+                          # spatial_reference=sr,
                           geostruct=grid_gs)
     ghb_list=[]
     for i in range(int(layers.sum())):
@@ -371,7 +373,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.01,
                           ult_ubound=100,
                           ult_lbound=0,
-                          spatial_reference=sr
+                          # spatial_reference=sr
                           )
     ubnd=[1.157e-6,3.48e-8]    # transient 100% daily percol, steady 1100 mm/yr
     #be careful about this setup, review PLEASE
@@ -386,7 +388,7 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
                           lower_bound=0.25,
                           ult_ubound=ubnd[i],
                           ult_lbound=0,
-                          spatial_reference=sr,
+                          # spatial_reference=sr,
                           )
     
     #add run model command(run once only?), review later
@@ -529,12 +531,12 @@ def setup_inv_model(org_ws, template_ws, df_field_meas_2, updt_obs_field=True, r
     
     
     
-def run_pest(t_d, run_type="ies"):
-    num_workers=11
+def run_pest(t_d,exe_path, run_type="ies", num_workers=6):
+    num_workers=6
     if run_type== "ies":
-        exe_p_name=r"C:\WRDAPP\bin\pestpp-ies"
+        exe_p_name=os.path.join(exe_path,"pestpp-ies")
     elif run_type=="glm_fosm":
-        exe_p_name=r"C:\WRDAPP\bin\pestpp-glm"
+        exe_p_name=os.path.join(exe_path,"pestpp-glm")
         
     pyemu.os_utils.start_workers(os.path.join(t_d,"template"),
                                   exe_p_name,#"../10_exe/pestpp-ies.exe",
@@ -563,10 +565,10 @@ def pest_graphs(m_d):
     par_summary=pst_a.write_par_summary_table()
     
     
-def update_strt_first_time():
-    head_0, numsp =Modif_model.export_head(run_path="data/modelo_Norte")
-    Modif_model.write_ext_str_heads(head_0, run_path="E:/Thesis_Runs")
-    Modif_model.update_start_head(run_path="E:/Thesis_Runs",folder_update="template",first_update=True)
+def update_strt_first_time(model_path, pest_path):
+    head_0, numsp =Modif_model.export_head(run_path=model_path)
+    Modif_model.write_ext_str_heads(head_0, run_path=pest_path)
+    Modif_model.update_start_head(run_path=pest_path,folder_update="template",first_update=True)
        
         
     
@@ -577,14 +579,17 @@ def update_strt_first_time():
     
     
 if __name__ == "__main__":
+    exe_path = os.path.join('..','10_exe')
     
-    
-    run_path="E:/Thesis_Runs"
-    run_type="glm_fosm"#"ies" , "glm_fosm"
+    model_path="data/modelo_Norte"
+    # run_path="E:/Thesis_Runs"
+    run_path=os.path.join('.',"Thesis_Runs")
+    exe_path_from_worker  = os.path.join('..',"..",'..','10_Exe' )
+    run_type="ies" #, "glm_fosm"
     # df_field_meas=setup_obs("../04_Xls/Observ")
-    # setup_inv_model("data/modelo_Norte",run_path, df_field_meas, updt_obs_field=True, run_type=run_type, restart_strt=True)
-    update_strt_first_time()
-    run_pest(run_path, run_type=run_type)
+    # setup_inv_model( model_path,run_path, df_field_meas, updt_obs_field=True, run_type=run_type, restart_strt=False)
+    update_strt_first_time(model_path, run_path)
+    run_pest(run_path, exe_path_from_worker, run_type=run_type)
     # pest_graphs(os.path.join(run_path,"master"))
     
     
